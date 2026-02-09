@@ -1,7 +1,6 @@
 # Dateien/Ordner, die beim Plenty-Upload nicht berücksichtigt werden sollen
 .git/
 .gitignore
-.plentymarketsignore
 AGENTS.md
 README.md
 ChatGPT-PlentyLTS-Custom-Theme-Research-Guide.md
