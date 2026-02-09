@@ -1,0 +1,13 @@
+# Dateien/Ordner, die beim Plenty-Upload nicht berücksichtigt werden sollen
+.git/
+.gitignore
+AGENTS.md
+README.md
+ChatGPT-PlentyLTS-Custom-Theme-Research-Guide.md
+Documentation/
+Custom CSS/
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
