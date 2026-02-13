@@ -1,0 +1,14 @@
+{
+  "name": "david-hammer/plenty-lts-custom-theme-plugin",
+  "description": "Basisstruktur für das PlentyShop-LTS-Theme-Plugin von Fenster-Hammer und Schrauben-Hammer.",
+  "type": "plentymarkets-plugin",
+  "license": "AGPL-3.0",
+  "require": {
+    "php": "^7.3 || ^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "PlentyLTSDavidHammerCustomThemePlugin\\": "src/"
+    }
+  }
+}

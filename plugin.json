@@ -1,0 +1,18 @@
+{
+  "name": "PlentyLTSDavidHammerCustomThemePlugin",
+  "namespace": "PlentyLTSDavidHammerCustomThemePlugin",
+  "type": "theme",
+  "version": "0.1.0",
+  "license": "AGPL-3.0",
+  "author": "David Hammer",
+  "serviceProvider": "PlentyLTSDavidHammerCustomThemePlugin\\Providers\\ThemeServiceProvider",
+  "description": "PlentyShop-LTS-Theme-Plugin für FH und SH mit Header- und Footer-Rebuild als Basis.",
+  "platform": {
+    "php": "^7.3 || ^8.0",
+    "plentymarkets": "^5.0.0"
+  },
+  "dependencies": {
+    "Ceres": "5.0.78",
+    "IO": "5.0.78"
+  }
+}
