@@ -1,62 +1,35 @@
-\# ShopBuilder plugins → ShopBuilder widgets
+# ShopBuilder plugins → ShopBuilder widgets
 
+## Widget information - widgetClass (current standard)
 
+Since the release of plentyShop LTS 5.0.39, widget information can also be provided via a **widget PHP class**. A widget class has two essential methods:
 
-\## Widget information - widgetClass (current standard)
+\- **getData()**: All widget information that would previously have been stored in the JSON — such as the identifier, label, preview image, type, categories, etc. — is now stored in this method. To implement this method more easily, you should use the helper class **WidgetDataFactory** (see table below).
 
-
-
-Since the release of plentyShop LTS 5.0.39, widget information can also be provided via a \*\*widget PHP class\*\*. A widget class has two essential methods:
-
-
-
-\- \*\*getData()\*\*: All widget information that would previously have been stored in the JSON — such as the identifier, label, preview image, type, categories, etc. — is now stored in this method. To implement this method more easily, you should use the helper class \*\*WidgetDataFactory\*\* (see table below).
-
-
-
-\- \*\*getSettings()\*\*: The widget's settings that would previously have been stored in the JSON can now be provided in this method. To do so, you should use the helper class \*\*WidgetSettingsFactory\*\* (see table below). The helper class can be called in the constructor or via pluginApp() and provides a multitude of methods for preconfigured settings, such as text and number input, drop-down lists, checkboxes and sliders. All settings that are provided by a \*\*create\*\* method can be further customised with additional methods. To see which methods are available, take a look at the WidgetSettingsFactory. Even if you use \*\*WidgetSettingsFactory\*\* methods, you still have the option to define custom settings. In this case, call the method \*\*createCustomSetting()\*\* of the WidgetSettingsFactory.
-
-
+\- **getSettings()**: The widget's settings that would previously have been stored in the JSON can now be provided in this method. To do so, you should use the helper class **WidgetSettingsFactory**(see table below). The helper class can be called in the constructor or via pluginApp() and provides a multitude of methods for preconfigured settings, such as text and number input, drop-down lists, checkboxes and sliders. All settings that are provided by a**create**method can be further customised with additional methods. To see which methods are available, take a look at the WidgetSettingsFactory. Even if you use**WidgetSettingsFactory**methods, you still have the option to define custom settings. In this case, call the method**createCustomSetting()** of the WidgetSettingsFactory.
 
 | Helper class | Description |
 
 |---|---|
 
-| WidgetDataFactory | A helper class that simplifies defining widget information. The WidgetDataFactory is instantiated via the static method \*\*make($identifier)\*\*. All subsequent widget information is set via methods, which can be chained by using \*\*→\*\*. The method \*\*toArray()\*\* converts the WidgetDataFactory object into an array, which can be returned by the getData() method. |
+| WidgetDataFactory | A helper class that simplifies defining widget information. The WidgetDataFactory is instantiated via the static method **make($identifier)**. All subsequent widget information is set via methods, which can be chained by using **→**. The method **toArray()** converts the WidgetDataFactory object into an array, which can be returned by the getData() method. |
 
-| WidgetSettingsFactory | A helper class that simplifies defining widget settings. The WidgetSettingsFactory is instantiated via pluginApp. By calling predefined \*\*create\*\* methods, you can add settings to your widget. Alternatively, you can define custom settings via the method \*\*createCustomSettings()\*\*. After calling all necessary \*\*create\*\* methods, call the method \*\*toArray()\*\*, which converts the WidgetSettingsFactory object into an array. This array can then be returned by the \*\*getSettings()\*\* method. |
+| WidgetSettingsFactory | A helper class that simplifies defining widget settings. The WidgetSettingsFactory is instantiated via pluginApp. By calling predefined **create**methods, you can add settings to your widget. Alternatively, you can define custom settings via the method**createCustomSettings()**. After calling all necessary **create**methods, call the method**toArray()**, which converts the WidgetSettingsFactory object into an array. This array can then be returned by the **getSettings()** method. |
 
-
-
-\*\*Note:\*\* The helper class WidgetSettingsFactory bundles many predefined widget settings, such as the commonly used CSS class input and the widget spacing settings. When using the helper class, you do not have to replicate these settings yourself. Instead, you can cherrypick individual settings classes instead.
-
-
+**Note:** The helper class WidgetSettingsFactory bundles many predefined widget settings, such as the commonly used CSS class input and the widget spacing settings. When using the helper class, you do not have to replicate these settings yourself. Instead, you can cherrypick individual settings classes instead.
 
 After you have created the widget PHP class, you need to register the widget class in the service provider of your plugin. The ContentWidgetRepositoryContract provides the function `registerWidget ($widgetClass)`, in which you replace the variable with the widgetClass of your widget.
 
-
-
-\### widgetClass for Print button widget
-
-
+### widgetClass for Print button widget
 
 Take a look at the rudimentary print button widget from the ShopBuilder and how it is structured as a PHP class:
 
-
-
-\*\*contentWidgets.json\*\*
-
-
+### contentWidgets.json
 
 ```php
-
 <?php
 
-
-
 namespace Ceres\\Widgets\\Common;
-
-
 
 use Ceres\\Widgets\\Helper\\BaseWidget;
 
@@ -66,221 +39,159 @@ use Ceres\\Widgets\\Helper\\Factories\\WidgetDataFactory;
 
 use Ceres\\Widgets\\Helper\\WidgetTypes;
 
-
-
 class PrintButtonWidget extends BaseWidget
 
 {
 
-&nbsp;   protected $template = "Ceres::Widgets.Common.PrintButtonWidget";
+    protected $template = "Ceres::Widgets.Common.PrintButtonWidget";
 
+    public function getData()
 
+    {
 
-&nbsp;   public function getData()
+        return WidgetDataFactory::make("Ceres::PrintButtonWidget")
 
-&nbsp;   {
+            ->withLabel("Widget.printButtonLabel")
 
-&nbsp;       return WidgetDataFactory::make("Ceres::PrintButtonWidget")
+            ->withPreviewImageUrl("/images/widgets/print-button.svg")
 
-&nbsp;           ->withLabel("Widget.printButtonLabel")
+            ->withType(WidgetTypes::STATIC)
 
-&nbsp;           ->withPreviewImageUrl("/images/widgets/print-button.svg")
+            ->withPosition(300)
 
-&nbsp;           ->withType(WidgetTypes::STATIC)
+            ->toArray();
 
-&nbsp;           ->withPosition(300)
+    }
 
-&nbsp;           ->toArray();
+    public function getSettings()
 
-&nbsp;   }
+    {
 
+        /** @var WidgetSettingsFactory $settings */
 
+        $settings = pluginApp(WidgetSettingsFactory::class);
 
-&nbsp;   public function getSettings()
+        $settings->createCustomClass();
 
-&nbsp;   {
+        $settings->createAppearance();
 
-&nbsp;       /\*\* @var WidgetSettingsFactory $settings \*/
+        $settings->createButtonSize();
 
-&nbsp;       $settings = pluginApp(WidgetSettingsFactory::class);
+        $settings->createSpacing();
 
+        return $settings->toArray();
 
-
-&nbsp;       $settings->createCustomClass();
-
-&nbsp;       $settings->createAppearance();
-
-&nbsp;       $settings->createButtonSize();
-
-&nbsp;       $settings->createSpacing();
-
-
-
-&nbsp;       return $settings->toArray();
-
-&nbsp;   }
+    }
 
 }
-
 ```
 
-
-
-| | \*\*Explanation\*\* |
+| | **Explanation** |
 
 |---|---|
 
-| | Here, the print button widgetClass implements both helper classes detailed above, the \*\*WidgetDataFactory\*\* and the \*\*WidgetSettingsFactory\*\*. The getData() method serves to set widget information, such as label and preview image. The getSettings() method defines widget settings such as the CSS class input and button size via the helper class. Previously, this information would have been stored in the contentWidget.json. |
+| | Here, the print button widgetClass implements both helper classes detailed above, the **WidgetDataFactory**and the**WidgetSettingsFactory**. The getData() method serves to set widget information, such as label and preview image. The getSettings() method defines widget settings such as the CSS class input and button size via the helper class. Previously, this information would have been stored in the contentWidget.json. |
 
+### Overwriting individual widgets
 
+By constructing widgets via PHP classes, it becomes a lot easier for plugins to overwrite individual widgets. All you have to do, is add the call `$widgetRepository→overrideWidget($original, $newWidgetClass);`in your`boot()`method. In this context, **$original**is the identifier of the widget you want to overwrite, which in the future will be set within the PHP widgetClass via the`getData()` method.**$newWidgetClass** is the identifier of the widgetClass you want to replace the other widget with.
 
-\### Overwriting individual widgets
+## Widget information - contentWidgets.json (obsolete)
 
+Note that this guide refers to an obsolete way of creating ShopBuilder widgets. All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to **the widget turorial**.
 
-
-By constructing widgets via PHP classes, it becomes a lot easier for plugins to overwrite individual widgets. All you have to do, is add the call `$widgetRepository→overrideWidget($original, $newWidgetClass);` in your `boot()` method. In this context, \*\*$original\*\* is the identifier of the widget you want to overwrite, which in the future will be set within the PHP widgetClass via the `getData()` method. \*\*$newWidgetClass\*\* is the identifier of the widgetClass you want to replace the other widget with.
-
-
-
-\## Widget information - contentWidgets.json (obsolete)
-
-
-
-Note that this guide refers to an obsolete way of creating ShopBuilder widgets. All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to \*\*the widget turorial\*\*.
-
-
-
-\*\*contentWidgets.json\*\*
-
-
+### contentWidgets.json
 
 ```json
+[
 
-\[
+    {
 
-&nbsp;   {
+        "identifier": "MyWidget",
 
-&nbsp;       "identifier": "MyWidget",
+        "label": "Widget.MyWidgetLabel",
 
-&nbsp;       "label": "Widget.MyWidgetLabel",
+        "previewImageURL": "/images/my-widget.svg",
 
-&nbsp;       "previewImageURL": "/images/my-widget.svg",
+        "type": "default",
 
-&nbsp;       "type": "default",
+        "position": 2000,
 
-&nbsp;       "position": 2000,
+        "categories": ["category1", "category2"]
 
-&nbsp;       "categories": \["category1", "category2"]
+        "widgetClass": "MyWidget\\\\Widgets\\\\MyWidget",
 
-&nbsp;       "widgetClass": "MyWidget\\\\Widgets\\\\MyWidget",
+        "settings": {
 
-&nbsp;       "settings": {
+            "MySetting": {
 
-&nbsp;           "MySetting": {
+                "type": "text",
 
-&nbsp;               "type": "text",
+                "required": true,
 
-&nbsp;               "required": true,
+                "defaultValue": "myWidgetText",
 
-&nbsp;               "defaultValue": "myWidgetText",
+                "options": {
 
-&nbsp;               "options": {
+                    "name": "Widget.MyWidgetTextLabel",
 
-&nbsp;                   "name": "Widget.MyWidgetTextLabel",
+                    "tooltip": "Widget.MyWidgetTooltip"
 
-&nbsp;                   "tooltip": "Widget.MyWidgetTooltip"
+                }
 
-&nbsp;               }
+            }
 
-&nbsp;           }
+        }
 
-&nbsp;       }
-
-&nbsp;   }
+    }
 
 ]
-
 ```
 
-
-
-\### identifier
-
-
+### identifier
 
 The unique identifier of the widget. It is sensible for this identifier to include the namespace of the plugin.
 
-
-
-\### label
-
-
+### label
 
 Contains the label of the widget that is used to display the widget's name in the ShopBuilder user interface. The label provided here refers to the translation key stored in the widgets.properties files under \\resources\\lang\\de and \\resources\\lang\\en.
 
-
-
-\### previewImageURL
-
-
+### previewImageURL
 
 Contains the icon that is displayed in the widget list of the ShopBuilder interface. The path provided here refers to an image stored under \\resources\\images. The usual image formats are applicable (SVG, JPG, PNG), but we recommend that you use an image in SVG format with a width of 350px and a height of 120px. The icon can also be provided via a URL.
 
+### type
 
+There are four types of widgets: **static**, **structure**, **header**and**footer**. The widget type determines where the widget can be implemented on a page. Widgets of the type header can only be integrated into the header section of a ShopBuilder page; widgets of the types default and structure can be integrated into the body and footer sections of a ShopBuilder page; widgets of the type footer can only be integrated into the footer section of a ShopBuilder page. The widget type is also relevant for the **allowedNestingTypes** detailed below.
 
-\### type
-
-
-
-There are four types of widgets: \*\*static\*\*, \*\*structure\*\*, \*\*header\*\* and \*\*footer\*\*. The widget type determines where the widget can be implemented on a page. Widgets of the type header can only be integrated into the header section of a ShopBuilder page; widgets of the types default and structure can be integrated into the body and footer sections of a ShopBuilder page; widgets of the type footer can only be integrated into the footer section of a ShopBuilder page. The widget type is also relevant for the \*\*allowedNestingTypes\*\* detailed below.
-
-
-
-\### position
-
-
+### position
 
 Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by plentyShop LTS are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two plentyShop LTS widgets.
 
+### category
 
+Contains the categories of the widget via which it is grouped in the ShopBuilder editor. One widget can belong to multiple categories. Available categories are listed in an array beneath containers and presets in the shopBuilder.json file in plentyShop LTS. You can add your own categories in a theme. Each category consists of the key-value pairs **key**, **label**, and **position**. The default categories native to plentyShop LTS are Header, Structure, Text, Image, Item and Footer. If categories is left empty or is not included in the JSON, the widget will be listed under "more widgets" in the ShopBuilder editor.
 
-\### category
-
-
-
-Contains the categories of the widget via which it is grouped in the ShopBuilder editor. One widget can belong to multiple categories. Available categories are listed in an array beneath containers and presets in the shopBuilder.json file in plentyShop LTS. You can add your own categories in a theme. Each category consists of the key-value pairs \*\*key\*\*, \*\*label\*\*, and \*\*position\*\*. The default categories native to plentyShop LTS are Header, Structure, Text, Image, Item and Footer. If categories is left empty or is not included in the JSON, the widget will be listed under "more widgets" in the ShopBuilder editor.
-
-
-
-\### widgetClass
-
-
+### widgetClass
 
 This is the path of the widget's PHP class. In our case, the class' label is MapsWidget and is located at src/Widgets/MapsWidget. In the widget's class, you define the location of the TWIG template and determine which data is handed over to the TIWG template.
 
+### settings
 
+The settings provide the configuration options of the widget in the ShopBuilder. The settings are stored in a JSON object. Each item in the settings object needs to have a unique key, which is used in the code to refer to it. In the case of the Google Maps widget, the three setting keys are **apiKey**, **address**and**zoom**. You can provide as many settings as necessary for your widget.
 
-\### settings
+\- **type**: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types **in the turorial**.
 
+\- **required**: A Boolean that determines whether this widget setting is mandatory for the user.
 
+\- **defaultValue**: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type **in the turorial**.
 
-The settings provide the configuration options of the widget in the ShopBuilder. The settings are stored in a JSON object. Each item in the settings object needs to have a unique key, which is used in the code to refer to it. In the case of the Google Maps widget, the three setting keys are \*\*apiKey\*\*, \*\*address\*\* and \*\*zoom\*\*. You can provide as many settings as necessary for your widget.
+\- **options**: The options are a JSON object that includes the name of the setting and the tooltip. If the setting's input type is a **select**, i.e. a drop-down list, the options also include the **listBoxValues**, meaning the various entries in the drop-down list.
 
+- **name**: The key for the setting's name. The key is used to display the text stored in the widgets.properties file.
 
+- **tooltip**: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
 
-\- \*\*type\*\*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types \*\*in the turorial\*\*.
+\- **isVisible**: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of **isVisible**. An example of how this setting is implemented is described **in the turorial**.
 
-\- \*\*required\*\*: A Boolean that determines whether this widget setting is mandatory for the user.
-
-\- \*\*defaultValue\*\*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type \*\*in the turorial\*\*.
-
-\- \*\*options\*\*: The options are a JSON object that includes the name of the setting and the tooltip. If the setting's input type is a \*\*select\*\*, i.e. a drop-down list, the options also include the \*\*listBoxValues\*\*, meaning the various entries in the drop-down list.
-
-&nbsp; - \*\*name\*\*: The key for the setting's name. The key is used to display the text stored in the widgets.properties file.
-
-&nbsp; - \*\*tooltip\*\*: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
-
-\- \*\*isVisible\*\*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of \*\*isVisible\*\*. An example of how this setting is implemented is described \*\*in the turorial\*\*.
-
-\- \*\*isList\*\*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting \*\*in the turorial\*\*.
-
+\- **isList**: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting **in the turorial**.

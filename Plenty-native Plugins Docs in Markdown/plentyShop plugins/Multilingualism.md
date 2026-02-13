@@ -1,65 +1,46 @@
-\# Multilingualism
+# Multilingualism
 
+This tutorial guides you through the steps necessary to make **language-dependent texts**of your plugin, such as input labels or tooltips of the plugin configuration, editable in the PlentyONE**multilingualism** interface. The multilingualism interface displays the language-dependent texts of your plugin in a bilingual view, in which users can edit and translate them to display them in various languages in their online store. In the multilingualism interface the language-dependent texts are organised in sections, so that users can easily find the texts they want to edit.
 
+## Folder structure
 
-This tutorial guides you through the steps necessary to make \*\*language-dependent texts\*\* of your plugin, such as input labels or tooltips of the plugin configuration, editable in the PlentyONE \*\*multilingualism\*\* interface. The multilingualism interface displays the language-dependent texts of your plugin in a bilingual view, in which users can edit and translate them to display them in various languages in their online store. In the multilingualism interface the language-dependent texts are organised in sections, so that users can easily find the texts they want to edit.
+In order to make texts of your plugin editable in the multilingualism interface, your plugin needs to include the files **Template.properties**, **Config.properties**and**translation.json**. Your folder structure should look like this:
 
-
-
-\## Folder structure
-
-
-
-In order to make texts of your plugin editable in the multilingualism interface, your plugin needs to include the files \*\*Template.properties\*\*, \*\*Config.properties\*\* and \*\*translation.json\*\*. Your folder structure should look like this:
-
-
-
-```
-
+```text
 MyPlugin/
 
-&nbsp;   ├── resources/
+    ├── resources/
 
-&nbsp;   │   └── lang/
+    │   └── lang/
 
-&nbsp;   |       ├── en/
+    |       ├── en/
 
-&nbsp;   │       |   └── config.properties   // contains the section names
+    │       |   └── config.properties   // contains the section names
 
-&nbsp;   │       |   └── template.properties // contains the translation keys and texts grouped according to prefixes
+    │       |   └── template.properties // contains the translation keys and texts grouped according to prefixes
 
-&nbsp;   │       |
+    │       |
 
-&nbsp;   │       └── de/
+    │       └── de/
 
-&nbsp;   |           └── config.properties   // contains the section names
+    |           └── config.properties   // contains the section names
 
-&nbsp;   |           └── template.properties // contains the translation keys and texts grouped according to prefixes
+    |           └── template.properties // contains the translation keys and texts grouped according to prefixes
 
-&nbsp;   |
+    |
 
-&nbsp;   |
+    |
 
-&nbsp;   └── translation.json // contains sections keys, section prefixes and untranslatable keys
-
+    └── translation.json // contains sections keys, section prefixes and untranslatable keys
 ```
 
+## Step 1: Creating the Template.properties file
 
+The Template.properties file contains all of the language-dependent translation keys of your plugin. You save the Template.properties file in a sub-folder of your **resources/lang**folde, e.g.**resources/lang/en**for texts in English. Within the Template.properties file, you organise the translation keys into sections according to prefixes. For instance, you could group all text elements that pertain to the contact page by adding**contact** as a prefix to the language keys:
 
-\## Step 1: Creating the Template.properties file
+***MyPlugin/resources/lang/en/Template.properties***
 
-
-
-The Template.properties file contains all of the language-dependent translation keys of your plugin. You save the Template.properties file in a sub-folder of your \*\*resources/lang\*\* folde, e.g. \*\*resources/lang/en\*\* for texts in English. Within the Template.properties file, you organise the translation keys into sections according to prefixes. For instance, you could group all text elements that pertain to the contact page by adding \*\*contact\*\* as a prefix to the language keys:
-
-
-
-\*\*\*MyPlugin/resources/lang/en/Template.properties\*\*\*
-
-
-
-```
-
+```text
 ; contact - Contact page
 
 contact = "Contact"
@@ -71,29 +52,17 @@ contactMail = "Email"
 contactMessage = "Message"
 
 contactShopMessage = "You have a question? Simply fill out the form and we will respond to your request as soon as possible."
-
 ```
 
+Organise other sections of your plugin, such as **address**, **notifications**or**terms and conditions**, analogously and assign distinct prefixes to the keys. While it is not mandatory, you should ideally sort the keys alphabetically. The translation.json file accesses the prefixes contained in the Template.properties file and yields the data that is required for the multilingualism interface. How you organise the translation keys is up to you and will differ from plugin to plugin. In the next step, you will create a Config.properties file, which determines the names of the sections, into which your translation keys have been organised.
 
+## Step 2: Creating the Config.properties
 
-Organise other sections of your plugin, such as \*\*address\*\*, \*\*notifications\*\* or \*\*terms and conditions\*\*, analogously and assign distinct prefixes to the keys. While it is not mandatory, you should ideally sort the keys alphabetically. The translation.json file accesses the prefixes contained in the Template.properties file and yields the data that is required for the multilingualism interface. How you organise the translation keys is up to you and will differ from plugin to plugin. In the next step, you will create a Config.properties file, which determines the names of the sections, into which your translation keys have been organised.
+The Config.properties file contains the keys and texts for the section names of your plugin and is located in the relevant sub-folder of the **resource/lang** folder. You should try to label your sections unambiguously, so that users can clearly identify which part of your plugin the section names refer to. The section names in the Config.properties cannot be edited in the multilingualism interface.
 
+***MyPlugin/resources/lang/en/Config.properties***
 
-
-\## Step 2: Creating the Config.properties
-
-
-
-The Config.properties file contains the keys and texts for the section names of your plugin and is located in the relevant sub-folder of the \*\*resource/lang\*\* folder. You should try to label your sections unambiguously, so that users can clearly identify which part of your plugin the section names refer to. The section names in the Config.properties cannot be edited in the multilingualism interface.
-
-
-
-\*\*\*MyPlugin/resources/lang/en/Config.properties\*\*\*
-
-
-
-```
-
+```text
 ; sections
 
 address = "Address"
@@ -103,110 +72,88 @@ contact = "Contact"
 notifications = "Notifications"
 
 termsAndConditions = "Terms and conditions"
-
 ```
 
+## Step 3: Creating the translation.json
 
+The **translation.json** file brings together the elements from the Template.properties and Config.properties files. It lists the sections, whose names are adopted from the Config.properties file, and the prefixes, along which the translation keys are organised in the Template.properties file.
 
-\## Step 3: Creating the translation.json
-
-
-
-The \*\*translation.json\*\* file brings together the elements from the Template.properties and Config.properties files. It lists the sections, whose names are adopted from the Config.properties file, and the prefixes, along which the translation keys are organised in the Template.properties file.
-
-
-
-\*\*\*MyPlugin/translation.json\*\*\*
-
-
+***MyPlugin/translation.json***
 
 ```json
-
 {
 
-&nbsp;   "sections":
+    "sections":
 
-&nbsp;   \[
+    [
 
-&nbsp;       {
+        {
 
-&nbsp;       "name": "Config.address",
+        "name": "Config.address",
 
-&nbsp;       "prefix": "address"
+        "prefix": "address"
 
-&nbsp;       },
+        },
 
-&nbsp;       {
+        {
 
-&nbsp;       "name": "Config.contact",
+        "name": "Config.contact",
 
-&nbsp;       "prefix": "contact"
+        "prefix": "contact"
 
-&nbsp;       },
+        },
 
-&nbsp;       {
+        {
 
-&nbsp;       "name": "Config.notifications",
+        "name": "Config.notifications",
 
-&nbsp;       "prefix": "notifications"
+        "prefix": "notifications"
 
-&nbsp;       },
+        },
 
-&nbsp;       {
+        {
 
-&nbsp;       "name": "Config.termsAndConditions",
+        "name": "Config.termsAndConditions",
 
-&nbsp;       "prefix": "termsAndConditions"
+        "prefix": "termsAndConditions"
 
-&nbsp;       }
+        }
 
-&nbsp;   ]
+    ]
 
 }
-
 ```
 
-
-
-\## Step 4: Including non-translatable keys in the translation.json
-
-
+## Step 4: Including non-translatable keys in the translation.json
 
 If you want to prevent users from editing and translating certain text elements of your plugin, such as brand names, you can include a separate array in the translation.json file, in which you list the keys. These keys will appear in the multilingualism interface, but users will not be able to interact with the text element.
 
-
-
-\*\*\*MyPlugin/translation.json\*\*\*
-
-
+***MyPlugin/translation.json***
 
 ```json
-
 {
 
-&nbsp;   "sections":
+    "sections":
 
-&nbsp;   \[
+    [
 
-&nbsp;   {
+    {
 
-&nbsp;       "name": "Config.contact",
+        "name": "Config.contact",
 
-&nbsp;       "prefix": "contact"
+        "prefix": "contact"
 
-&nbsp;   }
+    }
 
-&nbsp;   ],
+    ],
 
-&nbsp;   "nonTranslatableKeys":\[
+    "nonTranslatableKeys":[
 
-&nbsp;   "brandName1",
+    "brandName1",
 
-&nbsp;   "brandName2"
+    "brandName2"
 
-&nbsp;   ]
+    ]
 
 }
-
 ```
-

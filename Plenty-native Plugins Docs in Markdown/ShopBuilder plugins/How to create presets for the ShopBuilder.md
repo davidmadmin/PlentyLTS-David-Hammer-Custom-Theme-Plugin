@@ -1,56 +1,29 @@
-\# How to create presets for the ShopBuilder
-
-
+# How to create presets for the ShopBuilder
 
 This tutorial will teach you how to create your own presets for the ShopBuilder. The ShopBuilder provides three default presets: one for the body of the homepage, for the header and the footer. Each of these comes with preconfigured widgets; the default header, for instance, already includes the top bar, the category navigation and the breadcrumb navigation. Users can select from a set of presets when opening the ShopBuilder and adding a new page; there, presets can be selected from the preset drop-down list.
 
-
-
 You can create own presets to use them in the ShopBuilder, for example if you want to maintain the same structure for your homepage but change item lists and image carousels for various seasonal events. In that case, you can simply rely on your own presets, thereby saving time and effort.
 
+## ShopBuilder.json
 
+The preset information is stored in the `shopBuilder.json`file. There, the`presets` object contains one array each for the header, the footer and the content, i.e. the page body. In each array, you can specify as many presets as you require.
 
-\## ShopBuilder.json
-
-
-
-The preset information is stored in the `shopBuilder.json` file. There, the `presets` object contains one array each for the header, the footer and the content, i.e. the page body. In each array, you can specify as many presets as you require.
-
-
-
-The key-value pair for each preset entry consists of the \*\*label\*\* and the \*\*presetClass\*\*.
-
-
+The key-value pair for each preset entry consists of the **label**and the**presetClass**.
 
 The preset's `label` references an entry in the Widgets.properties file located in the resources/lang folder, which provides the name of the preset that is displayed in the frontend. Please note that the name of the plugin providing the preset is appended in brackets after the label in the frontend, e.g. "Default header (plentyShop LTS)".
 
-
-
-The `presetClass` value indicates a path to the pertinent PHP class located in the Ceres/Widgets/Presets folder, which specifies the widgets and contains the settings of your preset. Please note that the path needs to include double backslashes, e.g. `Ceres\\\\Widgets\\\\Presets\\\\DefaultHeaderPreset`.
-
-
+The `presetClass`value indicates a path to the pertinent PHP class located in the Ceres/Widgets/Presets folder, which specifies the widgets and contains the settings of your preset. Please note that the path needs to include double backslashes, e.g.`Ceres\\\\Widgets\\\\Presets\\\\DefaultHeaderPreset`.
 
 Below, you can see what the PHP class for the plentyShop LTS default header looks like.
 
+## Code example for the plentyShop LTS default header
 
-
-\## Code example for the plentyShop LTS default header
-
-
-
-\*\*\*src/Widgets/Presets/DefaultHeaderPreset.php\*\*\*
-
-
+***src/Widgets/Presets/DefaultHeaderPreset.php***
 
 ```php
-
 <?php
 
-
-
 namespace Ceres\\Widgets\\Presets;
-
-
 
 use Ceres\\Config\\CeresConfig;
 
@@ -60,123 +33,103 @@ use Plenty\\Modules\\ShopBuilder\\Contracts\\ContentPreset;
 
 use Plenty\\Plugin\\Application;
 
-
-
 class DefaultHeaderPreset implements ContentPreset
 
 {
 
-&nbsp;   /\*\*
+    /**
 
-&nbsp;    \* Get the widget configurations of the presets to be assigned to the created content.
+     * Get the widget configurations of the presets to be assigned to the created content.
 
-&nbsp;    \*
+     *
 
-&nbsp;    \* @return mixed
+     * @return mixed
 
-&nbsp;    \*/
+     */
 
-&nbsp;   public function getWidgets()
+    public function getWidgets()
 
-&nbsp;   {
+    {
 
-&nbsp;       /\*\* @var CeresConfig $config \*/
+        /** @var CeresConfig $config */
 
-&nbsp;       $config = pluginApp(CeresConfig::class);
+        $config = pluginApp(CeresConfig::class);
 
+        /** @var PresetHelper $preset */
 
+        $preset = pluginApp(PresetHelper::class);
 
-&nbsp;       /\*\* @var PresetHelper $preset \*/
+        $preset->createWidget("Ceres::TopBarWidget")
 
-&nbsp;       $preset = pluginApp(PresetHelper::class);
+            ->withSetting("isFixed", $config->header->fixedNavBar)
 
+            ->withSetting("searchStyle", "onDemand")
 
+            ->withSetting("enableLogin", true)
 
-&nbsp;       $preset->createWidget("Ceres::TopBarWidget")
+            ->withSetting("enableRegistration", true)
 
-&nbsp;           ->withSetting("isFixed", $config->header->fixedNavBar)
+            ->withSetting("enableLanguageSelect", true)
 
-&nbsp;           ->withSetting("searchStyle", "onDemand")
+            ->withSetting("enableShippingCountrySelect", true)
 
-&nbsp;           ->withSetting("enableLogin", true)
+            ->withSetting("enableCurrencySelect", true)
 
-&nbsp;           ->withSetting("enableRegistration", true)
+            ->withSetting("enableWishList", true)
 
-&nbsp;           ->withSetting("enableLanguageSelect", true)
+            ->withSetting("enableBasketPreview", true)
 
-&nbsp;           ->withSetting("enableShippingCountrySelect", true)
+            ->withSetting("basketValues", $config->header->basketValues)
 
-&nbsp;           ->withSetting("enableCurrencySelect", true)
+            ->withSetting("showItemImages", false)
 
-&nbsp;           ->withSetting("enableWishList", true)
+            ->withSetting("forwardToSingleItem", $config->search->forwardToSingleItem);
 
-&nbsp;           ->withSetting("enableBasketPreview", true)
+        $companyLogo = $config->header->companyLogo;
 
-&nbsp;           ->withSetting("basketValues", $config->header->basketValues)
+        if ( strpos($companyLogo, 'http') !== 0 \&\& strpos($companyLogo, 'layout/') !== 0 )
 
-&nbsp;           ->withSetting("showItemImages", false)
+        {
 
-&nbsp;           ->withSetting("forwardToSingleItem", $config->search->forwardToSingleItem);
+            $companyLogo = pluginApp(Application::class)->getUrlPath('Ceres') . '/' . $companyLogo;
 
+        }
 
+        $preset->createWidget("Ceres::NavigationWidget")
 
-&nbsp;       $companyLogo = $config->header->companyLogo;
+            ->withSetting("isFixed", $config->header->fixedNavBar)
 
-&nbsp;       if ( strpos($companyLogo, 'http') !== 0 \&\& strpos($companyLogo, 'layout/') !== 0 )
+            ->withSetting("navigationStyle", $config->header->megamenuLevels > 1 ? "megaMenu" : "normal")
 
-&nbsp;       {
+            ->withSetting("megaMenuLevels", $config->header->megamenuLevels)
 
-&nbsp;           $companyLogo = pluginApp(Application::class)->getUrlPath('Ceres') . '/' . $companyLogo;
+            ->withSetting("megaMenuMaxItems.stage1", $config->header->megamenuItemsStage1)
 
-&nbsp;       }
+            ->withSetting("megaMenuMaxItems.stage2", $config->header->megamenuItemsStage2)
 
+            ->withSetting("megaMenuMaxItems.stage3", $config->header->megamenuItemsStage3)
 
+            ->withSetting("companyLogoUrl", $companyLogo);
 
-&nbsp;       $preset->createWidget("Ceres::NavigationWidget")
+        $preset->createWidget("Ceres::BreadcrumbWidget")
 
-&nbsp;           ->withSetting("isFixed", $config->header->fixedNavBar)
+            ->withSetting("isFixed", false)
 
-&nbsp;           ->withSetting("navigationStyle", $config->header->megamenuLevels > 1 ? "megaMenu" : "normal")
+            ->withSetting("showOnHomepage", false)
 
-&nbsp;           ->withSetting("megaMenuLevels", $config->header->megamenuLevels)
+            ->withSetting("showOnMyAccount", false)
 
-&nbsp;           ->withSetting("megaMenuMaxItems.stage1", $config->header->megamenuItemsStage1)
+            ->withSetting("showOnCheckout", false)
 
-&nbsp;           ->withSetting("megaMenuMaxItems.stage2", $config->header->megamenuItemsStage2)
+            ->withSetting("showOnContentCategory", false);
 
-&nbsp;           ->withSetting("megaMenuMaxItems.stage3", $config->header->megamenuItemsStage3)
+        return $preset->toArray();
 
-&nbsp;           ->withSetting("companyLogoUrl", $companyLogo);
-
-
-
-&nbsp;       $preset->createWidget("Ceres::BreadcrumbWidget")
-
-&nbsp;           ->withSetting("isFixed", false)
-
-&nbsp;           ->withSetting("showOnHomepage", false)
-
-&nbsp;           ->withSetting("showOnMyAccount", false)
-
-&nbsp;           ->withSetting("showOnCheckout", false)
-
-&nbsp;           ->withSetting("showOnContentCategory", false);
-
-
-
-&nbsp;       return $preset->toArray();
-
-&nbsp;   }
+    }
 
 }
-
 ```
 
-
-
-| | \*\*\*Explanation\*\*\* The code example above is taken from the PHP class for the plentyShop LTS default header. The three instances of `$preset→createWidget` specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of `$preset→createWidget`, the `→withSetting` directive specifies the default values of the individual widget settings as configured for the preset. |
-
-
+| | ***Explanation*** The code example above is taken from the PHP class for the plentyShop LTS default header. The three instances of `$preset→createWidget`specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of`$preset→createWidget`, the `→withSetting` directive specifies the default values of the individual widget settings as configured for the preset. |
 
 The line `$preset = pluginApp(PresetHelper::class);` accesses the plentyShop LTS helper class for presets, which is located in the Widgets/Helper folder.
-

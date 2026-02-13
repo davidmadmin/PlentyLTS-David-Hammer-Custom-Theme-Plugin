@@ -1,3 +1,5 @@
+# CSS changes
+
 | Old class | New class |
 
 |-----------|-----------|
@@ -1165,4 +1167,3 @@
 | #recommend-text | .text-center |
 
 | #vue-error | Class has been removed. |
-

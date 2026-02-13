@@ -1,138 +1,81 @@
-\# How to migrate to the DataTable
+# How to migrate to the DataTable
 
-
-
-> \*\*Note:\*\* The Terra-Components have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using \[\*\*Material components\*\*](https://material.angular.io/) instead.
-
-
+> **Note:** The Terra-Components have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using [**Material components**](https://material.angular.io/) instead.
 
 In order to migrate to the DataTable structure, the following steps are necessary.
 
+1\. First of all, create a service. As an example, **MyService**extends**TerraDataTableBaseService**, which expects two interfaces specifying the type of data that is retrieved and the parameters that can be applied to the search. Type 1 is the interface of an element, e.g. when having a table of the contacts, it is the **ContactInterface**. Type 2 is the interface that specifies the possible search parameters, e.g. **ContactsParameterInterface**. For the search parameter interface you may remove `extends TerraPagerParameterInterface`. Make sure to provide the table service in the main component - not in the module.
 
+2\. In the next step, implement `requestTableData()`, an abstract method inherited from the base class. It receives the search parameter interface and returns an Observable of the type **TerraPagerInterface**, which in turn is of type 1 (Contact,Address,Whatever).
 
-1\. First of all, create a service. As an example, \*\*MyService\*\* extends \*\*TerraDataTableBaseService\*\*, which expects two interfaces specifying the type of data that is retrieved and the parameters that can be applied to the search. Type 1 is the interface of an element, e.g. when having a table of the contacts, it is the \*\*ContactInterface\*\*. Type 2 is the interface that specifies the possible search parameters, e.g. \*\*ContactsParameterInterface\*\*. For the search parameter interface you may remove `extends TerraPagerParameterInterface`. Make sure to provide the table service in the main component - not in the module.
+3\. Then implement `dataToRowMapping()`, another abstract method inherited from the base class. It receives a single data object (Contact,Address,Whatever) and returns a **TerraDataTableRowInterface** of the type Contact,Address,Whatever. Insert the mapping logic from the directive.
 
+4\. Further functions that are necessary for mapping the data need to be moved into the service. It may be necessary to outsource logic such as deleting, creating etc. from the component. For all actions that are intended to happen when clicking on a row or a button in the table, create an **EventEmitter**in the service. This applies particularly if information (variables, instances,…) from the component are required. Then subscribe on the**EventEmitter** in the component and carry out the corresponding action.
 
+5\. As a next step, drag the definition of the headers from the directive into the component. Per data binding, transfer it to **inputHeaderList** in the template.
 
-2\. In the next step, implement `requestTableData()`, an abstract method inherited from the base class. It receives the search parameter interface and returns an Observable of the type \*\*TerraPagerInterface\*\*, which in turn is of type 1 (Contact,Address,Whatever).
-
-
-
-3\. Then implement `dataToRowMapping()`, another abstract method inherited from the base class. It receives a single data object (Contact,Address,Whatever) and returns a \*\*TerraDataTableRowInterface\*\* of the type Contact,Address,Whatever. Insert the mapping logic from the directive.
-
-
-
-4\. Further functions that are necessary for mapping the data need to be moved into the service. It may be necessary to outsource logic such as deleting, creating etc. from the component. For all actions that are intended to happen when clicking on a row or a button in the table, create an \*\*EventEmitter\*\* in the service. This applies particularly if information (variables, instances,…) from the component are required. Then subscribe on the \*\*EventEmitter\*\* in the component and carry out the corresponding action.
-
-
-
-5\. As a next step, drag the definition of the headers from the directive into the component. Per data binding, transfer it to \*\*inputHeaderList\*\* in the template.
-
-
-
-6\. Carry out the initialisation of the paging information (possibly pagingSizes or defaultPagingSize) and the filter parameter in the Constructor of the \*\*DataTableService\*\*.
-
-
+6\. Carry out the initialisation of the paging information (possibly pagingSizes or defaultPagingSize) and the filter parameter in the Constructor of the **DataTableService**.
 
 7\. Delete the config and the directive and remove all imports and usages. Instead of the config, inject the service wherever required.
 
+8\. Replace references on the Config's **doSearch** method with `MyService.getResults`(in FilterComponent, DetailsComponent etc.). If`loadFirstPage` is given as true, it will search for the first page (useful when you click on the search button).
 
+9\. Change the ngModel-Bindings of the Filter Component from `config.filterParameter.xyz`to`service.filterParameter.xyz`. Make sure that the instance of your service in the typescript file carries the protected access modifier to be accessible in the template.
 
-8\. Replace references on the Config's \*\*doSearch\*\* method with `MyService.getResults` (in FilterComponent, DetailsComponent etc.). If `loadFirstPage` is given as true, it will search for the first page (useful when you click on the search button).
+10\. The **inputHasInitialLoading**is omitted. Instead, in**ngOnInit** of the component, call the `getResults()` method of the service.
 
-
-
-9\. Change the ngModel-Bindings of the Filter Component from `config.filterParameter.xyz` to `service.filterParameter.xyz`. Make sure that the instance of your service in the typescript file carries the protected access modifier to be accessible in the template.
-
-
-
-10\. The \*\*inputHasInitialLoading\*\* is omitted. Instead, in \*\*ngOnInit\*\* of the component, call the `getResults()` method of the service.
-
-
-
-11\. The \*\*inputDataType\*\* is omitted (possibly delete from html).
-
-
+11\. The **inputDataType** is omitted (possibly delete from html).
 
 12\. In the Component, remove all the directive's inputs from the DataTable's template.
 
+13\. Bind the **inputService**with the instance of the new**DataTableService**.
 
-
-13\. Bind the \*\*inputService\*\* with the instance of the new \*\*DataTableService\*\*.
-
-
-
-\## Best Practices
-
-
+## Best Practices
 
 1\. Saving Pager configuration to the UiConfig:
 
-&nbsp;  - Handling in requestTableData function:
-
-
+- Handling in requestTableData function:
 
 ```typescript
+  public requestTableData(params?:ContactsParameterInterface):Observable<TerraPagerInterface<ContactInterface>>
 
-&nbsp; public requestTableData(params?:ContactsParameterInterface):Observable<TerraPagerInterface<ContactInterface>>
+  {
 
-&nbsp; {
+     if(params.itemsPerPage !== this.defaultPagingSize)
 
-&nbsp;    if(params.itemsPerPage !== this.defaultPagingSize)
+     {
 
-&nbsp;    {
+         this.savePagerSettingsToUiConfig(params.itemsPerPage);
 
-&nbsp;        this.savePagerSettingsToUiConfig(params.itemsPerPage);
+     }
 
-&nbsp;    }
+     return this.contactsService.getContacts(params);
 
-
-
-&nbsp;    return this.contactsService.getContacts(params);
-
-&nbsp; }
-
+  }
 ```
-
-
 
 2\. Notification when search is performed:
 
-&nbsp;  - Using an EventEmitter which can be subscribed to
+- Using an EventEmitter which can be subscribed to
 
-&nbsp;  - Perform the intended action in the component
-
-
+- Perform the intended action in the component
 
 ```typescript
-
-&nbsp; public dataLoaded:EventEmitter<LogsInterface> = new EventEmitter();
-
-
+  public dataLoaded:EventEmitter<LogsInterface> = new EventEmitter();
 
 public requestTableData(params?:LogParameterInterface):Observable<TerraPagerInterface<LogInterface>>
 
 {
 
-&nbsp;  return this.logService.getLogs(params).pipe(tap((res:LogsInterface) => this.dataLoaded.emit(res)));
+   return this.logService.getLogs(params).pipe(tap((res:LogsInterface) => this.dataLoaded.emit(res)));
 
 }
-
 ```
 
-
-
-\## Clean up
-
-
+## Clean up
 
 If necessary, tidy up afterwards. ViewChild should have the access modifier private if not particularly needed in another class.
 
+If the dependency `TranslationService`is only transferred to the constructor call (super()) from the base class, it doesn't require an`access modifier`. Variables that are accessed in the template are labelled as `access modifier`protected. Declare unchangeable variables such as the HeaderList as`readonly` and set them in the Constructor once.
 
-
-If the dependency `TranslationService` is only transferred to the constructor call (super()) from the base class, it doesn't require an `access modifier`. Variables that are accessed in the template are labelled as `access modifier` protected. Declare unchangeable variables such as the HeaderList as `readonly` and set them in the Constructor once.
-
-
-
-The DataTable is expected to be available up to the terra-components version 7.0.0. If you use a terra-components version higher than 5.4.0 you can \[\*\*migrate to the Material Table\*\*](https://developers.plentymarkets.com/dev-doc/material-table-migration-guide), which offers many useful functionalities, such as pagination and sorting.
-
+The DataTable is expected to be available up to the terra-components version 7.0.0. If you use a terra-components version higher than 5.4.0 you can [**migrate to the Material Table**](https://developers.plentymarkets.com/dev-doc/material-table-migration-guide), which offers many useful functionalities, such as pagination and sorting.

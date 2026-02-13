@@ -1,22 +1,12 @@
-\# plentyShop plugins → Containers in the plentyShop LTS template
+# plentyShop plugins → Containers in the plentyShop LTS template
 
+## Containers overview
 
+The **plentyShop LTS** template provides multiple containers which can be used to integrate plugins into your plentyShop.
 
-\## Containers overview
+## Header \& footer containers
 
-
-
-The \*\*plentyShop LTS\*\* template provides multiple containers which can be used to integrate plugins into your plentyShop.
-
-
-
-\## Header \& footer containers
-
-
-
-\### Header
-
-
+### Header
 
 | Container key | Container name | Description |
 
@@ -26,11 +16,7 @@ The \*\*plentyShop LTS\*\* template provides multiple containers which can be us
 
 | Header.RightSide | Right side of the header | Add content to the right side of the header |
 
-
-
-\### Footer
-
-
+### Footer
 
 | Container key | Container name | Description |
 
@@ -38,15 +24,9 @@ The \*\*plentyShop LTS\*\* template provides multiple containers which can be us
 
 | Footer.AfterContent | After footer content | Add content after the footer |
 
+## Login \& registration containers
 
-
-\## Login \& registration containers
-
-
-
-\### Login view
-
-
+### Login view
 
 | Container key | Container name | Description |
 
@@ -56,11 +36,7 @@ The \*\*plentyShop LTS\*\* template provides multiple containers which can be us
 
 | LoginOverlay.ExtendOverlayButtons | Container in a row with the buttons | Add content in the login overlay. Note that the class `btn btn-primary` is used for rendering the container in the style of the other buttons. |
 
-
-
-\### Registration overlay
-
-
+### Registration overlay
 
 | Container key | Container name | Description |
 
@@ -68,287 +44,182 @@ The \*\*plentyShop LTS\*\* template provides multiple containers which can be us
 
 | RegistrationOverlay.ExtendOverlayButtons | Container in a row with the buttons | Add content in the registration overlay. Note that the class `btn btn-primary` is used for rendering the container in the style of the other buttons. |
 
+## Containers on the homepage
 
+The **plentyShop LTS** homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
 
-\## Containers on the homepage
+[Image showing homepage containers]
 
-
-
-The \*\*plentyShop LTS\*\* homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
-
-
-
-\[Image showing homepage containers]
-
-
-
-\## Using containers in the template
-
-
+## Using containers in the template
 
 Following the tutorial above, we have learned about the plugin providing the data for our template. Now, you will learn how to use containers in template plugins.
 
-
-
-\### Container entry point
-
-
+### Container entry point
 
 The entry point of a container is defined in the `plugin.json` file of a plugin.
 
+### Ceres/plugin.json
 
-
-\*\*Ceres/plugin.json\*\*
-
-
-
-```
-
+```text
 "containers"        :
 
-&nbsp;   \[
+    [
 
-&nbsp;       {
+        {
 
-&nbsp;           "key"           : "Homepage.Certified",
+            "key"           : "Homepage.Certified",
 
-&nbsp;           "name"          : "Homepage: Certified container",
+            "name"          : "Homepage: Certified container",
 
-&nbsp;           "description"   : "Add an icon to the certified by container on the homepage",
+            "description"   : "Add an icon to the certified by container on the homepage",
 
-&nbsp;           "multiple"      : false
+            "multiple"      : false
 
-&nbsp;       }
+        }
 
-&nbsp;   ]
-
+    ]
 ```
 
+### Explanation
 
+The `containers`key stores an array of values that consist of a`key`, a `name`and a`description` representing our containers. The content provided by our data provider, the **Placeholder** plugin, is linked to the container in this template plugin.
 
-\*\*Explanation\*\*
+`key`specifies the container.`name`and`description` are texts for the PlentyONE back end.
 
+`multiple`is an optional property that defines whether multiple data providers can provide content for this container. Set it to`false` if you want to display the content of the first data provider only.
 
+### Container macro
 
-The `containers` key stores an array of values that consist of a `key`, a `name` and a `description` representing our containers. The content provided by our data provider, the \*\*Placeholder\*\* plugin, is linked to the container in this template plugin.
+The content to be displayed in a container is processed by the `show()`function in a macro. This macro is stored in the`LayoutContainer.twig`file. With the help of this macro, you can also access objects in layout containers, e.g. the`item`object in the`SingleItemView.twig` template.
 
+### Ceres/resources/views/PageDesign/Macros/LayoutContainer.twig
 
-
-`key` specifies the container. `name` and `description` are texts for the PlentyONE back end.
-
-
-
-`multiple` is an optional property that defines whether multiple data providers can provide content for this container. Set it to `false` if you want to display the content of the first data provider only.
-
-
-
-\### Container macro
-
-
-
-The content to be displayed in a container is processed by the `show()` function in a macro. This macro is stored in the `LayoutContainer.twig` file. With the help of this macro, you can also access objects in layout containers, e.g. the `item` object in the `SingleItemView.twig` template.
-
-
-
-\*\*Ceres/resources/views/PageDesign/Macros/LayoutContainer.twig\*\*
-
-
-
-```
-
+```text
 {% macro show( containerName, object ) %}
 
-&nbsp;   {% if object == null %}
+    {% if object == null %}
 
-&nbsp;       {% for content in container(containerName) %}
+        {% for content in container(containerName) %}
 
-&nbsp;           {{ content.result|raw }}
+            {{ content.result|raw }}
 
-&nbsp;       {% endfor %}
+        {% endfor %}
 
-&nbsp;   {% else %}
+    {% else %}
 
-&nbsp;       {% for content in container(containerName, object) %}
+        {% for content in container(containerName, object) %}
 
-&nbsp;           {{ content.result|raw }}
+            {{ content.result|raw }}
 
-&nbsp;       {% endfor %}
+        {% endfor %}
 
-&nbsp;   {% endif %}
+    {% endif %}
 
 {% endmacro %}
-
 ```
 
+### Container in the template
 
+Our **Certified by**container is integrated into the template of**plentyShop LTS** using the following code.
 
-\### Container in the template
+### Ceres/resources/views/PageDesign/Partials/Footer.twig
 
-
-
-Our \*\*Certified by\*\* container is integrated into the template of \*\*plentyShop LTS\*\* using the following code.
-
-
-
-\*\*Ceres/resources/views/PageDesign/Partials/Footer.twig\*\*
-
-
-
-```
-
+```text
 {% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
 
-
-
 ...
-
-
 
 {% set certifiedContent = LayoutContainer.show("Ceres::Homepage.Certified") %}
 
 {% if certifiedContent|trim is not empty %}
 
-&nbsp;   <div class="services-certificate m-b-1">
+    <div class="services-certificate m-b-1">
 
-&nbsp;       <strong class="services-title">{{ trans("Ceres::Template.generalCertifiedBy") }}</strong>
+        <strong class="services-title">{{ trans("Ceres::Template.generalCertifiedBy") }}</strong>
 
-&nbsp;       {{ certifiedContent }}
+        {{ certifiedContent }}
 
-&nbsp;   </div>
+    </div>
 
 {% endif %}
-
 ```
 
+### Explanation
 
+A Twig function sets the variable `certifiedContent`. The variable is equal to the content of the `Homepage.Certified`container defined in the`plugin.json` file.
 
-\*\*Explanation\*\*
+The title of the container is displayed using the `{{ trans("Ceres::Template.generalCertifiedBy") }}`variable. The text for this variable is stored in the`Template.properties` file.
 
+The `{{ certifiedContent }}` variable is used to display the content provided by our **Placeholder** plugin below the title.
 
-
-A Twig function sets the variable `certifiedContent`. The variable is equal to the content of the `Homepage.Certified` container defined in the `plugin.json` file.
-
-
-
-The title of the container is displayed using the `{{ trans("Ceres::Template.generalCertifiedBy") }}` variable. The text for this variable is stored in the `Template.properties` file.
-
-
-
-The `{{ certifiedContent }}` variable is used to display the content provided by our \*\*Placeholder\*\* plugin below the title.
-
-
-
-\### Objects in containers
-
-
+### Objects in containers
 
 By using the `LayoutContainer.twig` macro, we can access objects in layout containers. We specify the object as a parameter in the container and can make use of all the information of the current object.
 
+### Ceres/resources/views/Item/SingleItem.twig
 
-
-\*\*Ceres/resources/views/Item/SingleItem.twig\*\*
-
-
-
-```
-
-{{ LayoutContainer.show("Ceres::SingleItem.BeforePrice", item.documents\[0].data) }}
+```text
+{{ LayoutContainer.show("Ceres::SingleItem.BeforePrice", item.documents[0].data) }}
 
 {% if ('item.recommendedPrice' in itemData or 'all' in itemData) %}
 
-&nbsp;   <div class="crossprice" v-resource-if:currentVariation="documents\[0].data.calculatedPrices.rrp.price > 0">
+    <div class="crossprice" v-resource-if:currentVariation="documents[0].data.calculatedPrices.rrp.price > 0">
 
-&nbsp;       <del class="text-muted small" v-resource-bind:currentVariation="documents.0.data.calculatedPrices.rrp.price" :filters="\['currency']">
+        <del class="text-muted small" v-resource-bind:currentVariation="documents.0.data.calculatedPrices.rrp.price" :filters="['currency']">
 
-&nbsp;           {#{{ item.data.salesPrices\[1].price | formatMonetary(item.variationRetailPrice.currency) }} TODO get correct currency#}
+            {#{{ item.data.salesPrices[1].price | formatMonetary(item.variationRetailPrice.currency) }} TODO get correct currency#}
 
-&nbsp;           {{ item.documents\[0].data.calculatedPrices.rrp.price | formatMonetary(item.documents\[0].data.calculatedPrices.rrp.currency) }}
+            {{ item.documents[0].data.calculatedPrices.rrp.price | formatMonetary(item.documents[0].data.calculatedPrices.rrp.currency) }}
 
-&nbsp;       </del>
+        </del>
 
-&nbsp;   </div>
+    </div>
 
 {% endif %}
-
 ```
 
-
-
-\*\*Explanation\*\*
-
-
+### Explanation
 
 Here, we specify the `item` object as the second parameter of our layout container. This allows us to use the information saved in the object for further processing, e.g. for calculating the instalments of certain payment methods.
 
+In addition to the `Item`object, other objects can be used in different layout containers. The`Order` object, for example, can be used in several containers on the order confirmation page.
 
+### Ceres/resources/views/Checkout/Components/OrderDetails.twig
 
-In addition to the `Item` object, other objects can be used in different layout containers. The `Order` object, for example, can be used in several containers on the order confirmation page.
-
-
-
-\*\*Ceres/resources/views/Checkout/Components/OrderDetails.twig\*\*
-
-
-
-```
-
+```text
 {{ LayoutContainer.show("Ceres::OrderConfirmation.AdditionalPaymentInformation", services.customer.getLatestOrder().order) }}
-
 ```
-
-
 
 Here, we specify the `order` object as the second parameter of our layout container. This allows us to use the information about the latest order saved in the object for further processing.
 
+### Additional tabs in the single item view
 
+In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs`is used for displaying one or multiple additional tabs in the view of an item in the plentyShop LTS online store. The second container`SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual data provider is required.
 
-\### Additional tabs in the single item view
+### MyPlugin/resources/views/CustomTab.twig
 
-
-
-In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the plentyShop LTS online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual data provider is required.
-
-
-
-\*\*MyPlugin/resources/views/CustomTab.twig\*\*
-
-
-
-```
-
+```text
 <li class="nav-item">
 
-&nbsp;   <a class="nav-link" data-toggle="tab" href="#my-custom-tab" role="tab">Custom Tab</a>
+    <a class="nav-link" data-toggle="tab" href="#my-custom-tab" role="tab">Custom Tab</a>
 
 </li>
-
 ```
 
+Our tab is a `li`element with the class`nav-item`. If more tabs are required, further list items can be added here. In the `href` attribute, we provide a link to our tab content.
 
+### MyPlugin/resources/views/CustomTabContent.twig
 
-Our tab is a `li` element with the class `nav-item`. If more tabs are required, further list items can be added here. In the `href` attribute, we provide a link to our tab content.
-
-
-
-\*\*MyPlugin/resources/views/CustomTabContent.twig\*\*
-
-
-
-```
-
+```text
 <div class="tab-pane" id="my-custom-tab" role="tabpanel">
 
-&nbsp;   <div class="m-y-2">
+    <div class="m-y-2">
 
-&nbsp;       Enter Custom Tab content here...
+        Enter Custom Tab content here...
 
-&nbsp;   </div>
+    </div>
 
 </div>
-
 ```
 
-
-
-In a second `Twig` file, we enter the content for our tab. Our container has the same ID, that is referenced in the previous code example, e.g. `id="my-custom-tab"`.
-
+In a second `Twig`file, we enter the content for our tab. Our container has the same ID, that is referenced in the previous code example, e.g.`id="my-custom-tab"`.

@@ -1,49 +1,32 @@
-\# Multilingual configuration
+# Multilingual configuration
 
+When creating a plugin configuration, you have to supply the properties `label`, `caption`and`tooltip` in multiple languages. German and English are required.
 
+**_Note:_** Every translation key must feature the prefix `Config.`.
 
-When creating a plugin configuration, you have to supply the properties `label`, `caption` and `tooltip` in multiple languages. German and English are required.
-
-
-
-\*\*\_Note:\_\*\* Every translation key must feature the prefix `Config.`.
-
-
-
-```
-
+```text
 {
 
-&nbsp;  "tab"       : "Config.globalTab",
+   "tab"       : "Config.globalTab",
 
-&nbsp;  "key"       : "header.company\_name",
+   "key"       : "header.company_name",
 
-&nbsp;  "label"     : "Config.globalHeaderCompanyName",
+   "label"     : "Config.globalHeaderCompanyName",
 
-&nbsp;  "type"      : "text",
+   "type"      : "text",
 
-&nbsp;  "default"   : "Ceres Webshop"
+   "default"   : "Ceres Webshop"
 
 }
-
 ```
 
+## Using separate translation files
 
+To use the multiligualism functionality to its full extent, you have to use separate translation files for each language you want to provide. In addition, the files have to be stored in the correct folder structure. For example, use `resources/lang/de`for German and`resources/lang/en`for English. The translation file in each folder has to be named`Config.properties`.
 
-\## Using separate translation files
+### _PluginXY/resources/lang/de/Config.properties_
 
-
-
-To use the multiligualism functionality to its full extent, you have to use separate translation files for each language you want to provide. In addition, the files have to be stored in the correct folder structure. For example, use `resources/lang/de` for German and `resources/lang/en` for English. The translation file in each folder has to be named `Config.properties`.
-
-
-
-\*\*\_PluginXY/resources/lang/de/Config.properties\_\*\*
-
-
-
-```
-
+```text
 globalTab=Global
 
 globalHeaderCompanyName=Name Ihres Geschäfts
@@ -89,17 +72,11 @@ contactShowDataValuesZip=PLZ
 contactShowDataValuesTimezone=Zeitzone
 
 contactShowDataValuesOpeningTimes=Öffnungszeiten
-
 ```
 
+### _PluginXY/resources/lang/en/Config.properties_
 
-
-\*\*\_PluginXY/resources/lang/en/Config.properties\_\*\*
-
-
-
-```
-
+```text
 globalTab=Global
 
 globalHeaderCompanyName=Name of your store
@@ -145,68 +122,56 @@ contactShowDataValuesZip=ZIP
 contactShowDataValuesTimezone=Time zone
 
 contactShowDataValuesOpeningTimes=Opening hours
-
 ```
 
+### Example of the use of the translation keys
 
+**_Note:_** Every translation key must feature the prefix `Config.`.
 
-\### Example of the use of the translation keys
+### _PluginXY/config.json_
 
-
-
-\*\*\_Note:\_\*\* Every translation key must feature the prefix `Config.`.
-
-
-
-\*\*\_PluginXY/config.json\_\*\*
-
-
-
-```
-
+```text
 {
 
-&nbsp;   "tab"                         : "Config.globalTab",
+    "tab"                         : "Config.globalTab",
 
-&nbsp;   "key"                         : "contact.show\_data",
+    "key"                         : "contact.show_data",
 
-&nbsp;   "label"                       : "Config.contactShowData",
+    "label"                       : "Config.contactShowData",
 
-&nbsp;   "type"                        : "multi\_select",
+    "type"                        : "multi_select",
 
-&nbsp;   "possibleValues"              :
+    "possibleValues"              :
 
-&nbsp;   {
+    {
 
-&nbsp;       "name"                      : "Config.contactShowDataValuesName",
+        "name"                      : "Config.contactShowDataValuesName",
 
-&nbsp;       "ceo"                       : "Config.contactShowDataValuesCeo",
+        "ceo"                       : "Config.contactShowDataValuesCeo",
 
-&nbsp;       "city"                      : "Config.contactShowDataValuesCity",
+        "city"                      : "Config.contactShowDataValuesCity",
 
-&nbsp;       "country"                   : "Config.contactShowDataValuesCountry",
+        "country"                   : "Config.contactShowDataValuesCountry",
 
-&nbsp;       "email"                     : "Config.contactShowDataValuesEmail",
+        "email"                     : "Config.contactShowDataValuesEmail",
 
-&nbsp;       "fax"                       : "Config.contactShowDataValuesFax",
+        "fax"                       : "Config.contactShowDataValuesFax",
 
-&nbsp;       "hotline"                   : "Config.contactShowDataValuesHotline",
+        "hotline"                   : "Config.contactShowDataValuesHotline",
 
-&nbsp;       "street"                    : "Config.contactShowDataValuesStreet",
+        "street"                    : "Config.contactShowDataValuesStreet",
 
-&nbsp;       "vatNumber"                 : "Config.contactShowDataValuesVatNumber",
+        "vatNumber"                 : "Config.contactShowDataValuesVatNumber",
 
-&nbsp;       "zip"                       : "Config.contactShowDataValuesZip",
+        "zip"                       : "Config.contactShowDataValuesZip",
 
-&nbsp;       "timezone"                  : "Config.contactShowDataValuesTimezone",
+        "timezone"                  : "Config.contactShowDataValuesTimezone",
 
-&nbsp;       "opening\_times"             : "Config.contactShowDataValuesOpeningTimes"
+        "opening_times"             : "Config.contactShowDataValuesOpeningTimes"
 
-&nbsp;   },
+    },
 
-&nbsp;   "default"                     : "street, zip, city, hotline, email, opening\_times"
+    "default"                     : "street, zip, city, hotline, email, opening_times"
 
 }
-
 ```
-
