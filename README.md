@@ -76,6 +76,17 @@ Wenn Du neue Anforderungen für Styling, JavaScript-Funktionen oder zusätzliche
             └── Theme.twig
 ```
 
+## Initiale Basisstruktur im Repository
+Die Grundstruktur wurde als lauffähiges Mindestgerüst angelegt und enthält:
+
+- Plugin-Metadaten (`plugin.json`, `composer.json`)
+- Basis-Service-Provider und Container unter `src/`
+- Minimales Twig-Template und Basis-CSS unter `resources/`
+- Shop-spezifische Arbeitsordner für Header, Footer, PDP, Checkout, Global, Kontaktseiten und Basis-CSS
+- Dokumentations-Ordner inkl. `Plenty-native Plugins Docs in Markdown/` als First-Party-Doku-Ablage
+
+Damit kannst Du ab sofort strukturiert mit dem Header-/Footer-Rebuild und den shop-synchronen Erweiterungen starten.
+
 ## Ignore-Dateien für PlentyLTS
 Damit PlentyLTS beim Upload nur relevante Plugin-Dateien berücksichtigt, nutzt dieses Repo eine `plenty.ignore`. Lege dort alle Dateien ab, die nicht Teil des Plugins sein sollen (z. B. interne Notizen, lokale Build-Artefakte oder Doku-Entwürfe).
 
