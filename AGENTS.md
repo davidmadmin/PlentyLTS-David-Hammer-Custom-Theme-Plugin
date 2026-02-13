@@ -11,10 +11,16 @@ Diese Anweisungen gelten für das gesamte Repository.
 ### Bezug zu plentyShop LTS (Ceres)
 - **Ceres-Repository:** https://github.com/plentymarkets/plugin-ceres.git
 - **IO-Plugin:** https://github.com/plentymarkets/plugin-io
+- **Quell-Repo für bestehende Frontend-Snippets:** https://github.com/davidmadmin/Custom-CSS-JS-im-Frontend-Hammer-Shops
 - **Plenty Native Docs (lokal):** `Plenty-native Plugins Docs in Markdown/`
 - **Empfehlung:** Klone Ceres parallel in `plentyshop-lts/`, um Twig-, Vue- und SCSS-Strukturen nachzuschlagen.
+- **Empfehlung (Snippets):** Nutze das Frontend-Snippet-Repo als primäre Referenz für bestehende CSS-/JS-Logik, die bereits live in den Shops läuft, und überführe die relevanten Fragmente strukturiert in dieses Theme-Plugin.
 - **Verknüpfung:** Anpassungen greifen in bestehende Ceres-Templates. Prüfe vor Änderungen IDs, Klassen, Slots und Komponenten, damit Custom CSS/JS sauber aufsetzt.
 - **Priorität:** Header- und Footer-Rebuilds haben Vorrang. Zusätzliche Features (z. B. Countdown, Progressbars) nur, wenn sie mit dem neuen Aufbau kompatibel sind.
+
+### Shops, Namen und Abkürzungen
+- **FH** = **FENSTER-HAMMER** (`fenster-hammer.de`)
+- **SH** = **SCHRAUBEN-HAMMER** (`schrauben-hammer.de`)
 
 ### Technologiestack (plentyShop LTS 5.0.78)
 - **PHP:** ^7.3 || ^8.0
@@ -46,6 +52,11 @@ Diese Anweisungen gelten für das gesamte Repository.
 - Halte README und Dokumentation aktuell, wenn Du neue Features oder Abhängigkeiten ergänzt.
 - Nutze die **Du-Form** und schreibe **Du/Dir/Dich/Dein** immer groß.
 - **Wunschliste/Merkliste/wishlist** sind synonym; in der Kundenkommunikation ausschließlich **„Merkliste“** verwenden.
+
+### Umsetzungs-Workflow für neue Styling-/JS-Anforderungen
+- Wenn Du eine neue Anforderung für Styling, JS-Funktionalität oder Add-on-Features umsetzt, prüfe zuerst im Repo `Custom-CSS-JS-im-Frontend-Hammer-Shops`, ob bereits passende, produktiv erprobte Fragmente vorhanden sind.
+- Übernimm diese Fragmente nicht blind, sondern passe sie an die Struktur und Hooks dieses Theme-Plugins sowie an aktuelle Ceres-Gegebenheiten an.
+- Ziel ist funktionale Parität (oder eine technisch bessere, kompatible Umsetzung), ohne bestehende Shop-Funktionen in FH/SH zu beschädigen.
 
 ### Aktuelle Repo-Struktur (Referenz)
 - `Header/HTML`, `Header/CSS`, `Header/JS`: Header-Snippets pro Shop.
