@@ -9,9 +9,15 @@ Dieses Repository **ist** das PlentyShop-LTS-Theme-Plugin. Es baut die Header- u
 
 ## Bezug zu plentyShop LTS (Ceres)
 - **Ceres-Repository:** https://github.com/plentymarkets/plugin-ceres.git
+- **Quell-Repo für bestehende Frontend-Snippets:** https://github.com/davidmadmin/Custom-CSS-JS-im-Frontend-Hammer-Shops
 - **Empfehlung:** Klone Ceres parallel in `plentyshop-lts/`, um Twig-, Vue- und SCSS-Strukturen nachzuschlagen.
+- **Empfehlung (Snippets):** Nutze das Frontend-Snippet-Repo als primäre Referenz für CSS-/JS-Fragmente, die bereits in den Live-Shops laufen, und überführe sie sauber in dieses Theme-Plugin.
 - **Verknüpfung:** Custom CSS/JS muss auf vorhandene Ceres-Strukturen aufsetzen. Prüfe IDs, Klassen, Slots und Komponenten vor Änderungen.
 - **Priorität:** Header- und Footer-Rebuilds haben Vorrang. Zusätzliche Features nur, wenn sie kompatibel sind.
+
+## Shops, Namen und Abkürzungen
+- **FH** = **FENSTER-HAMMER** (`fenster-hammer.de`)
+- **SH** = **SCHRAUBEN-HAMMER** (`schrauben-hammer.de`)
 
 ## Technologiestack (plentyShop LTS 5.0.78)
 **Core & Laufzeit**
@@ -44,6 +50,14 @@ Nutze IO/REST primär bei Datenflüssen oder Logikänderungen. Für reine CSS/HT
   - SH: `//cdn02.plentymarkets.com/nteqnk1xxnkn` → `//bilder.schrauben-hammer.de`
 - Nutze die **Du-Form** und schreibe **Du/Dir/Dich/Dein** immer groß.
 - **Wunschliste/Merkliste/wishlist** sind synonym; in der Kundenkommunikation ausschließlich **„Merkliste“** verwenden.
+
+## Workflow für neue Styling-/JS-Anforderungen
+Wenn Du neue Anforderungen für Styling, JavaScript-Funktionen oder zusätzliche Frontend-Features umsetzt, arbeite in dieser Reihenfolge:
+
+1. Prüfe im Repo `Custom-CSS-JS-im-Frontend-Hammer-Shops`, ob es bereits produktiv erprobte CSS-/JS-Fragmente für die gewünschte Funktion gibt.
+2. Überführe relevante Fragmente in dieses Theme-Plugin und passe sie an die aktuelle Ceres-/Plugin-Struktur an (IDs, Klassen, Hooks, Komponenten).
+3. Stelle sicher, dass die Umsetzung in beiden Shops (FH/SH) funktioniert und keine bestehende Funktionalität beschädigt.
+4. Bevorzuge eine gleichwertige oder technisch bessere Umsetzung gegenüber 1:1-Kopien, solange das Ergebnis kompatibel bleibt.
 
 ## Empfohlene Plugin-Struktur (Beispiel)
 ```
