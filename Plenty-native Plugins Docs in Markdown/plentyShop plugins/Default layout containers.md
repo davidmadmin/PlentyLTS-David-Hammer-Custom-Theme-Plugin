@@ -1,0 +1,56 @@
+\# Default layout containers
+
+
+
+With default layout containers, you can make it easier for your customers to link your plugin's data providers to containers, allowing them to integrate your plugin into their webshop at the click of a button.
+
+
+
+You can find a list of available containers, as well as a visual overview of which containers influence which parts of the webshop, in the template containers guide linked above.
+
+
+
+\## Providing default layout containers
+
+
+
+Default layout containers are defined in the plugin.json file of your plugin.
+
+
+
+\*\*\*FacebookPixel/plugin.json\*\*\*
+
+
+
+```
+
+"dataProviders": \[
+
+&nbsp;   {
+
+&nbsp;   "key"           :"FacebookPixel\\\\Providers\\\\FacebookPixelCodeProvider",
+
+&nbsp;   "name"          :"Facebook Pixel",
+
+&nbsp;   "description"   :"Include the Facebook Pixel code snippet.",
+
+&nbsp;   "defaultLayoutContainer": "Ceres::Script.Loader"
+
+&nbsp;   }
+
+]
+
+```
+
+
+
+| | \*\*\*Explanation\*\*\* |
+
+|---|---|
+
+| | The `dataProviders` key stores an array consisting of the values `key`, `name`, `description` and `defaultLayoutContainer`. `key` specifies the container. `name` and `description` are texts for the PlentyONE back end. `defaultLayoutContainer` is an optional property where you can specify which container to link the provider to if the user links providers to containers in the plugin detail view. In this example, plentyShop LTS provides the containers. If the containers are provided by a different plugin, replace the name accordingly. |
+
+
+
+You can add default layout containers to as many of your data providers as you want, but no more than one default layout container to the same data provider. If you choose to add default layout containers to your plugin, you should indicate this in your documentation.
+

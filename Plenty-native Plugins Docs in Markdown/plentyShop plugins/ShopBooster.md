@@ -1,0 +1,242 @@
+\# Introducing content caching
+
+
+
+This page serves to give you an overview about the new content caching functionality of \*\*plentyShop LTS\*\* and \*\*IO\*\*. The caching of content data of the online store prevents a recalculating of pages upon each new page view and therefore improves the performance of the online store. Data which has already been loaded or generated once remains in the cache and can be invoked much faster when it is accessed again.
+
+
+
+\## Information about caching and invalidation
+
+
+
+\- All online store pages are cached in IO \*\*with the exception of user-dependent data\*\*, which is loaded via REST. The following pages are not written into the cache:
+
+&nbsp; - Shopping cart
+
+&nbsp; - Checkout
+
+&nbsp; - MyAccount
+
+&nbsp; - Login and registration
+
+&nbsp; - Order confirmation
+
+&nbsp; - Wish list
+
+&nbsp; - Search
+
+\- The cache can only be invalidated every 5 minutes.
+
+\- The entire cache is invalidated through the following actions:
+
+&nbsp; - Saving and publishing a plugin set
+
+&nbsp; - Changing the settings of a plugin and saving the new settings
+
+&nbsp; - Linking layout containers in the settings of a plugin
+
+\- The cache for individual variation pages is invalidated when changes are made to the item settings of the variation. The invalidation of variation pages is dependent on the refreshing of the Elasticsearch index, meaning that the aforementioned invalidation cycle of 5 minutes does not apply; the Elasticsearch index is refreshed every 10 to 15 minutes.
+
+
+
+The \*\*Preview mode\*\* in the \*\*Plugins » Plugin overview\*\* menu completely circumvents the content caching. Changes to the online store will therefore be displayed immediately in the preview mode.
+
+
+
+You can also add a query parameter like `?=nocache` to the URL to not load the page from the cache.
+
+
+
+\## How to cache additional pages
+
+
+
+If you, as a plugin developer, want to provide additional routes in your theme or plugin and want these to be written into the cache, you need to implement the following code snippet into your controller:
+
+
+
+```
+
+...
+
+use Plenty\\Modules\\ContentCache\\Contracts\\ContentCacheRepositoryContract;
+
+
+
+// ...
+
+
+
+/\*\* @var ContentCacheRepositoryContract $cacheRepository \*/
+
+$cacheRepository = pluginApp(ContentCacheRepositoryContract::class);
+
+$cacheRepository->enableCacheForResponse();
+
+
+
+...
+
+```
+
+
+
+By integrating this code, you ensure that the additional routes are written into the cache. You can see how the code is implemented in the LayoutController of \*\*IO\*\*, located in the IO/src/Controllers/LayoutController.php file.
+
+
+
+It is furthermore possible to link variation IDs to the respective cache entry, so that the cache is invalidated upon any changes to the variations. By implementing the following code snippet, the loaded variation IDs are transmitted to the caching module when item data is loaded:
+
+
+
+```
+
+...
+
+use Plenty\\Modules\\ContentCache\\Contracts\\ContentCacheRepositoryContract;
+
+
+
+// ...
+
+
+
+/\*\* @var ContentCacheRepositoryContract $contentCacheRepo \*/
+
+$contentCacheRepo = pluginApp(ContentCacheRepositoryContract::class);
+
+$contentCacheRepo->linkVariationsToResponse($variationIds); // $variationIds = \[1,2,3];
+
+
+
+...
+
+```
+
+
+
+In this case, the page is automatically invalidated whenever changes are being made to the variations with the IDs 1, 2 or 3.
+
+
+
+\## Caching pages that include query parameters
+
+
+
+Beginning with plentyShop LTS v5.0.29, ShopBooster is able to cache pages that include query parameters. Paginated pages, sorted item pages, pages accessed via referrer: These pages are now also written into the cache, which significantly reduces access times for these pages.
+
+
+
+Per default, ShopBooster caches pages that include the following query parameters:
+
+
+
+\- ReferrerID
+
+\- ShipToCountry
+
+\- Currency
+
+\- currency
+
+\- page
+
+\- items
+
+\- sorting
+
+\- facets
+
+\- category
+
+
+
+In addition, we've made it possible for external developers to register additional query parameters that are to be written into the cache as well as to register query parameters that should be explicitely excluded and are thereby never cached by ShopBooster. For this purpose, we added 2 methods to the plugin interface: `registerIncluded` and `registerExcluded`.
+
+
+
+Note that if a query parameter is neither included by default (as per the list above) nor registered as an additional query parameter via `registerIncluded` nor excluded via the `registerExcluded` method, the ShopBooster cache will ignore this parameter completely. In this case, the page is not loaded from the cache and the user will face increased TTFB.
+
+
+
+If a conflict arises because a single query parameters is included by one plugin but excluded by another, the include function will take precedence, i.e. pages with this query parameter will be cached by ShopBooster.
+
+
+
+\### Registering additional query params
+
+
+
+As a plugin developer, you may want to register additional query parameters to write them into the ShopBooster cache. This is advisable if your plugin uses query parameters that influence the content of the page in any way. This includes parameters that change the prices of items, which items can be purchased, external search functions that influence search results, or customer class-dependent changes to the shop design.
+
+
+
+To register additional parameters, you need to use the `Plenty\\Modules\\ContentCache\\Contracts\\ContentCacheQueryParamsRepositoryContract` in your plugin.
+
+
+
+You can then implement the `registerIncluded()` method at any point in the \*\*boot function\*\* of your service provider. The `registerIncluded()` takes an array of the names of the query parameters you want to register as parameter.
+
+
+
+The example below shows how the method is implemented with an array of two additional query parameters, "springEvent" and "returnCustomer":
+
+
+
+```
+
+/\*\* @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository \*/
+
+$contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+
+$contentCacheQueryParamsRepository->registerIncluded(\[
+
+&nbsp;   'springEvent',
+
+&nbsp;   'returnCustomer'
+
+]);
+
+```
+
+
+
+If a page that includes either one of these query parameters is accessed, a new cache entry is created on S3. This new entry differs from the basic entry, which is the cache entry for pages without additional query parameters. Therefore, both the page with and without the registered query parameters can be loaded from the ShopBooster cache.
+
+
+
+\### registerExcluded method
+
+
+
+You may also want to explicitely exclude certain query parameters from being written into the cache. This is particularly useful if you want to exlude tracking parameters that are then processed by the Javascript, thereby negatively impacting shop performance.
+
+
+
+If you exclude query paramters via the `registerExcluded` method, and a corresponding page is accessed, ShopBooster will instead load the basic cache entry of this page, i.e. the version of the page that does not include any query parameters. As a consequence, the user can still benefit from reduced TTFB, because the page that is loaded is loaded from the cache.
+
+
+
+The implementation of the function works analogously to the `registerIncluded` method described above. To register parameters that should be excluded, you need to use the `Plenty\\Modules\\ContentCache\\Contracts\\ContentCacheQueryParamsRepositoryContract` in your plugin.
+
+
+
+You can then implement the `registerExcluded()` method at any point in the \*\*boot function\*\* of your service provider. The `registerExcluded()` takes an array of the names of the query parameters you want to exclude as its parameter. Here, only the query parameter "source" is excluded from caching:
+
+
+
+```
+
+/\*\* @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository \*/
+
+$contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+
+$contentCacheQueryParamsRepository->registerExcluded(\[
+
+&nbsp;   'source'
+
+]);
+
+```
+
