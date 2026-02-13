@@ -10,6 +10,8 @@ Diese Anweisungen gelten für das gesamte Repository.
 
 ### Bezug zu plentyShop LTS (Ceres)
 - **Ceres-Repository:** https://github.com/plentymarkets/plugin-ceres.git
+- **IO-Plugin:** https://github.com/plentymarkets/plugin-io
+- **Plenty Native Docs (lokal):** `Plenty-native Plugins Docs in Markdown/`
 - **Empfehlung:** Klone Ceres parallel in `plentyshop-lts/`, um Twig-, Vue- und SCSS-Strukturen nachzuschlagen.
 - **Verknüpfung:** Anpassungen greifen in bestehende Ceres-Templates. Prüfe vor Änderungen IDs, Klassen, Slots und Komponenten, damit Custom CSS/JS sauber aufsetzt.
 - **Priorität:** Header- und Footer-Rebuilds haben Vorrang. Zusätzliche Features (z. B. Countdown, Progressbars) nur, wenn sie mit dem neuen Aufbau kompatibel sind.
@@ -26,6 +28,12 @@ Diese Anweisungen gelten für das gesamte Repository.
 - **IO-Plugin:** https://github.com/plentymarkets/plugin-io
 - **Ceres:** https://github.com/plentymarkets/plugin-ceres
 - Prüfe IO/REST nur, wenn Datenflüsse oder Logik betroffen sind. Für reine CSS/HTML-Änderungen genügt meist ein Strukturcheck in Ceres.
+
+### First-Party-Dokumentation als Source of Truth
+- Die Markdown-Dateien im Ordner `Plenty-native Plugins Docs in Markdown/` inklusive aller Unterordner sind die primäre, verbindliche Entscheidungsgrundlage für Plugin-Setup, ShopBuilder-Widgets, plentyShop-LTS-Aspekte und angrenzende Themen.
+- Suche bei fachlichen oder technischen Fragen immer zuerst in diesem Ordner und richte Umsetzung sowie Empfehlungen danach aus.
+- Die bestehenden Leitlinien in diesem AGENTS-Dokument bleiben bestehen; bei Überschneidungen oder Unklarheiten hat die lokale First-Party-Dokumentation Vorrang.
+- Wenn die lokale Dokumentation keine eindeutige Aussage enthält, nutze Ceres- und IO-Repository als ergänzende Referenz.
 
 ### Stil- und Strukturvorgaben
 - Verwende klare, dokumentierte HTML-Strukturen. Inline-CSS ist erlaubt, darf aber keine Skripte enthalten.
