@@ -1,0 +1,28 @@
+{
+  "name": "HammerTheme",
+  "namespace": "HammerTheme",
+  "type": "theme",
+  "version": "0.1.0",
+  "description": "Basisstruktur fuer das PlentyShop LTS Custom Theme Plugin fuer FH und SH.",
+  "author": "David Hammer",
+  "email": "dev@hammer-shops.de",
+  "phone": "+49 0 000000000",
+  "authorIcon": "icon_author_xs.png",
+  "pluginIcon": "icon_plugin_xs.png",
+  "serviceProvider": "HammerTheme\\Providers\\HammerThemeServiceProvider",
+  "require": {
+    "Ceres": "~5.0.0",
+    "IO": "~5.0.0"
+  },
+  "platform": {
+    "php": "^7.3 || ^8.0"
+  },
+  "dataProviders": [
+    {
+      "key": "HammerTheme\\Containers\\HammerThemeContainer",
+      "name": "Hammer Theme Base Container",
+      "description": "Gibt eine minimale, erweiterbare Theme-Basis aus."
+    }
+  ],
+  "isClosedSource": false
+}

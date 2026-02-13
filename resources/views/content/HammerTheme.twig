@@ -1,0 +1,5 @@
+{% set baseClass = config("HammerTheme.theme.baseClass") %}
+
+<div class="{{ baseClass | default('hammer-theme') }}">
+    <p>{{ trans("HammerTheme::Template.basePlaceholder") }}</p>
+</div>
