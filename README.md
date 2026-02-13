@@ -77,7 +77,7 @@ Wenn Du neue Anforderungen für Styling, JavaScript-Funktionen oder zusätzliche
 ```
 
 ## Ignore-Dateien für PlentyLTS
-Damit PlentyLTS beim Upload nur relevante Plugin-Dateien berücksichtigt, nutzt dieses Repo eine `plugin.ignore`. Lege dort alle Dateien ab, die nicht Teil des Plugins sein sollen (z. B. interne Notizen, lokale Build-Artefakte oder Doku-Entwürfe).
+Damit PlentyLTS beim Upload nur relevante Plugin-Dateien berücksichtigt, nutzt dieses Repo eine `plenty.ignore`. Lege dort alle Dateien ab, die nicht Teil des Plugins sein sollen (z. B. interne Notizen, lokale Build-Artefakte oder Doku-Entwürfe).
 
 ## Commit Message Convention (Conventional Commits)
 Format:
