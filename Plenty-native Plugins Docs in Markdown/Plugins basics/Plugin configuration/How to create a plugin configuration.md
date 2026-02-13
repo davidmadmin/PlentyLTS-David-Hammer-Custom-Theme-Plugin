@@ -1,10 +1,6 @@
-\# Plugin configuration
-
-
+# Plugin configuration
 
 The plugin configuration provides:
-
-
 
 \- versioning to ensure backwards compatibility
 
@@ -16,257 +12,241 @@ The plugin configuration provides:
 
 \- structured definitions of your configuration and configuration fields
 
-
-
-\## Format of the plugin configuration file
-
-
+## Format of the plugin configuration file
 
 Each configuration needs the following properties:
 
-
-
-\*\*\*PluginXY/config.json\*\*\*
-
-
+***PluginXY/config.json***
 
 ```json
-
 {
 
-&nbsp; "formatVersion": 1,
+  "formatVersion": 1,
 
-&nbsp; "menu": {
+  "menu": {
 
-&nbsp;    "global": {
+     "global": {
 
-&nbsp;       "label": "Config.global",
+        "label": "Config.global",
 
-&nbsp;       "fullWidth": true,
+        "fullWidth": true,
 
-&nbsp;       "formFields": {
+        "formFields": {
 
-&nbsp;          "global.headerLogo": {
+           "global.headerLogo": {
 
-&nbsp;             "type": "inputFile",
+              "type": "inputFile",
 
-&nbsp;             "required": true,
+              "required": true,
 
-&nbsp;             "label": "Config.globalHeaderLogoLabel",
+              "label": "Config.globalHeaderLogoLabel",
 
-&nbsp;             "options": {
+              "options": {
 
-&nbsp;                "tooltip": "Config.globalHeaderLogoTooltip",
+                 "tooltip": "Config.globalHeaderLogoTooltip",
 
-&nbsp;                "defaultValue": ""
+                 "defaultValue": ""
 
-&nbsp;             }
+              }
 
-&nbsp;          },
+           },
 
-&nbsp;          "global.category": {
+           "global.category": {
 
-&nbsp;             "type": "categoryPicker",
+              "type": "categoryPicker",
 
-&nbsp;             "required": true,
+              "required": true,
 
-&nbsp;             "label": "Config.globalCategoryLabel",
+              "label": "Config.globalCategoryLabel",
 
-&nbsp;             "options": {
+              "options": {
 
-&nbsp;                "tooltip": "Config.globalCategoryTooltip",
+                 "tooltip": "Config.globalCategoryTooltip",
 
-&nbsp;                "defaultValue": ""
+                 "defaultValue": ""
 
-&nbsp;             }
+              }
 
-&nbsp;          },
+           },
 
-&nbsp;          "global.container": {
+           "global.container": {
 
-&nbsp;             "type": "verticalContainer",
+              "type": "verticalContainer",
 
-&nbsp;             "label": "Config.globalContainerLabel",
+              "label": "Config.globalContainerLabel",
 
-&nbsp;             "options": {
+              "options": {
 
-&nbsp;                "containerEntries":
+                 "containerEntries":
 
-&nbsp;                {
+                 {
 
-&nbsp;                   "global.container.apiKey": {
+                    "global.container.apiKey": {
 
-&nbsp;                      "type": "inputText",
+                       "type": "inputText",
 
-&nbsp;                      "label": "Config.globalContainerApiKeyLabel",
+                       "label": "Config.globalContainerApiKeyLabel",
 
-&nbsp;                      "required": false
+                       "required": false
 
-&nbsp;                   }
+                    }
 
-&nbsp;                }
+                 }
 
-&nbsp;             }
+              }
 
-&nbsp;          }
+           }
 
-&nbsp;       }
+        }
 
-&nbsp;    },
+     },
 
-&nbsp;    "additional": {
+     "additional": {
 
-&nbsp;       "label": "Config.additionalSettings",
+        "label": "Config.additionalSettings",
 
-&nbsp;       "menu": {
+        "menu": {
 
-&nbsp;          "languages": {
+           "languages": {
 
-&nbsp;             "label": "Config.additionalSettingsLanguagesLabel",
+              "label": "Config.additionalSettingsLanguagesLabel",
 
-&nbsp;             "formFields": {
+              "formFields": {
 
-&nbsp;                "additional.languages.supportedLanguages": {
+                 "additional.languages.supportedLanguages": {
 
-&nbsp;                   "type": "multiCheckBox",
+                    "type": "multiCheckBox",
 
-&nbsp;                   "required": false,
+                    "required": false,
 
-&nbsp;                   "label": "Config.additionalSettingsSupportedLanguagesLabel",
+                    "label": "Config.additionalSettingsSupportedLanguagesLabel",
 
-&nbsp;                   "options": {
+                    "options": {
 
-&nbsp;                      "tooltip": "Config.additionalSettingsSupportedLanguagesTooltip",
+                       "tooltip": "Config.additionalSettingsSupportedLanguagesTooltip",
 
-&nbsp;                      "defaultValue": "de, en",
+                       "defaultValue": "de, en",
 
-&nbsp;                      "checkBoxValues": \[
+                       "checkBoxValues": [
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "de",
+                             "value": "de",
 
-&nbsp;                            "caption":"Config.languageGerman"
+                             "caption":"Config.languageGerman"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "en",
+                             "value": "en",
 
-&nbsp;                            "caption": "Config.languageEnglish"
+                             "caption": "Config.languageEnglish"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "fr",
+                             "value": "fr",
 
-&nbsp;                            "caption": "Config.languageFrench"
+                             "caption": "Config.languageFrench"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "es",
+                             "value": "es",
 
-&nbsp;                            "caption": "Config.languageSpanish"
+                             "caption": "Config.languageSpanish"
 
-&nbsp;                         }
+                          }
 
-&nbsp;                      ]
+                       ]
 
-&nbsp;                   }
+                    }
 
-&nbsp;                }
+                 }
 
-&nbsp;             }
+              }
 
-&nbsp;          },
+           },
 
-&nbsp;          "moreSettings": {
+           "moreSettings": {
 
-&nbsp;             "label": "Config.additionalSettingsMoreLabel",
+              "label": "Config.additionalSettingsMoreLabel",
 
-&nbsp;             "formFields": {
+              "formFields": {
 
-&nbsp;                "additional.more.fulfillmentClient": {
+                 "additional.more.fulfillmentClient": {
 
-&nbsp;                   "type": "selectBox",
+                    "type": "selectBox",
 
-&nbsp;                   "required": false,
+                    "required": false,
 
-&nbsp;                   "label": "Config.additionalSettingsMoreFulfillmentClientLabel",
+                    "label": "Config.additionalSettingsMoreFulfillmentClientLabel",
 
-&nbsp;                   "options": {
+                    "options": {
 
-&nbsp;                      "tooltip": "Config.additionalSettingsMoreFulfillmentClientTooltip",
+                       "tooltip": "Config.additionalSettingsMoreFulfillmentClientTooltip",
 
-&nbsp;                      "defaultValue": "dhl",
+                       "defaultValue": "dhl",
 
-&nbsp;                      "selectBoxValues": \[
+                       "selectBoxValues": [
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "dhl",
+                             "value": "dhl",
 
-&nbsp;                            "caption": "Config.fulfillmentDHL"
+                             "caption": "Config.fulfillmentDHL"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "ups",
+                             "value": "ups",
 
-&nbsp;                            "caption": "Config.fulfillmentUPS"
+                             "caption": "Config.fulfillmentUPS"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "hermes",
+                             "value": "hermes",
 
-&nbsp;                            "caption": "Config.fulfillmentHermes"
+                             "caption": "Config.fulfillmentHermes"
 
-&nbsp;                         },
+                          },
 
-&nbsp;                         {
+                          {
 
-&nbsp;                            "value": "dpd",
+                             "value": "dpd",
 
-&nbsp;                            "caption": "Config.fulfillmentDPD"
+                             "caption": "Config.fulfillmentDPD"
 
-&nbsp;                         }
+                          }
 
-&nbsp;                      ]
+                       ]
 
-&nbsp;                   }
+                    }
 
-&nbsp;                }
+                 }
 
-&nbsp;             }
+              }
 
-&nbsp;          }
+           }
 
-&nbsp;       }
+        }
 
-&nbsp;    }
+     }
 
-&nbsp; }
+  }
 
 }
-
 ```
 
-
-
-The key `menu` states whether the following value is interpreted as a menu entry. A menu entry must have a `label` property and can have another `menu` or `formFields` or a `fullWidth` property. With another `menu` property, a new menu level is created. With `fullWidth` set to `true`, the configuration is rendered with 100% width. Default value for `fullWidth` is `false`.
-
-
+The key `menu`states whether the following value is interpreted as a menu entry. A menu entry must have a`label`property and can have another`menu`or`formFields`or a`fullWidth`property. With another`menu`property, a new menu level is created. With`fullWidth`set to`true`, the configuration is rendered with 100% width. Default value for `fullWidth`is`false`.
 
 The `formFields` property must be an object containing all the form fields to be shown when clicking on the related menu entry. Every key in this object corresponds to the configuration field's key defined by the plugin. A form field has the following properties:
-
-
 
 \- `type`
 
@@ -278,15 +258,9 @@ The `formFields` property must be an object containing all the form fields to be
 
 \- `options`
 
-
-
-If the `scss` property is set to `true`, any scss files contained in the resources/css folder are compiled automatically during plugin build.
-
-
+If the `scss`property is set to`true`, any scss files contained in the resources/css folder are compiled automatically during plugin build.
 
 The options property can include more properties that are optional, e.g.:
-
-
 
 \- `tooltip`
 
@@ -298,11 +272,7 @@ The options property can include more properties that are optional, e.g.:
 
 \- `containerEntries`
 
-
-
 The following types are available:
-
-
 
 \- `inputFile`
 
@@ -330,41 +300,25 @@ The following types are available:
 
 \- `horizontalContainer`
 
+Vertical and horizontal containers offer more flexibility for the layout of the configuration view. In a specific menu entry, form fields can be grouped in vertical and horizontal containers. Next to the `label`property the`options.containerEntries`property must be set. The`containerEntries` property contains the form fields that should be grouped in the corresponding container.
 
+### Password input
 
-Vertical and horizontal containers offer more flexibility for the layout of the configuration view. In a specific menu entry, form fields can be grouped in vertical and horizontal containers. Next to the `label` property the `options.containerEntries` property must be set. The `containerEntries` property contains the form fields that should be grouped in the corresponding container.
-
-
-
-\### Password input
-
-
-
-You can use an `inputText` for passwords by adding the `isPassword` option.
-
-
+You can use an `inputText`for passwords by adding the`isPassword` option.
 
 ```json
-
 "type": "inputText",
 
 "options": {
 
-&nbsp;   "isPassword": true
+    "isPassword": true
 
 }
-
 ```
 
-
-
-\### Default values of the picker elements
-
-
+### Default values of the picker elements
 
 The various picker elements use the following default values:
-
-
 
 \- `categoryPicker`: the id of the proposed category
 
@@ -372,53 +326,40 @@ The various picker elements use the following default values:
 
 \- `datePicker`: the date in RFC2822 or ISO 8601 date format (with time) as string
 
-
-
-\### Accessing plugin options from PhpClass.php
-
-
+### Accessing plugin options from PhpClass.php
 
 ```php
-
 // access configuration from PHP
 
 function getTitle(ConfigRepository $config):string
 
-&nbsp;   {
+    {
 
-&nbsp;       if( $config->get('MyPlugin.show\_title') == "1" )
+        if( $config->get('MyPlugin.show_title') == "1" )
 
-&nbsp;           {
+            {
 
-&nbsp;               return $config->get('MyPlugin.title\_text');
+                return $config->get('MyPlugin.title_text');
 
-&nbsp;                   }
+                    }
 
-&nbsp;                       else
+                        else
 
-&nbsp;                   {
+                    {
 
-&nbsp;               return "";
+                return "";
 
-&nbsp;           }
+            }
 
-&nbsp;   }
-
+    }
 ```
 
-
-
-\### Accessing plugin options from Template.twig
-
-
+### Accessing plugin options from Template.twig
 
 ```twig
+{% if config('MyPlugin.show_title') == "1" %}
 
-{% if config('MyPlugin.show\_title') == "1" %}
-
-&nbsp;   <h1>{{ config('MyPlugin.title\_text') }}</h1>
+    <h1>{{ config('MyPlugin.title_text') }}</h1>
 
 {% endif %}
-
 ```
-

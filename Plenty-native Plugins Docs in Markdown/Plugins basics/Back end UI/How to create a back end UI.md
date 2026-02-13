@@ -24,7 +24,7 @@ To set up your development environment, you need to install the plugin Template 
 9. Enter `npm install`.
    → The node modules are installed.
 10. Enter `npm start`.
-    → The `plugin-terra-basic` starts on `localhost:3002`.
+    → The `plugin-terra-basic`starts on`localhost:3002`.
 
 Your setup is now complete and you can start developing your plugin.
 
@@ -36,7 +36,7 @@ The Terra-Components library provides you with a material table component that y
 
 To work with TypeScript properly, you should create an interface to define the type of data used by your table. The following code sample is the interface for a list of contacts:
 
-**src/app/interfaces/contact.interface.ts**
+### src/app/interfaces/contact.interface.ts
 
 ```typescript
 export interface ContactInterface {
@@ -67,9 +67,9 @@ export interface ContactInterface {
 
 ### Creating your service
 
-To receive data from the back end, you need to create a service that can send REST calls. The plugin template comes with an example in the `src/app/services` folder. It already contains the `contact.service.ts` file. To create a new service you can use `ng generate service` and then enter `services/contact` when prompted for a name, or by creating it manually. When using the generate option, you will also be provided with a spec file which you can use to create tests.
+To receive data from the back end, you need to create a service that can send REST calls. The plugin template comes with an example in the `src/app/services`folder. It already contains the`contact.service.ts`file. To create a new service you can use`ng generate service`and then enter`services/contact` when prompted for a name, or by creating it manually. When using the generate option, you will also be provided with a spec file which you can use to create tests.
 
-**src/app/services/contact.service.ts**
+### src/app/services/contact.service.ts
 
 ```typescript
 import { Injectable } from '@angular/core';
@@ -99,9 +99,9 @@ To use the service and be able to send REST calls, you need to get an authentica
 3. Right click and click on `Inspect`.
 4. Go to `Application`.
 5. Open `Local Storage`.
-6. Click on your connection example: **http://master.login.plentymarkets.com**.
+6. Click on your connection example: **<http://master.login.plentymarkets.com>**.
    → This will open a list where you can copy the `accessToken`.
-7. Open `plugin-terra-basic.component.ts` and go to `line 17`.
+7. Open `plugin-terra-basic.component.ts`and go to`line 17`.
 8. Paste the copied token into the `accessToken` variable.
    **Tip:** To avoid errors while accessing the `accessToken`, use the [Allow-Control-Allow-Origin plugin](https://developers.plentymarkets.com/en-gb/developers/main/back-end-ui/how-to-back-end-ui.html#_enabling_cross_origin).
    → You are ready to use the service.
@@ -113,7 +113,7 @@ To use the service and be able to send REST calls, you need to get an authentica
 
 If you used the generate option, the service should be added to the module automatically. If not, you may need to add it to the `NgModule` manually.
 
-**src/app/plugin-terra-basic.module.ts**
+### src/app/plugin-terra-basic.module.ts
 
 ```typescript
 import {
@@ -221,7 +221,7 @@ The Terra-Components provide you with the base class of a fully functional DataS
 
 An example is provided in the plugin Terra-Basic:
 
-**src/app/views/example/overview/table/contacts-data-source.ts**
+### src/app/views/example/overview/table/contacts-data-source.ts
 
 ```typescript
 import { RequestParameterInterface, TerraPagerInterface, TerraTableDataSource } from '@plentymarkets/terra-components';
@@ -244,11 +244,11 @@ export class ContactsDataSource extends TerraTableDataSource<ContactInterface> {
 
 If you get errors due to cross origin resource sharing, you need to allow it by using a plugin. For example the **Allow-Control-Allow-Origin** in Chrome. Activate the plugin and allow all resources from your test system domain.
 
-*Figure 2. Enable cross origin*
+### Figure 2. Enable cross origin
 
 At this point of the how-to guide, your Angular UI should look like this:
 
-*Figure 3. Plugin Terra-Basic*
+### Figure 3. Plugin Terra-Basic
 
 ## Disabling back end caching
 

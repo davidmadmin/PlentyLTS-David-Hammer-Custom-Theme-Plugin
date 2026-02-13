@@ -1,14 +1,8 @@
-\# plentyShop plugins → ElasticSearch results fields
+# plentyShop plugins → ElasticSearch results fields
 
-
-
-\## Item information
-
-
+## Item information
 
 The following table lists the result fields pertaining to items.
-
-
 
 | Result field | Description |
 
@@ -110,15 +104,9 @@ The following table lists the result fields pertaining to items.
 
 | item.revenueAccount | Contains the revenue account of the item. |
 
-
-
-\## Item texts
-
-
+## Item texts
 
 The following table lists the result fields pertaining to item texts.
-
-
 
 | Result field | Description |
 
@@ -144,15 +132,9 @@ The following table lists the result fields pertaining to item texts.
 
 | texts.keywords | Contains the item's keywords. |
 
-
-
-\## Attribute values
-
-
+## Attribute values
 
 The following table lists the result fields pertaining to attribute values.
-
-
 
 | Result field | Description |
 
@@ -170,107 +152,101 @@ The following table lists the result fields pertaining to attribute values.
 
 | attributes.values.lang | Contains the language of the value of the attribute. |
 
-
-
-\## Item images
-
-
+## Item images
 
 The following table lists the result fields pertaining to item images.
-
-
 
 | Result field | Description |
 
 |---|---|
 
-| images.all\[].itemId | Contains the item id for the image. |
+| images.all[].itemId | Contains the item id for the image. |
 
-| images.all\[].type | Contains the image type. |
+| images.all[].type | Contains the image type. |
 
-| images.all\[].fileType | Contains the file type of the image. |
+| images.all[].fileType | Contains the file type of the image. |
 
-| images.all\[].path | Contains the image path in the webspace. |
+| images.all[].path | Contains the image path in the webspace. |
 
-| images.all\[].position | Contains the position of the image. |
+| images.all[].position | Contains the position of the image. |
 
-| images.all\[].lastUpdateTimestamp | Contains the timestamp of when the image was last updated. |
+| images.all[].lastUpdateTimestamp | Contains the timestamp of when the image was last updated. |
 
-| images.all\[].createdAt | Contains the timestamp of when the image was created. |
+| images.all[].createdAt | Contains the timestamp of when the image was created. |
 
-| images.all\[].updatedAt | Contains the timestamp of when the image was last updated. |
+| images.all[].updatedAt | Contains the timestamp of when the image was last updated. |
 
-| images.all\[].url | Contains the URL to the image. |
+| images.all[].url | Contains the URL to the image. |
 
-| images.all\[].urlMiddle | Contains the URL to the middle-sized preview image. |
+| images.all[].urlMiddle | Contains the URL to the middle-sized preview image. |
 
-| images.all\[].urlPreview | Contains the URL to the preview image. |
+| images.all[].urlPreview | Contains the URL to the preview image. |
 
-| images.all\[].urlSecondPreview | Contains the URL to the second preview image. |
+| images.all[].urlSecondPreview | Contains the URL to the second preview image. |
 
-| images.all\[].height | Contains the height of the image in pixels. |
+| images.all[].height | Contains the height of the image in pixels. |
 
-| images.all\[].width | Contains the width of the image in pixels. |
+| images.all[].width | Contains the width of the image in pixels. |
 
-| images.all\[].md5Checksum | Contains the md5 hash of the image. |
+| images.all[].md5Checksum | Contains the md5 hash of the image. |
 
-| images.all\[].md5ChecksumOriginal | Contains the md5 hash of the original image. |
+| images.all[].md5ChecksumOriginal | Contains the md5 hash of the original image. |
 
-| images.all\[].size | Contains the file size of the image in bytes. |
+| images.all[].size | Contains the file size of the image in bytes. |
 
-| images.all\[].storageProviderId | Contains the storage provider id of the image. |
+| images.all[].storageProviderId | Contains the storage provider id of the image. |
 
-| images.all\[].names\[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
+| images.all[].names[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
 
-| images.all\[].names\[].alternate | Contains alternate image names. |
+| images.all[].names[].alternate | Contains alternate image names. |
 
-| images.all\[].availabilities\[].type | Contains an indicator for the type of the images availability. |
+| images.all[].availabilities[].type | Contains an indicator for the type of the images availability. |
 
-| images.all\[].availabilities\[].value | Contains an indicator for the value of the images availability. |
+| images.all[].availabilities[].value | Contains an indicator for the value of the images availability. |
 
-| images.variation\[{Number}].itemId | Contains the item id for the images of the variation with the id {Number}. |
+| images.variation[{Number}].itemId | Contains the item id for the images of the variation with the id {Number}. |
 
-| images.variation\[{Number}].type | Contains the image type. |
+| images.variation[{Number}].type | Contains the image type. |
 
-| images.variation\[{Number}].fileType | Contains the file type of the image. |
+| images.variation[{Number}].fileType | Contains the file type of the image. |
 
-| images.variation\[{Number}].path | Contains the image path in the webspace. |
+| images.variation[{Number}].path | Contains the image path in the webspace. |
 
-| images.variation\[{Number}].position | Contains the position of the image. |
+| images.variation[{Number}].position | Contains the position of the image. |
 
-| images.variation\[{Number}].lastUpdateTimestamp | Contains the timestamp of when the image was last updated. |
+| images.variation[{Number}].lastUpdateTimestamp | Contains the timestamp of when the image was last updated. |
 
-| images.variation\[{Number}].createdAt | Contains the timestamp of when the image was created. |
+| images.variation[{Number}].createdAt | Contains the timestamp of when the image was created. |
 
-| images.variation\[{Number}].updatedAt | Contains the timestamp of when the image was last updated. |
+| images.variation[{Number}].updatedAt | Contains the timestamp of when the image was last updated. |
 
-| images.variation\[{Number}].url | Contains the URL to the image. |
+| images.variation[{Number}].url | Contains the URL to the image. |
 
-| images.variation\[{Number}].urlMiddle | Contains the URL to the middle-sized preview image. |
+| images.variation[{Number}].urlMiddle | Contains the URL to the middle-sized preview image. |
 
-| images.variation\[{Number}].urlPreview | Contains the URL to the preview image. |
+| images.variation[{Number}].urlPreview | Contains the URL to the preview image. |
 
-| images.variation\[{Number}].urlSecondPreview | Contains the URL to the second preview image. |
+| images.variation[{Number}].urlSecondPreview | Contains the URL to the second preview image. |
 
-| images.variation\[{Number}].height | Contains the height of the image in pixels. |
+| images.variation[{Number}].height | Contains the height of the image in pixels. |
 
-| images.variation\[{Number}].width | Contains the width of the image in pixels. |
+| images.variation[{Number}].width | Contains the width of the image in pixels. |
 
-| images.variation\[{Number}].md5Checksum | Contains the md5 hash of the image. |
+| images.variation[{Number}].md5Checksum | Contains the md5 hash of the image. |
 
-| images.variation\[{Number}].md5ChecksumOriginal | Contains the md5 hash of the original image. |
+| images.variation[{Number}].md5ChecksumOriginal | Contains the md5 hash of the original image. |
 
-| images.variation\[{Number}].size | Contains the file size of the image in bytes. |
+| images.variation[{Number}].size | Contains the file size of the image in bytes. |
 
-| images.variation\[{Number}].storageProviderId | Contains the storage provider id of the image. |
+| images.variation[{Number}].storageProviderId | Contains the storage provider id of the image. |
 
-| images.variation\[{Number}].names\[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
+| images.variation[{Number}].names[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
 
-| images.variation\[{Number}].names\[].alternate | Contains alternate image names. |
+| images.variation[{Number}].names[].alternate | Contains alternate image names. |
 
-| images.variation\[{Number}].availabilities\[].type | Contains an indicator for the type of the images availability. |
+| images.variation[{Number}].availabilities[].type | Contains an indicator for the type of the images availability. |
 
-| images.variation\[{Number}].availabilities\[].value | Contains an indicator for the value of the images availability. |
+| images.variation[{Number}].availabilities[].value | Contains an indicator for the value of the images availability. |
 
 | images.item.itemId | Contains the item id for the item images. |
 
@@ -308,93 +284,81 @@ The following table lists the result fields pertaining to item images.
 
 | images.item.storageProviderId | Contains the storage provider id of the image. |
 
-| images.item.names\[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
+| images.item.names[].name | Contains the names of the image. The image can have names in multiple languages. Separated by array. |
 
-| images.item.names\[].alternate | Contains alternate image names. |
+| images.item.names[].alternate | Contains alternate image names. |
 
-| images.item.availabilities\[].type | Contains an indicator for the type of the images availability. |
+| images.item.availabilities[].type | Contains an indicator for the type of the images availability. |
 
-| images.item.availabilities\[].value | Contains an indicator for the value of the images availability. |
+| images.item.availabilities[].value | Contains an indicator for the value of the images availability. |
 
-
-
-\## Sales prices
-
-
+## Sales prices
 
 The following table lists the result fields pertaining to sales prices.
-
-
 
 | Result field | Description |
 
 |---|---|
 
-| salesPrices\[0].price | Contains the value of the sales price. |
+| salesPrices[0].price | Contains the value of the sales price. |
 
-| salesPrices\[0].priceNet | Contains the net value of the sales price. |
+| salesPrices[0].priceNet | Contains the net value of the sales price. |
 
-| salesPrices\[0].basePrice | Contains the base price. |
+| salesPrices[0].basePrice | Contains the base price. |
 
-| salesPrices\[0].basePriceNet | Contains the net base price. |
+| salesPrices[0].basePriceNet | Contains the net base price. |
 
-| salesPrices\[0].unitPrice | Contains the unit price. |
+| salesPrices[0].unitPrice | Contains the unit price. |
 
-| salesPrices\[0].unitPriceNet | Contains the net unit price. |
+| salesPrices[0].unitPriceNet | Contains the net unit price. |
 
-| salesPrices\[0].lowestPrice | Contains the lowest price. |
+| salesPrices[0].lowestPrice | Contains the lowest price. |
 
-| salesPrices\[0].lowestPriceNet | Contains the net lowest price. |
+| salesPrices[0].lowestPriceNet | Contains the net lowest price. |
 
-| salesPrices\[0].customerClassDiscountPercent | Contains the customer class discount in percent. |
+| salesPrices[0].customerClassDiscountPercent | Contains the customer class discount in percent. |
 
-| salesPrices\[0].customerClassDiscount | Contains the customer class discount. |
+| salesPrices[0].customerClassDiscount | Contains the customer class discount. |
 
-| salesPrices\[0].customerClassDiscountNet | Contains the net customer class discount. |
+| salesPrices[0].customerClassDiscountNet | Contains the net customer class discount. |
 
-| salesPrices\[0].categoryDiscountPercent | Contains the category discount in percent. |
+| salesPrices[0].categoryDiscountPercent | Contains the category discount in percent. |
 
-| salesPrices\[0].categoryDiscount | Contains the category discount. |
+| salesPrices[0].categoryDiscount | Contains the category discount. |
 
-| salesPrices\[0].categoryDiscountNet | Contains the net category discount. |
+| salesPrices[0].categoryDiscountNet | Contains the net category discount. |
 
-| salesPrices\[0].vatId | Contains the id of the VAT configuration. |
+| salesPrices[0].vatId | Contains the id of the VAT configuration. |
 
-| salesPrices\[0].vatValue | Contains the value of the VAT configuration in percent. |
+| salesPrices[0].vatValue | Contains the value of the VAT configuration in percent. |
 
-| salesPrices\[0].currency | Contains the currency of the sales price. |
+| salesPrices[0].currency | Contains the currency of the sales price. |
 
-| salesPrices\[0].interval | Contains the subscription interval. |
+| salesPrices[0].interval | Contains the subscription interval. |
 
-| salesPrices\[0].conversionFactor | Contains the conversion factor of the unit of the price. |
+| salesPrices[0].conversionFactor | Contains the conversion factor of the unit of the price. |
 
-| salesPrices\[0].minimumOrderQuantity | Contains the minimum order quantity for the sales price. |
+| salesPrices[0].minimumOrderQuantity | Contains the minimum order quantity for the sales price. |
 
-| salesPrices\[0].updatedAt | Contains the timestamp of when the sales price was last updated. |
+| salesPrices[0].updatedAt | Contains the timestamp of when the sales price was last updated. |
 
-| salesPrices\[0].type | Contains the type of the price. "default" = Normal price, "rrp" = Recommended retail price, "set" = Set price, "specialOffer" = Special offer price. |
+| salesPrices[0].type | Contains the type of the price. "default" = Normal price, "rrp" = Recommended retail price, "set" = Set price, "specialOffer" = Special offer price. |
 
-| salesPrices\[0].pricePosition | Contains the position of the sales price. |
+| salesPrices[0].pricePosition | Contains the position of the sales price. |
 
-| salesPrices\[0].priceId | Contains the id of the sales price. |
+| salesPrices[0].priceId | Contains the id of the sales price. |
 
-| salesPrices\[0].names.nameInternal | Contains the internal name of the sales price. |
+| salesPrices[0].names.nameInternal | Contains the internal name of the sales price. |
 
-| salesPrices\[0].names.nameExternal | Contains the external name of the sales price. |
+| salesPrices[0].names.nameExternal | Contains the external name of the sales price. |
 
-| salesPrices\[0].names.lang | Contains the language of the name of the sales price. |
+| salesPrices[0].names.lang | Contains the language of the name of the sales price. |
 
-| salesPrices\[0].priceReturnItem | Contains the return price of the item. |
+| salesPrices[0].priceReturnItem | Contains the return price of the item. |
 
-
-
-\## Facets
-
-
+## Facets
 
 The following table lists the result fields pertaining to facets.
-
-
 
 | Result field | Description |
 
@@ -424,15 +388,9 @@ The following table lists the result fields pertaining to facets.
 
 | facets.values.names.lang | Contains the language of the name of the facet value. |
 
-
-
-\## Barcodes
-
-
+## Barcodes
 
 The following table lists the result fields pertaining to barcodes.
-
-
 
 | Result field | Description |
 
@@ -446,79 +404,67 @@ The following table lists the result fields pertaining to barcodes.
 
 | barcodes.updatedAt | Contains the timestamp of when the barcode was last updated. |
 
-
-
-\## Default categories
-
-
+## Default categories
 
 The following table lists the result fields pertaining to default categories.
-
-
 
 | Result field | Description |
 
 |---|---|
 
-| defaultCategories\[0].id | Contains the id of the default category. |
+| defaultCategories[0].id | Contains the id of the default category. |
 
-| defaultCategories\[0].parentCategoryId | Contains the id of the parent category. |
+| defaultCategories[0].parentCategoryId | Contains the id of the parent category. |
 
-| defaultCategories\[0].level | Contains the category level. |
+| defaultCategories[0].level | Contains the category level. |
 
-| defaultCategories\[0].type | Contains the category type. |
+| defaultCategories[0].type | Contains the category type. |
 
-| defaultCategories\[0].linklist | Contains a Boolean that returns true if the category is displayed in the navigation. |
+| defaultCategories[0].linklist | Contains a Boolean that returns true if the category is displayed in the navigation. |
 
-| defaultCategories\[0].right | Contains the right limit of the nested set model. |
+| defaultCategories[0].right | Contains the right limit of the nested set model. |
 
-| defaultCategories\[0].sitemap | Contains a Boolean that returns true if the category is displayed in the sitemap. |
+| defaultCategories[0].sitemap | Contains a Boolean that returns true if the category is displayed in the sitemap. |
 
-| defaultCategories\[0].updatedAt | Contains the timestamp of when the category was last updated. |
+| defaultCategories[0].updatedAt | Contains the timestamp of when the category was last updated. |
 
-| defaultCategories\[0].plentyId | Contains the plenty id of the category. |
+| defaultCategories[0].plentyId | Contains the plenty id of the category. |
 
-| defaultCategories\[0].details.categoryId | Contains the category id. |
+| defaultCategories[0].details.categoryId | Contains the category id. |
 
-| defaultCategories\[0].details.lang | Contains the language of the category detail. |
+| defaultCategories[0].details.lang | Contains the language of the category detail. |
 
-| defaultCategories\[0].details.name | Contains the name of the category. |
+| defaultCategories[0].details.name | Contains the name of the category. |
 
-| defaultCategories\[0].details.name2 | Contains the second name of the category. |
+| defaultCategories[0].details.name2 | Contains the second name of the category. |
 
-| defaultCategories\[0].details.shortDescription | Contains the short description of the category. |
+| defaultCategories[0].details.shortDescription | Contains the short description of the category. |
 
-| defaultCategories\[0].details.description | Contains the description of the category. |
+| defaultCategories[0].details.description | Contains the description of the category. |
 
-| defaultCategories\[0].details.description2 | Contains the second description of the category. |
+| defaultCategories[0].details.description2 | Contains the second description of the category. |
 
-| defaultCategories\[0].details.metaKeywords | Contains the meta keywords of the category. |
+| defaultCategories[0].details.metaKeywords | Contains the meta keywords of the category. |
 
-| defaultCategories\[0].details.metaDescription | Contains the meta description of the category. |
+| defaultCategories[0].details.metaDescription | Contains the meta description of the category. |
 
-| defaultCategories\[0].details.nameUrl | Contains the URL name of the category. |
+| defaultCategories[0].details.nameUrl | Contains the URL name of the category. |
 
-| defaultCategories\[0].details.metaTitle | Contains the meta title of the category. |
+| defaultCategories[0].details.metaTitle | Contains the meta title of the category. |
 
-| defaultCategories\[0].details.image | Contains the image of the category. |
+| defaultCategories[0].details.image | Contains the image of the category. |
 
-| defaultCategories\[0].details.imagePath | Contains the image path of the category. |
+| defaultCategories[0].details.imagePath | Contains the image path of the category. |
 
-| defaultCategories\[0].details.image2 | Contains the second image of the category. |
+| defaultCategories[0].details.image2 | Contains the second image of the category. |
 
-| defaultCategories\[0].details.image2Path | Contains the second image path of the category. |
+| defaultCategories[0].details.image2Path | Contains the second image path of the category. |
 
-| defaultCategories\[0].details.plentyId | Contains the plenty id of the category. |
+| defaultCategories[0].details.plentyId | Contains the plenty id of the category. |
 
-
-
-\## Item properties
-
-
+## Item properties
 
 The following table lists the result fields pertaining to item properties.
-
-
 
 | Result field | Description |
 
@@ -572,15 +518,9 @@ The following table lists the result fields pertaining to item properties.
 
 | properties.selection.description | Contains the description of the property selection. |
 
-
-
-\## Tags
-
-
+## Tags
 
 The following table lists the result fields pertaining to tags.
-
-
 
 | Result field | Description |
 
@@ -592,15 +532,9 @@ The following table lists the result fields pertaining to tags.
 
 | tags.color | Contains the color of the tag in hexadecimal format. |
 
-
-
-\## Units
-
-
+## Units
 
 The following table lists the result fields pertaining to units.
-
-
 
 | Result field | Description |
 
@@ -626,15 +560,9 @@ The following table lists the result fields pertaining to units.
 
 | unit.updatedAt | Contains the timestamp of when the unit was last updated. |
 
-
-
-\## Variation information
-
-
+## Variation information
 
 The following table lists the result fields pertaining to variations of an item.
-
-
 
 | Result field | Description |
 
@@ -722,7 +650,7 @@ The following table lists the result fields pertaining to variations of an item.
 
 | variation.availability.id | Contains the id of the variation's availability. |
 
-| variation.bundleType | Returns "bundle\_item" if the variation is part of an item bundle. |
+| variation.bundleType | Returns "bundle_item" if the variation is part of an item bundle. |
 
 | variation.maximumOrderQuantity | Contains the maximum order quantity of the variation. |
 
@@ -746,27 +674,20 @@ The following table lists the result fields pertaining to variations of an item.
 
 | variation.movingAveragePrice | Contains the moving average purchase net price of the variation. |
 
-
-
-\## Variation property groups
-
-
+## Variation property groups
 
 The following table lists the result fields pertaining to variation property groups.
-
-
 
 | Result field | Description |
 
 |---|---|
 
-| variationPropertyGroups\[0].names.name | Contains the name of the property group. |
+| variationPropertyGroups[0].names.name | Contains the name of the property group. |
 
-| variationPropertyGroups\[0].names.description | Contains the description of the property group. |
+| variationPropertyGroups[0].names.description | Contains the description of the property group. |
 
-| variationPropertyGroups\[0].names.lang | Contains the language of the name and the description of the property group. |
+| variationPropertyGroups[0].names.lang | Contains the language of the name and the description of the property group. |
 
-| variationPropertyGroups\[0].id | Contains the id of the property group. |
+| variationPropertyGroups[0].id | Contains the id of the property group. |
 
-| variationPropertyGroups\[0].position | Contains the position of the property group. |
-
+| variationPropertyGroups[0].position | Contains the position of the property group. |

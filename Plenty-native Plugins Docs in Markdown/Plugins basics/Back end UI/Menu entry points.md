@@ -1,10 +1,6 @@
-\# Menu entry points
-
-
+# Menu entry points
 
 This page lists all menus that can be accessed by a plugin via entry points.
-
-
 
 \- start
 
@@ -45,4 +41,3 @@ This page lists all menus that can be accessed by a plugin via entry points.
 \- cms
 
 \- cms/new-online-store
-

@@ -1,18 +1,10 @@
-\# Plugin basics → Data storage → Storing data in a plugin database
+# Plugin basics → Data storage → Storing data in a plugin database
 
-
-
-\## Introduction
-
-
+## Introduction
 
 This guide teaches you how to store data in a plugin database.
 
-
-
-\## What you will learn
-
-
+## What you will learn
 
 \- How to use migrations to set up a database and create tables
 
@@ -26,341 +18,220 @@ This guide teaches you how to store data in a plugin database.
 
 \- How to design a simple UI and logic for your plugin
 
+## Requirements
 
-
-\## Requirements
-
-
-
-This guide builds on our \[Hello World example plugin](https://github.com/plentymarkets/plugin-hello-world). Download the Hello World plugin, change the name to ToDoList and follow this guide.
-
-
+This guide builds on our [Hello World example plugin](https://github.com/plentymarkets/plugin-hello-world). Download the Hello World plugin, change the name to ToDoList and follow this guide.
 
 You need access to a plentymarkets system to deploy the plugin.
 
+## Step 1: Creating a migration
 
+Create the file `CreateToDoTable.php`in the`src/Migrations` folder.
 
-\## Step 1: Creating a migration
-
-
-
-Create the file `CreateToDoTable.php` in the `src/Migrations` folder.
-
-
-
-\*\*ToDoList/src/Migrations/CreateToDoTable.php\*\*
-
-
+### ToDoList/src/Migrations/CreateToDoTable.php
 
 ```php
-
 <?php
 
-
-
 namespace ToDoList\\Migrations;
-
-
 
 use ToDoList\\Models\\ToDo;
 
 use Plenty\\Modules\\Plugin\\DataBase\\Contracts\\Migrate;
 
-
-
 class CreateToDoTable
 
 {
 
-&nbsp;   public function run(Migrate $migrate)
+    public function run(Migrate $migrate)
 
-&nbsp;   {
+    {
 
-&nbsp;       $migrate->createTable(ToDo::class);
+        $migrate->createTable(ToDo::class);
 
-&nbsp;   }
+    }
 
 }
-
 ```
 
+The `run()`method is executed when deploying the plugin. In our`run()`method, we use the`createTable()`method of the`Migrate` contract to create a new table based on the model that we specify.
 
+## Step 2: Creating a model
 
-The `run()` method is executed when deploying the plugin. In our `run()` method, we use the `createTable()` method of the `Migrate` contract to create a new table based on the model that we specify.
+Create the file `ToDo.php`in the`src/Models` folder.
 
-
-
-\## Step 2: Creating a model
-
-
-
-Create the file `ToDo.php` in the `src/Models` folder.
-
-
-
-\*\*ToDoList/src/Models/ToDo.php\*\*
-
-
+### ToDoList/src/Models/ToDo.php
 
 ```php
-
 <?php
-
-
 
 namespace ToDoList\\Models;
 
-
-
 use Plenty\\Modules\\Plugin\\DataBase\\Contracts\\Model;
-
-
 
 class ToDo extends Model
 
 {
 
-&nbsp;   public $id              = 0;
+    public $id              = 0;
 
-&nbsp;   public $taskDescription = "";
+    public $taskDescription = "";
 
-&nbsp;   public $isDone          = false;
+    public $isDone          = false;
 
+    public function getTableName(): string
 
+    {
 
-&nbsp;   public function getTableName(): string
+        return 'ToDoList::ToDo';
 
-&nbsp;   {
-
-&nbsp;       return 'ToDoList::ToDo';
-
-&nbsp;   }
+    }
 
 }
-
 ```
 
+Our model extends the `Model`contract and defines 3 properties that will be saved as columns in the data base:`id`, `taskDescription`and`isDone`. The `getTableName()` method specifies the name of the table.
 
+## Step 3: Creating a repository
 
-Our model extends the `Model` contract and defines 3 properties that will be saved as columns in the data base: `id`, `taskDescription` and `isDone`. The `getTableName()` method specifies the name of the table.
+Create the file `ToDoRepository.php`in the`src/Repositories` folder.
 
-
-
-\## Step 3: Creating a repository
-
-
-
-Create the file `ToDoRepository.php` in the `src/Repositories` folder.
-
-
-
-\*\*ToDoList/src/Repositories/ToDoRepository.php\*\*
-
-
+### ToDoList/src/Repositories/ToDoRepository.php
 
 ```php
-
 <?php
 
-
-
 namespace ToDoList\\Repositories;
-
-
 
 use ToDoList\\Models\\ToDo;
 
 use Plenty\\Modules\\Plugin\\DataBase\\Contracts\\DataBase;
 
-
-
 class ToDoRepository
 
 {
 
-&nbsp;   private $database;
+    private $database;
 
+    public function __construct(DataBase $database)
 
+    {
 
-&nbsp;   public function \_\_construct(DataBase $database)
+        $this->database = $database;
 
-&nbsp;   {
+    }
 
-&nbsp;       $this->database = $database;
+    public function getToDoList(): array
 
-&nbsp;   }
+    {
 
+        return $this->database->query(ToDo::class)->get();
 
+    }
 
-&nbsp;   public function getToDoList(): array
+    public function createTask(array $data): ToDo
 
-&nbsp;   {
+    {
 
-&nbsp;       return $this->database->query(ToDo::class)->get();
+        $todo = pluginApp(ToDo::class);
 
-&nbsp;   }
+        $todo->taskDescription  = $data['taskDescription'];
 
+        $todo->isDone           = false;
 
+        $this->database->save($todo);
 
-&nbsp;   public function createTask(array $data): ToDo
+        return $todo;
 
-&nbsp;   {
+    }
 
-&nbsp;       $todo = pluginApp(ToDo::class);
+    public function updateTask($id)
 
+    {
 
+        $todo = $this->database->find(ToDo::class, $id);
 
-&nbsp;       $todo->taskDescription  = $data\['taskDescription'];
+        if($todo instanceof ToDo) {
 
-&nbsp;       $todo->isDone           = false;
+            $todo->isDone = true;
 
+            $this->database->save($todo);
 
+            return $todo;
 
-&nbsp;       $this->database->save($todo);
+        }
 
+    }
 
+    public function deleteTask($id)
 
-&nbsp;       return $todo;
+    {
 
-&nbsp;   }
+        $todo = $this->database->find(ToDo::class, $id);
 
+        if($todo instanceof ToDo) {
 
+            $this->database->delete($todo);
 
-&nbsp;   public function updateTask($id)
+            return $todo;
 
-&nbsp;   {
+        }
 
-&nbsp;       $todo = $this->database->find(ToDo::class, $id);
-
-
-
-&nbsp;       if($todo instanceof ToDo) {
-
-&nbsp;           $todo->isDone = true;
-
-&nbsp;           $this->database->save($todo);
-
-&nbsp;           return $todo;
-
-&nbsp;       }
-
-&nbsp;   }
-
-
-
-&nbsp;   public function deleteTask($id)
-
-&nbsp;   {
-
-&nbsp;       $todo = $this->database->find(ToDo::class, $id);
-
-
-
-&nbsp;       if($todo instanceof ToDo) {
-
-&nbsp;           $this->database->delete($todo);
-
-&nbsp;           return $todo;
-
-&nbsp;       }
-
-&nbsp;   }
+    }
 
 }
-
 ```
-
-
 
 Our repository defines 4 methods:
 
-
-
 \- `getToDoList()` uses a query to get all existing entries from the database and returns the result as an array.
 
-\- `createTask()` receives data via the `$data` parameter and creates a new To Do list entry.
+\- `createTask()`receives data via the`$data` parameter and creates a new To Do list entry.
 
-\- `updateTask()` receives an `$id` via the parameter, finds the entry with that ID and updates the `isDone` status.
+\- `updateTask()`receives an`$id`via the parameter, finds the entry with that ID and updates the`isDone` status.
 
-\- `deleteTask()` receives an `$id` via the parameter, finds the entry with that ID and deletes it from the database.
+\- `deleteTask()`receives an`$id` via the parameter, finds the entry with that ID and deletes it from the database.
 
+## Step 4: Creating a contract
 
+Create the file `ToDoRepositoryContract.php`in the`src/Contracts` folder.
 
-\## Step 4: Creating a contract
-
-
-
-Create the file `ToDoRepositoryContract.php` in the `src/Contracts` folder.
-
-
-
-\*\*ToDoList/src/Contracts/ToDoRepositoryContract.php\*\*
-
-
+### ToDoList/src/Contracts/ToDoRepositoryContract.php
 
 ```php
-
 <?php
-
-
 
 namespace ToDoList\\Contracts;
 
-
-
 use ToDoList\\Models\\ToDo;
-
-
 
 interface ToDoRepositoryContract
 
 {
 
-&nbsp;   public function getToDoList(): array;
+    public function getToDoList(): array;
 
+    public function createTask(array $data): ToDo;
 
+    public function updateTask($id);
 
-&nbsp;   public function createTask(array $data): ToDo;
-
-
-
-&nbsp;   public function updateTask($id);
-
-
-
-&nbsp;   public function deleteTask($id);
+    public function deleteTask($id);
 
 }
-
 ```
-
-
 
 The repository contract is an interface that lists the same methods as the repository.
 
+## Step 5: Registering the service provider
 
+Edit the `ToDoListServiceProvider.php`file in the`src/Providers` folder.
 
-\## Step 5: Registering the service provider
-
-
-
-Edit the `ToDoListServiceProvider.php` file in the `src/Providers` folder.
-
-
-
-\*\*ToDoList/src/Providers/ToDoListServiceProvider.php\*\*
-
-
+### ToDoList/src/Providers/ToDoListServiceProvider.php
 
 ```php
-
 <?php
 
-
-
 namespace ToDoList\\Providers;
-
-
 
 use Plenty\\Plugin\\ServiceProvider;
 
@@ -368,53 +239,35 @@ use ToDoList\\Contracts\\ToDoRepositoryContract;
 
 use ToDoList\\Repositories\\ToDoRepository;
 
-
-
 class ToDoListServiceProvider extends ServiceProvider
 
 {
 
-&nbsp;   public function register()
+    public function register()
 
-&nbsp;   {
+    {
 
-&nbsp;       $this->getApplication()->register(ToDoListRouteServiceProvider::class);
+        $this->getApplication()->register(ToDoListRouteServiceProvider::class);
 
-&nbsp;       $this->getApplication()->bind(ToDoRepositoryContract::class, ToDoRepository::class);
+        $this->getApplication()->bind(ToDoRepositoryContract::class, ToDoRepository::class);
 
-&nbsp;   }
+    }
 
 }
-
 ```
-
-
 
 In the service provider, we register the route service provider and bind the repository contract to the repository.
 
+## Step 6: Creating a controller
 
+Create the file `ContentController.php`in the`src/Controllers` folder.
 
-\## Step 6: Creating a controller
-
-
-
-Create the file `ContentController.php` in the `src/Controllers` folder.
-
-
-
-\*\*ToDoList/src/Controllers/ContentController.php\*\*
-
-
+### ToDoList/src/Controllers/ContentController.php
 
 ```php
-
 <?php
 
-
-
 namespace ToDoList\\Controllers;
-
-
 
 use Plenty\\Plugin\\Controller;
 
@@ -424,71 +277,58 @@ use ToDoList\\Contracts\\ToDoRepositoryContract;
 
 use Plenty\\Plugin\\Http\\Request;
 
-
-
 class ContentController extends Controller
 
 {
 
-&nbsp;   public function showToDoList(Twig $twig, ToDoRepositoryContract $toDoRepo): string
+    public function showToDoList(Twig $twig, ToDoRepositoryContract $toDoRepo): string
 
-&nbsp;   {
+    {
 
-&nbsp;       $toDoList = $toDoRepo->getToDoList();
+        $toDoList = $toDoRepo->getToDoList();
 
-&nbsp;       $templateData = array("tasks" => $toDoList);
+        $templateData = array("tasks" => $toDoList);
 
-&nbsp;       return $twig->render('ToDoList::content.ToDoList', $templateData);
+        return $twig->render('ToDoList::content.ToDoList', $templateData);
 
-&nbsp;   }
+    }
 
+    public function createTask(Request $request, ToDoRepositoryContract $toDoRepo): string
 
+    {
 
-&nbsp;   public function createTask(Request $request, ToDoRepositoryContract $toDoRepo): string
+        $data = $request->all();
 
-&nbsp;   {
+        $newTask = $toDoRepo->createTask($data);
 
-&nbsp;       $data = $request->all();
+        return json_encode($newTask);
 
-&nbsp;       $newTask = $toDoRepo->createTask($data);
+    }
 
-&nbsp;       return json\_encode($newTask);
+    public function updateTask(ToDoRepositoryContract $toDoRepo, int $id): string
 
-&nbsp;   }
+    {
 
+        $updateTask = $toDoRepo->updateTask($id);
 
+        return json_encode($updateTask);
 
-&nbsp;   public function updateTask(ToDoRepositoryContract $toDoRepo, int $id): string
+    }
 
-&nbsp;   {
+    public function deleteTask(ToDoRepositoryContract $toDoRepo, int $id): string
 
-&nbsp;       $updateTask = $toDoRepo->updateTask($id);
+    {
 
-&nbsp;       return json\_encode($updateTask);
+        $deleteTask = $toDoRepo->deleteTask($id);
 
-&nbsp;   }
+        return json_encode($deleteTask);
 
-
-
-&nbsp;   public function deleteTask(ToDoRepositoryContract $toDoRepo, int $id): string
-
-&nbsp;   {
-
-&nbsp;       $deleteTask = $toDoRepo->deleteTask($id);
-
-&nbsp;       return json\_encode($deleteTask);
-
-&nbsp;   }
+    }
 
 }
-
 ```
 
-
-
 The controller has 4 public methods:
-
-
 
 \- `showToDoList()` gets the list of all tasks and renders the Twig template.
 
@@ -498,181 +338,136 @@ The controller has 4 public methods:
 
 \- `deleteTask()` receives an ID and deletes the task.
 
+## Step 7: Creating routes
 
+Create the file `ToDoListRouteServiceProvider.php`in the`src/Providers` folder.
 
-\## Step 7: Creating routes
-
-
-
-Create the file `ToDoListRouteServiceProvider.php` in the `src/Providers` folder.
-
-
-
-\*\*ToDoList/src/Providers/ToDoListRouteServiceProvider.php\*\*
-
-
+### ToDoList/src/Providers/ToDoListRouteServiceProvider.php
 
 ```php
-
 <?php
 
-
-
 namespace ToDoList\\Providers;
-
-
 
 use Plenty\\Plugin\\RouteServiceProvider;
 
 use Plenty\\Plugin\\Routing\\Router;
 
-
-
 class ToDoListRouteServiceProvider extends RouteServiceProvider
 
 {
 
-&nbsp;   public function map(Router $router)
+    public function map(Router $router)
 
-&nbsp;   {
+    {
 
-&nbsp;       $router->get('todo', 'ToDoList\\Controllers\\ContentController@showToDoList');
+        $router->get('todo', 'ToDoList\\Controllers\\ContentController@showToDoList');
 
-&nbsp;       $router->post('todo', 'ToDoList\\Controllers\\ContentController@createTask');
+        $router->post('todo', 'ToDoList\\Controllers\\ContentController@createTask');
 
-&nbsp;       $router->put('todo/{id}', 'ToDoList\\Controllers\\ContentController@updateTask');
+        $router->put('todo/{id}', 'ToDoList\\Controllers\\ContentController@updateTask');
 
-&nbsp;       $router->delete('todo/{id}', 'ToDoList\\Controllers\\ContentController@deleteTask');
+        $router->delete('todo/{id}', 'ToDoList\\Controllers\\ContentController@deleteTask');
 
-&nbsp;   }
+    }
 
 }
-
 ```
-
-
 
 We define 4 routes that link to the controller methods.
 
-
-
-\## Step 8: Designing the UI
-
-
+## Step 8: Designing the UI
 
 Create the following files:
 
-
-
-\*\*ToDoList/resources/views/content/ToDoList.twig\*\*
-
-
+### ToDoList/resources/views/content/ToDoList.twig
 
 ```twig
-
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-&nbsp;   <meta charset="utf-8">
+    <meta charset="utf-8">
 
-&nbsp;   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-&nbsp;   <title>To Do List</title>
+    <title>To Do List</title>
 
+    <link rel="stylesheet" href="{{ plugin_path('ToDoList') }}/css/main.css">
 
+    <link href='https://fonts.googleapis.com/css?family=Amatic+SC:700|Open+Sans:400' rel='stylesheet' type='text/css'>
 
-&nbsp;   <link rel="stylesheet" href="{{ plugin\_path('ToDoList') }}/css/main.css">
-
-&nbsp;   <link href='https://fonts.googleapis.com/css?family=Amatic+SC:700|Open+Sans:400' rel='stylesheet' type='text/css'>
-
-
-
-&nbsp;   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 </head>
 
 <body>
 
-&nbsp;   <div class="list">
+    <div class="list">
 
-&nbsp;       <h1 class="header">To Do List</h1>
+        <h1 class="header">To Do List</h1>
 
+        <ul class="tasks">
 
+            {% if tasks is not null %}
 
-&nbsp;       <ul class="tasks">
+                {% for task in tasks %}
 
-&nbsp;           {% if tasks is not null %}
+                    <li>
 
-&nbsp;               {% for task in tasks %}
+                        <span class="task {% if task.isDone == 1 %} done {% endif %}">{{ task.taskDescription }}</span>
 
-&nbsp;                   <li>
+                        {% if task.isDone == 1 %}
 
-&nbsp;                       <span class="task {% if task.isDone == 1 %} done {% endif %}">{{ task.taskDescription }}</span>
+                            <button id="{{ task.id }}" class="delete-button">Delete from list</button>
 
-&nbsp;                       {% if task.isDone == 1 %}
+                        {% else %}
 
-&nbsp;                           <button id="{{ task.id }}" class="delete-button">Delete from list</button>
+                            <button id="{{ task.id }}" class="done-button">Mark as done</button>
 
-&nbsp;                       {% else %}
+                        {% endif %}
 
-&nbsp;                           <button id="{{ task.id }}" class="done-button">Mark as done</button>
+                    </li>
 
-&nbsp;                       {% endif %}
+                {% endfor %}
 
-&nbsp;                   </li>
+            {% endif %}
 
-&nbsp;               {% endfor %}
+        </ul>
 
-&nbsp;           {% endif %}
+        <!-- Text field and submit button -->
 
-&nbsp;       </ul>
+        <div class="task-add">
 
+            <input type="text" name="taskDescription" placeholder="Enter a new task here." class="input" autocomplete="off">
 
+            <input type="submit" id="addTask" value="Add" class="submit">
 
-&nbsp;       <!-- Text field and submit button -->
+        </div>
 
-&nbsp;       <div class="task-add">
+    </div>
 
-&nbsp;           <input type="text" name="taskDescription" placeholder="Enter a new task here." class="input" autocomplete="off">
+    <!-- Enable adding, updating and deleting tasks in the To Do list without reloading the page -->
 
-&nbsp;           <input type="submit" id="addTask" value="Add" class="submit">
-
-&nbsp;       </div>
-
-&nbsp;   </div>
-
-
-
-&nbsp;   <!-- Enable adding, updating and deleting tasks in the To Do list without reloading the page -->
-
-&nbsp;   <script src="{{ plugin\_path('ToDoList') }}/js/todo.js"></script>
+    <script src="{{ plugin_path('ToDoList') }}/js/todo.js"></script>
 
 </body>
 
 </html>
-
 ```
 
-
-
-\*\*ToDoList/resources/css/main.css\*\*
-
-
+### ToDoList/resources/css/main.css
 
 ```css
-
-/\* General styling \*/
+/* General styling */
 
 body {
 
-&nbsp;   background-color: #F8F8F8;
+    background-color: #F8F8F8;
 
 }
-
-
 
 body,
 
@@ -680,357 +475,315 @@ input,
 
 button{
 
-&nbsp;   font:1em "Open Sans", sans-serif;
+    font:1em "Open Sans", sans-serif;
 
-&nbsp;   color: #4D4E53;
+    color: #4D4E53;
 
 }
-
-
 
 a {
 
-&nbsp;   text-decoration: none;
+    text-decoration: none;
 
-&nbsp;   border-bottom: 1px dashed #4D4E53;
+    border-bottom: 1px dashed #4D4E53;
 
 }
 
-
-
-/\* List \*/
+/* List */
 
 .list {
 
-&nbsp;   background-color:#fff;
+    background-color:#fff;
 
-&nbsp;   margin:20px auto;
+    margin:20px auto;
 
-&nbsp;   width:100%;
+    width:100%;
 
-&nbsp;   max-width:500px;
+    max-width:500px;
 
-&nbsp;   padding:20px;
+    padding:20px;
 
-&nbsp;   border-radius:2px;
+    border-radius:2px;
 
-&nbsp;   box-shadow:3px 3px 0 rgba(0, 0, 0, .1);
+    box-shadow:3px 3px 0 rgba(0, 0, 0, .1);
 
-&nbsp;   box-sizing:border-box;
+    box-sizing:border-box;
 
 }
-
-
 
 .list .header {
 
-&nbsp;   font-family: "Amatic SC", cursive;
+    font-family: "Amatic SC", cursive;
 
-&nbsp;   margin:0 0 10px 0;
+    margin:0 0 10px 0;
 
 }
 
-
-
-/\* Tasks \*/
+/* Tasks */
 
 .tasks {
 
-&nbsp;   margin: 0;
+    margin: 0;
 
-&nbsp;   padding:0;
+    padding:0;
 
-&nbsp;   list-style-type: none;
+    list-style-type: none;
 
 }
-
-
 
 .tasks .task.done {
 
-&nbsp;   text-decoration:line-through;
+    text-decoration:line-through;
 
 }
-
-
 
 .tasks li,
 
 .task-add .input{
 
-&nbsp;   border:0;
+    border:0;
 
-&nbsp;   border-bottom:1px dashed #ccc;
+    border-bottom:1px dashed #ccc;
 
-&nbsp;   padding: 15px 0;
+    padding: 15px 0;
 
 }
 
-
-
-/\* Input field \*/
+/* Input field */
 
 .input:focus {
 
-&nbsp;   outline:none;
+    outline:none;
 
 }
-
-
 
 .input {
 
-&nbsp;   width:100%;
+    width:100%;
 
 }
 
-
-
-/\* Done button \& Delete button\*/
+/* Done button \& Delete button*/
 
 .tasks .done-button {
 
-&nbsp;   display:inline-block;
+    display:inline-block;
 
-&nbsp;   font-size:0.8em;
+    font-size:0.8em;
 
-&nbsp;   background-color: #5d9c67;
+    background-color: #5d9c67;
 
-&nbsp;   color:#000;
+    color:#000;
 
-&nbsp;   padding:3px 6px;
+    padding:3px 6px;
 
-&nbsp;   border:0;
+    border:0;
 
-&nbsp;   opacity:0.4;
+    opacity:0.4;
 
 }
-
-
 
 .tasks .delete-button {
 
-&nbsp;   display:inline-block;
+    display:inline-block;
 
-&nbsp;   font-size:0.8em;
+    font-size:0.8em;
 
-&nbsp;   background-color: #77525c;
+    background-color: #77525c;
 
-&nbsp;   color:#000;
+    color:#000;
 
-&nbsp;   padding:3px 6px;
+    padding:3px 6px;
 
-&nbsp;   border:0;
+    border:0;
 
-&nbsp;   opacity:0.4;
+    opacity:0.4;
 
 }
-
-
 
 .tasks li:hover .done-button,
 
 .tasks li:hover .delete-button {
 
-&nbsp;   opacity:1;
+    opacity:1;
 
-&nbsp;   cursor:pointer;
+    cursor:pointer;
 
 }
 
-
-
-/\* Submit button \*/
+/* Submit button */
 
 .submit {
 
-&nbsp;   background-color:#fff;
+    background-color:#fff;
 
-&nbsp;   padding: 5px 10px;
+    padding: 5px 10px;
 
-&nbsp;   border:1px solid #ddd;
+    border:1px solid #ddd;
 
-&nbsp;   width:100%;
+    width:100%;
 
-&nbsp;   margin-top:10px;
+    margin-top:10px;
 
-&nbsp;   box-shadow: 3px 3px 0 #ddd;
+    box-shadow: 3px 3px 0 #ddd;
 
 }
-
-
 
 .submit:hover {
 
-&nbsp;   cursor:pointer;
+    cursor:pointer;
 
-&nbsp;   background-color:#ddd;
+    background-color:#ddd;
 
-&nbsp;   color: #fff;
+    color: #fff;
 
-&nbsp;   box-shadow: 3px 3px 0 #ccc;
+    box-shadow: 3px 3px 0 #ccc;
 
 }
-
 ```
 
-
-
-\*\*ToDoList/resources/js/todo.js\*\*
-
-
+### ToDoList/resources/js/todo.js
 
 ```javascript
-
 // Add a new task to the To Do list when clicking on the submit button
 
 $('#addTask').click(function(){
 
-&nbsp;   var nameInput = $("\[name='taskDescription']");
+    var nameInput = $("[name='taskDescription']");
 
-&nbsp;   var data = {
+    var data = {
 
-&nbsp;       'taskDescription': nameInput.val()
+        'taskDescription': nameInput.val()
 
-&nbsp;   };
+    };
 
-&nbsp;   $.ajax({
+    $.ajax({
 
-&nbsp;       type: "POST",
+        type: "POST",
 
-&nbsp;       url: "/todo",
+        url: "/todo",
 
-&nbsp;       data: data,
+        data: data,
 
-&nbsp;       success: function(data)
+        success: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           var data = jQuery.parseJSON( data );
+            var data = jQuery.parseJSON( data );
 
-&nbsp;           $("ul.tasks").append('' +
+            $("ul.tasks").append('' +
 
-&nbsp;               '<li>' +
+                '<li>' +
 
-&nbsp;               '   <span class="task">' + data.taskDescription + '</span> ' +
+                '   <span class="task">' + data.taskDescription + '</span> ' +
 
-&nbsp;               '   <button id="' + data.id + '"class="done-button">Mark as done</button>' +
+                '   <button id="' + data.id + '"class="done-button">Mark as done</button>' +
 
-&nbsp;               '</li>');
+                '</li>');
 
-&nbsp;           nameInput.val("");
+            nameInput.val("");
 
-&nbsp;       },
+        },
 
-&nbsp;       error: function(data)
+        error: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           alert("ERROR");
+            alert("ERROR");
 
-&nbsp;       }
+        }
 
-&nbsp;   });
+    });
 
 });
-
-
 
 // Update the status of an existing task in the To Do list and mark it as done when clicking on the Mark as done button
 
 $(document).on('click', 'button.done-button', function(e) {
 
-&nbsp;   var button = this;
+    var button = this;
 
-&nbsp;   var id = button.id;
+    var id = button.id;
 
-&nbsp;   $.ajax({
+    $.ajax({
 
-&nbsp;       type: "PUT",
+        type: "PUT",
 
-&nbsp;       url: "/todo/" + id,
+        url: "/todo/" + id,
 
-&nbsp;       success: function(data)
+        success: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           var data = jQuery.parseJSON( data );
+            var data = jQuery.parseJSON( data );
 
-&nbsp;           if(data.isDone)
+            if(data.isDone)
 
-&nbsp;           {
+            {
 
-&nbsp;               $("#" + id).removeClass("done-button").addClass("delete-button").html("Delete from list");
+                $("#" + id).removeClass("done-button").addClass("delete-button").html("Delete from list");
 
-&nbsp;               $("#" + id).prev().addClass("done");
+                $("#" + id).prev().addClass("done");
 
-&nbsp;           }
+            }
 
-&nbsp;           else
+            else
 
-&nbsp;           {
+            {
 
-&nbsp;               alert("ERROR");
+                alert("ERROR");
 
-&nbsp;           }
+            }
 
-&nbsp;       },
+        },
 
-&nbsp;       error: function(data)
+        error: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           alert("ERROR");
+            alert("ERROR");
 
-&nbsp;       }
+        }
 
-&nbsp;   });
+    });
 
 });
-
-
 
 // Delete a task from the To Do list when clicking on the Delete from list button
 
 $(document).on('click', 'button.delete-button', function(e) {
 
-&nbsp;   var button = this;
+    var button = this;
 
-&nbsp;   var id = button.id;
+    var id = button.id;
 
-&nbsp;   $.ajax({
+    $.ajax({
 
-&nbsp;       type: "DELETE",
+        type: "DELETE",
 
-&nbsp;       url: "/todo/" + id,
+        url: "/todo/" + id,
 
-&nbsp;       success: function(data)
+        success: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           $("#" + id).parent().remove();
+            $("#" + id).parent().remove();
 
-&nbsp;       },
+        },
 
-&nbsp;       error: function(data)
+        error: function(data)
 
-&nbsp;       {
+        {
 
-&nbsp;           alert("ERROR");
+            alert("ERROR");
 
-&nbsp;       }
+        }
 
-&nbsp;   });
+    });
 
 });
-
 ```
 
-
-
-\## All tasks are done
-
-
+## All tasks are done
 
 After creating the plugin, add it to the PlentyONE inbox and deploy it. To display the To Do list, open a new browser tab and type in your domain adding `/todo` at the end. Have fun with your new plugin!
-
