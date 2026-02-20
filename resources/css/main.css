@@ -1,3 +1,29 @@
+@font-face {
+  font-family: "HammerPrice";
+  src: url("../fonts/Industry-Demi.woff2") format("woff2"),
+       url("../fonts/Industry-Demi.woff") format("woff");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+:root {
+  --hammer-price-font: "HammerPrice", "Helvetica Neue", Arial, sans-serif;
+}
+
 .hammer-theme {
   display: block;
+}
+
+/* price font override */
+:where(.price),
+:where(.prices),
+:where(.crossprice),
+:where(.price-unit),
+:where(.vat),
+:where(.basket-item-price),
+:where(.item-price),
+:where([class*="price"] .value),
+:where([class*="price"] .amount) {
+  font-family: var(--hammer-price-font);
 }
