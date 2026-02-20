@@ -1,0 +1,26 @@
+{#
+  Theme entry template for plentyShop LTS.
+  Step 1: Extend the default Ceres PageDesign to keep full default behaviour.
+  Step 2+: Add HammerTheme includes/assets in dedicated extension blocks.
+#}
+{% extends "Ceres::PageDesign.PageDesign" %}
+
+{% block PartialHead %}
+    {{ parent() }}
+
+    {# Step 2: Load HammerTheme base stylesheet after Ceres defaults. #}
+    <link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
+
+    {# Step 3: Optional, dedicated hook for future head customisations. #}
+    {% include "HammerTheme::PageDesign.Includes.Head" ignore missing %}
+{% endblock %}
+
+{% block PartialFooter %}
+    {{ parent() }}
+
+    {# Step 4: Optional, dedicated hook for future footer customisations. #}
+    {% include "HammerTheme::PageDesign.Includes.Footer" ignore missing %}
+
+    {# Step 5: Load HammerTheme base script without altering Ceres default scripts. #}
+    <script src="{{ plugin_path('HammerTheme') }}/js/main.js?v={{ buildHash }}" defer></script>
+{% endblock %}
