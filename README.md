@@ -45,6 +45,9 @@ Die minimale, lauffähige Plugin-Basis ist angelegt:
     │   ├── de/
     │   └── en/
     └── views/
+        ├── PageDesign/
+        │   ├── PageDesign.twig
+        │   └── Includes/
         └── content/
 ```
 
