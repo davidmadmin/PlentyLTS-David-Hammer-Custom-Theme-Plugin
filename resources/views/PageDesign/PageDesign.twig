@@ -8,7 +8,7 @@
 {% block PartialHead %}
     {{ parent() }}
 
-    {# Step 2: Load HammerTheme base stylesheet after Ceres defaults. #}
+    {# Step 2: Load compiled HammerTheme stylesheet (resources/css/main.scss -> css/main.css) after Ceres defaults. #}
     <link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
 
     {# Step 3: Optional, dedicated hook for future head customisations. #}

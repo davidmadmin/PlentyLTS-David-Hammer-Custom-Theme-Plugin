@@ -71,6 +71,6 @@ Die finalen PNG-Dateien für Plugin-/Author-Icons und Preview werden manuell in 
 
 ## Custom price font
 - Lege die Preis-Schriftdateien in `resources/fonts/` ab (aktuell `Industry-Demi.woff2` und `Industry-Demi.woff` als `HammerPrice`).
-- Die Fallback-Kette steuerst Du über `--hammer-price-font` in `resources/css/main.css`.
-- Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.css`, damit nur Preistexte überschrieben werden.
-- In der Standard-plentyShop-LTS-Integration lädt `resources/css/main.css` nach den Ceres-Basis-Styles; bei einer angepassten PageDesign-Integration prüfst Du die Reihenfolge zusätzlich im aktiven Mandanten.
+- Die Fallback-Kette steuerst Du über `--hammer-price-font` in `resources/css/main.scss` (wird nach `css/main.css` kompiliert/gespiegelt).
+- Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.scss`, damit nur Preistexte überschrieben werden.
+- In der Standard-plentyShop-LTS-Integration lädt `css/main.css` nach den Ceres-Basis-Styles; dadurch gewinnt die Preis-Schrift im Cascade-Order gegenüber den Ceres-Defaults, wo kein höher spezifischer Selector greift.
