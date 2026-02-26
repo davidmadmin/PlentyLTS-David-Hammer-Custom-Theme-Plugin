@@ -1,1 +1,9 @@
-{% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" %}
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+
+{% set headerContainer = LayoutContainer.show("Ceres::Header") | trim %}
+
+{% if headerContainer is not empty %}
+    {{ headerContainer | raw }}
+{% else %}
+    {% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" %}
+{% endif %}

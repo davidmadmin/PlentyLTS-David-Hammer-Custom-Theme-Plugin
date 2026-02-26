@@ -1,7 +1,7 @@
-{% set requestHost = request.getHttpHost() | lower %}
+{% set configuredHeaderLayout = config("HammerTheme.theme.headerLayout") | default('fh') | lower | trim %}
 
-{% if 'schrauben-hammer' in requestHost %}
-    {% include "HammerTheme::PageDesign.Includes.Header.SH" %}
+{% if configuredHeaderLayout == 'sh' %}
+    {% include "HammerTheme::PageDesign.Includes.Header.SH" with { logoLink: logoLink | default('/') } %}
 {% else %}
-    {% include "HammerTheme::PageDesign.Includes.Header.FH" %}
+    {% include "HammerTheme::PageDesign.Includes.Header.FH" with { logoLink: logoLink | default('/') } %}
 {% endif %}

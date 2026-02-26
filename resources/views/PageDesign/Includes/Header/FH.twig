@@ -28,7 +28,7 @@
     </span>
   </div>
   <div class="fh-header__main">
-    <a href="/" class="fh-header__logo">
+    <a href="{{ logoLink | default('/') }}" class="fh-header__logo">
       <img src="https://bilder.fenster-hammer.de/frontend/Logo_neu/FH_Icon_big_Profile_Image_transparent_385x200px.png" alt="FENSTER-HAMMER">
     </a>
     <div class="fh-header__search-area">

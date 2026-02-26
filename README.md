@@ -82,3 +82,10 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 - Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.scss`, damit nur Preistexte überschrieben werden.
 - In der Standard-plentyShop-LTS-Integration lädt `css/main.css` nach den Ceres-Basis-Styles; dadurch gewinnt die Preis-Schrift im Cascade-Order gegenüber den Ceres-Defaults, wo kein höher spezifischer Selector greift.
 - Die Font wird über eine Twig-`@font-face`-Definition aus `documents/` mit absolutem `plugin_path` eingebunden, damit Browser die WOFF-Dateien ohne 403 laden.
+
+
+## ShopBuilder-Header-Widget
+- Das komplette Header-Markup ist als ShopBuilder-Widget `HammerTheme::HeaderWidget` registriert.
+- Du kannst das Widget im Header-Bereich platzieren und den **Logo-Link** pro Widget-Instanz konfigurieren.
+- Welches Header-Layout gerendert wird (FH oder SH), steuerst Du ausschließlich über die Plugin-Konfiguration **Header-Layout** (`theme.headerLayout`).
+- Die Domain wird für die Header-Auswahl nicht mehr ausgewertet.
