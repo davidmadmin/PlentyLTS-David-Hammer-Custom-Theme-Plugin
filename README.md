@@ -10,7 +10,7 @@ Dieses Repository **ist** das PlentyShop-LTS-Theme-Plugin. Es baut die Header- u
 ## Basisstatus (aktueller Stand)
 Die minimale, lauffähige Plugin-Basis ist angelegt:
 - `plugin.json` mit vollständigen Kern-Metadaten, ServiceProvider und DataProvider.
-- `config.json` mit einer initialen Basis-Konfiguration.
+- `config.json` mit einer initialen Basis-Konfiguration (inkl. konfigurierbarer primärer Preisfarbe als HEX-Wert).
 - `src/Providers/` und `src/Containers/` mit minimaler PHP-Struktur.
 - `resources/` für Twig, CSS, JavaScript und Übersetzungen (DE/EN).
 - `meta/images/` mit angebundenen Bildern für Plugin- und Author-Icon.

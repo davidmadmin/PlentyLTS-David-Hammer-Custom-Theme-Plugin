@@ -5,5 +5,12 @@
     "label": "Theme-Root-CSS-Klasse",
     "type": "text",
     "default": "hammer-theme"
+  },
+  {
+    "tab": "Allgemein",
+    "key": "theme.primaryPriceColor",
+    "label": "Primaere Preisfarbe (HEX)",
+    "type": "text",
+    "default": "#31a5f0"
   }
 ]

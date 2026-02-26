@@ -9,6 +9,7 @@
 
 :root {
   --hammer-price-font: "HammerPrice", "Helvetica Neue", Arial, sans-serif;
+  --hammer-price-color: #31a5f0;
 }
 
 .hammer-theme {
@@ -25,5 +26,6 @@
 .item-price,
 [class*="price"] .value,
 [class*="price"] .amount {
+  color: var(--hammer-price-color) !important;
   font-family: var(--hammer-price-font) !important;
 }
