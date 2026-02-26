@@ -1,4 +1,6 @@
 {% set configuredLogoLink = widget.settings.logoLink.mobile | default('/') | trim %}
 {% set logoLink = configuredLogoLink is not empty ? configuredLogoLink : '/' %}
 
-{% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" with { logoLink: logoLink } %}
+<div data-hammer-header-widget="true">
+    {% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" with { logoLink: logoLink } %}
+</div>
