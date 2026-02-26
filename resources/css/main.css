@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "HammerPrice";
+  font-family: "Industry-Demi";
   src: url("../fonts/Industry-Demi.woff2") format("woff2"),
        url("../fonts/Industry-Demi.woff") format("woff");
   font-display: swap;
@@ -8,7 +8,7 @@
 }
 
 :root {
-  --hammer-price-font: "HammerPrice", "Helvetica Neue", Arial, sans-serif;
+  --hammer-price-font: "Industry-Demi", "Helvetica Neue", Arial, sans-serif;
   --hammer-price-color: #31a5f0;
 }
 

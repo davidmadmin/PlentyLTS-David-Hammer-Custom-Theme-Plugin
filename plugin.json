@@ -21,7 +21,7 @@
     {
       "key": "HammerTheme\\Containers\\HammerThemeContainer",
       "name": "Hammer Theme Base Container",
-      "description": "Gibt eine minimale, erweiterbare Theme-Basis aus."
+      "description": "Gibt Style-Markup (main.css) fuer Container-Links aus."
     }
   ],
   "isClosedSource": false

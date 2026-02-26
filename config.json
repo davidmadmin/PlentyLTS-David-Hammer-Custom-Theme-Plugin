@@ -9,7 +9,7 @@
   {
     "tab": "Allgemein",
     "key": "theme.primaryPriceColor",
-    "label": "Primaere Preisfarbe (HEX)",
+    "label": "Primärfarbe",
     "type": "text",
     "default": "#31a5f0"
   }

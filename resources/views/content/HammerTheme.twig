@@ -1,5 +1,1 @@
-{% set baseClass = config("HammerTheme.theme.baseClass") %}
-
-<div class="{{ baseClass | default('hammer-theme') }}">
-    <p>{{ trans("HammerTheme::Template.basePlaceholder") }}</p>
-</div>
+<link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
