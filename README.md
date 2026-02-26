@@ -77,8 +77,8 @@ Damit PlentyLTS beim Upload nur relevante Plugin-Dateien berücksichtigt, nutzt 
 Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. Details zur Zuordnung findest Du in `meta/images/README.md`.
 
 ## Custom price font
-- Lege die Preis-Schriftdateien in `resources/fonts/` ab (aktuell `Industry-Demi.woff2` und `Industry-Demi.woff` als `Industry-Demi`).
+- Lege die Preis-Schriftdateien in `resources/documents/` ab (aktuell `Industry-Demi.woff2` und `Industry-Demi.woff` als `Industry-Demi`).
 - Die Fallback-Kette steuerst Du über `--hammer-price-font` in `resources/css/main.scss` (wird nach `css/main.css` kompiliert/gespiegelt).
 - Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.scss`, damit nur Preistexte überschrieben werden.
 - In der Standard-plentyShop-LTS-Integration lädt `css/main.css` nach den Ceres-Basis-Styles; dadurch gewinnt die Preis-Schrift im Cascade-Order gegenüber den Ceres-Defaults, wo kein höher spezifischer Selector greift.
-- Die Font wird über eine Twig-`@font-face`-Definition mit absolutem `plugin_path` eingebunden, damit relative Pfade in Inline-/Data-Styles keine 403 durch falsche Auflösung erzeugen.
+- Die Font wird über eine Twig-`@font-face`-Definition aus `documents/` mit absolutem `plugin_path` eingebunden, damit Browser die WOFF-Dateien ohne 403 laden.

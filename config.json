@@ -18,6 +18,6 @@
     "key": "theme.productPriceH1FontSize",
     "label": "PDP Preis H1 Schriftgröße",
     "type": "text",
-    "default": "1.4rem"
+    "default": "3rem"
   }
 ]
