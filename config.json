@@ -10,7 +10,14 @@
     "tab": "Allgemein",
     "key": "theme.primaryPriceColor",
     "label": "Primärfarbe",
-    "type": "text",
+    "type": "color",
     "default": "#31a5f0"
+  },
+  {
+    "tab": "Allgemein",
+    "key": "theme.productPriceH1FontSize",
+    "label": "PDP Preis H1 Schriftgröße",
+    "type": "text",
+    "default": "1.4rem"
   }
 ]

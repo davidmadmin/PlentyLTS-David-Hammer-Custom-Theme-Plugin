@@ -10,6 +10,7 @@
 :root {
   --hammer-price-font: "Industry-Demi", "Helvetica Neue", Arial, sans-serif;
   --hammer-price-color: #31a5f0;
+  --hammer-product-price-h1-font-size: 1.4rem;
 }
 
 .hammer-theme {
@@ -28,4 +29,12 @@
 [class*="price"] .amount {
   color: var(--hammer-price-color) !important;
   font-family: var(--hammer-price-font) !important;
+}
+
+
+/* product page price headline */
+.single [class*="price"] h1,
+.single .price.h1,
+.single h1[class*="price"] {
+  font-size: var(--hammer-product-price-h1-font-size) !important;
 }

@@ -58,6 +58,12 @@ Die minimale, lauffähige Plugin-Basis ist angelegt:
 4. Der Container-Link zeigt nur den Provider-Output; Preis-Font kommt über Theme/PageDesign oder einen dedizierten Style-Provider.
 5. Danach Header/Footer- und Shop-spezifische Erweiterungen (FH/SH) iterativ aufbauen.
 
+
+## Plugin-Konfiguration (Preisdarstellung)
+- **Primärfarbe** nutzt nun einen Color-Picker und erwartet ein gültiges HEX-Format mit `#` (z. B. `#31a5f0`).
+- **PDP Preis H1 Schriftgröße** ist neu und standardmäßig auf `1.4rem` gesetzt; Du kannst hier z. B. `1.2rem`, `22px` oder `110%` eintragen.
+- Ungültige Werte bei der PDP-Preis-H1-Schriftgröße werden im Twig-Fallback automatisch auf `1.4rem` zurückgesetzt.
+
 ## Bezug zu plentyShop LTS (Ceres)
 - **Ceres-Repository:** https://github.com/plentymarkets/plugin-ceres.git
 - **IO-Plugin:** https://github.com/plentymarkets/plugin-io
