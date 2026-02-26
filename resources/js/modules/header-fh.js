@@ -1,6 +1,20 @@
-import { onReady, runOnce } from "../core/on-ready";
+function initHeaderFH() {
+  const hammerThemeHeader = window.HammerThemeHeader || {};
+  const onReady = hammerThemeHeader.onReady || function (callback) {
+    if (typeof callback !== "function") return;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+    callback();
+  };
+  const runOnce = hammerThemeHeader.runOnce || function (runOnceKey, initializer) {
+    const fallbackState = (window.HammerThemeHeaderRunOnceKeys = window.HammerThemeHeaderRunOnceKeys || {});
+    if (!runOnceKey || typeof initializer !== "function" || fallbackState[runOnceKey]) return;
+    fallbackState[runOnceKey] = true;
+    initializer();
+  };
 
-export function initHeaderFH() {
   runOnce("fh-header-module", function () {
 // Section: FH account menu toggle behaviour
 onReady(function () {
@@ -2342,3 +2356,6 @@ onReady(function () {
 
   });
 }
+
+window.HammerThemeHeader = window.HammerThemeHeader || {};
+window.HammerThemeHeader.initHeaderFH = initHeaderFH;

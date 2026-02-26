@@ -1,6 +1,20 @@
-import { onReady, runOnce } from "../core/on-ready";
+function initHeaderSH() {
+  const hammerThemeHeader = window.HammerThemeHeader || {};
+  const onReady = hammerThemeHeader.onReady || function (callback) {
+    if (typeof callback !== "function") return;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+    callback();
+  };
+  const runOnce = hammerThemeHeader.runOnce || function (runOnceKey, initializer) {
+    const fallbackState = (window.HammerThemeHeaderRunOnceKeys = window.HammerThemeHeaderRunOnceKeys || {});
+    if (!runOnceKey || typeof initializer !== "function" || fallbackState[runOnceKey]) return;
+    fallbackState[runOnceKey] = true;
+    initializer();
+  };
 
-export function initHeaderSH() {
   runOnce("sh-header-module", function () {
 // Section: sh account menu toggle behaviour
 onReady(function () {
@@ -2319,3 +2333,6 @@ onReady(function () {
 
   });
 }
+
+window.HammerThemeHeader = window.HammerThemeHeader || {};
+window.HammerThemeHeader.initHeaderSH = initHeaderSH;

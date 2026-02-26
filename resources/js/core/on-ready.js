@@ -1,19 +1,25 @@
-const executedKeys = new Set();
+(function (window) {
+  const executedKeys = new Set();
 
-export function onReady(callback) {
-  if (typeof callback !== "function") return;
+  function onReady(callback) {
+    if (typeof callback !== 'function') return;
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", callback, { once: true });
-    return;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+      return;
+    }
+
+    callback();
   }
 
-  callback();
-}
+  function runOnce(key, initializer) {
+    if (!key || typeof initializer !== 'function' || executedKeys.has(key)) return;
 
-export function runOnce(key, initializer) {
-  if (!key || typeof initializer !== "function" || executedKeys.has(key)) return;
+    executedKeys.add(key);
+    initializer();
+  }
 
-  executedKeys.add(key);
-  initializer();
-}
+  window.HammerThemeHeader = window.HammerThemeHeader || {};
+  window.HammerThemeHeader.onReady = onReady;
+  window.HammerThemeHeader.runOnce = runOnce;
+})(window);
