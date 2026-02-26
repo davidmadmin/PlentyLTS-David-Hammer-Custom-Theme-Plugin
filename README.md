@@ -55,7 +55,8 @@ Die minimale, lauffähige Plugin-Basis ist angelegt:
 1. Plugin im Plugin-Set installieren.
 2. Plugin-Set speichern und bereitstellen.
 3. In den Container-Links den DataProvider **Hammer Theme Base Container** verknüpfen.
-4. Danach Header/Footer- und Shop-spezifische Erweiterungen (FH/SH) iterativ aufbauen.
+4. Der Container-Link zeigt nur den Provider-Output; Preis-Font kommt über Theme/PageDesign oder einen dedizierten Style-Provider.
+5. Danach Header/Footer- und Shop-spezifische Erweiterungen (FH/SH) iterativ aufbauen.
 
 ## Bezug zu plentyShop LTS (Ceres)
 - **Ceres-Repository:** https://github.com/plentymarkets/plugin-ceres.git
@@ -74,3 +75,4 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 - Die Fallback-Kette steuerst Du über `--hammer-price-font` in `resources/css/main.scss` (wird nach `css/main.css` kompiliert/gespiegelt).
 - Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.scss`, damit nur Preistexte überschrieben werden.
 - In der Standard-plentyShop-LTS-Integration lädt `css/main.css` nach den Ceres-Basis-Styles; dadurch gewinnt die Preis-Schrift im Cascade-Order gegenüber den Ceres-Defaults, wo kein höher spezifischer Selector greift.
+- Der Container-Link zeigt nur den Provider-Output. Die Preis-Font bindest Du daher ueber Theme/PageDesign oder einen dedizierten Style-Provider ein.
