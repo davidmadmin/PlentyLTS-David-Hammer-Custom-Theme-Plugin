@@ -11,6 +11,16 @@
     {# Step 2: Load compiled HammerTheme stylesheet (resources/css/main.scss -> css/main.css) after Ceres defaults. #}
     <link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
 
+    {% set configuredHammerPriceColor = config("HammerTheme.theme.primaryPriceColor") | default('#31a5f0') | trim %}
+    {% set hammerPriceColor = configuredHammerPriceColor matches '/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/'
+        ? configuredHammerPriceColor
+        : '#31a5f0' %}
+    <style>
+        :root {
+            --hammer-price-color: {{ hammerPriceColor }};
+        }
+    </style>
+
     {# Step 3: Optional, dedicated hook for future head customisations. #}
     {% include "HammerTheme::PageDesign.Includes.Head" ignore missing %}
 {% endblock %}
