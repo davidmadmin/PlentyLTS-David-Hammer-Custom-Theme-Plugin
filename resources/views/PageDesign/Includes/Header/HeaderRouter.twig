@@ -1,0 +1,7 @@
+{% set requestHost = request.getHttpHost() | lower %}
+
+{% if 'schrauben-hammer' in requestHost %}
+    {% include "HammerTheme::PageDesign.Includes.Header.SH" %}
+{% else %}
+    {% include "HammerTheme::PageDesign.Includes.Header.FH" %}
+{% endif %}
