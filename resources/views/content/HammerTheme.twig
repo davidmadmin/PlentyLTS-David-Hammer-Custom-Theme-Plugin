@@ -1,1 +1,21 @@
 <link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
+
+{% set configuredHammerPriceColor = config("HammerTheme.theme.primaryPriceColor") | default('#31a5f0') | trim %}
+{% set hammerPriceColor = configuredHammerPriceColor matches '/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/'
+    ? configuredHammerPriceColor
+    : '#31a5f0' %}
+<style>
+    @font-face {
+        font-family: "Industry-Demi";
+        src: url("{{ plugin_path('HammerTheme') }}/fonts/Industry-Demi.woff2") format("woff2"),
+             url("{{ plugin_path('HammerTheme') }}/fonts/Industry-Demi.woff") format("woff");
+        font-display: swap;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    :root {
+        --hammer-price-color: {{ hammerPriceColor }};
+        --hammer-price-font: "Industry-Demi", "Helvetica Neue", Arial, sans-serif;
+    }
+</style>

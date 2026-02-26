@@ -1,7 +1,7 @@
 @font-face {
   font-family: "Industry-Demi";
-  src: url("../fonts/Industry-Demi.woff2") format("woff2"),
-       url("../fonts/Industry-Demi.woff") format("woff");
+  src: url("/plugins/HammerTheme/fonts/Industry-Demi.woff2") format("woff2"),
+       url("/plugins/HammerTheme/fonts/Industry-Demi.woff") format("woff");
   font-display: swap;
   font-style: normal;
   font-weight: 600;

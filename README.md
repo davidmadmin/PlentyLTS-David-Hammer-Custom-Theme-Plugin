@@ -75,4 +75,5 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 - Die Fallback-Kette steuerst Du über `--hammer-price-font` in `resources/css/main.scss` (wird nach `css/main.css` kompiliert/gespiegelt).
 - Für zukünftige Preis-Komponenten erweiterst Du den Block `/* price font override */` in `resources/css/main.scss`, damit nur Preistexte überschrieben werden.
 - In der Standard-plentyShop-LTS-Integration lädt `css/main.css` nach den Ceres-Basis-Styles; dadurch gewinnt die Preis-Schrift im Cascade-Order gegenüber den Ceres-Defaults, wo kein höher spezifischer Selector greift.
-- Der Container-Link zeigt nur den Provider-Output. Die Preis-Font bindest Du daher ueber Theme/PageDesign oder einen dedizierten Style-Provider ein.
+- Der Style-Output setzt `@font-face` zusätzlich mit absolutem Plugin-Pfad (`/plugins/HammerTheme/fonts/...`), damit die Font auch dann geladen wird, wenn Styles aus einem Inline- oder Data-Kontext gerendert werden.
+- Der Container-Link liefert jetzt sowohl `main.css` als auch die Laufzeit-Variablen aus der Plugin-Konfiguration (z. B. `theme.primaryPriceColor`).
