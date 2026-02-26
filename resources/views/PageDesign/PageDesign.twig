@@ -11,21 +11,7 @@
     {# Step 2: Load compiled HammerTheme stylesheet (resources/css/main.scss -> css/main.css) after Ceres defaults. #}
     <link rel="stylesheet" href="{{ plugin_path('HammerTheme') }}/css/main.css?v={{ buildHash }}">
 
-    {% set configuredHammerPriceColor = config("HammerTheme.theme.primaryPriceColor") | default('#31a5f0') | trim %}
-    {% set hammerPriceColor = configuredHammerPriceColor matches '/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/'
-        ? configuredHammerPriceColor
-        : '#31a5f0' %}
-
-    {% set configuredProductPriceH1FontSize = config("HammerTheme.theme.productPriceH1FontSize") | default('1.4rem') | trim %}
-    {% set productPriceH1FontSize = configuredProductPriceH1FontSize matches '/^(?:\d+(?:\.\d+)?)(?:rem|em|px|%)$/'
-        ? configuredProductPriceH1FontSize
-        : '1.4rem' %}
-    <style>
-        :root {
-            --hammer-price-color: {{ hammerPriceColor }};
-            --hammer-product-price-h1-font-size: {{ productPriceH1FontSize }};
-        }
-    </style>
+    {% include "HammerTheme::PageDesign.Includes.ThemeVariables" %}
 
     {# Step 3: Optional, dedicated hook for future head customisations. #}
     {% include "HammerTheme::PageDesign.Includes.Head" ignore missing %}

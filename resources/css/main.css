@@ -1,12 +1,3 @@
-@font-face {
-  font-family: "Industry-Demi";
-  src: url("../fonts/Industry-Demi.woff2") format("woff2"),
-       url("../fonts/Industry-Demi.woff") format("woff");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 600;
-}
-
 :root {
   --hammer-price-font: "Industry-Demi", "Helvetica Neue", Arial, sans-serif;
   --hammer-price-color: #31a5f0;
@@ -30,7 +21,6 @@
   color: var(--hammer-price-color) !important;
   font-family: var(--hammer-price-font) !important;
 }
-
 
 /* product page price headline */
 .single [class*="price"] h1,

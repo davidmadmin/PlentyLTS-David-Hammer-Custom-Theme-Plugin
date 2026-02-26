@@ -1,0 +1,26 @@
+{% set configuredHammerPriceColor = config("HammerTheme.theme.primaryPriceColor") | default('#31a5f0') | trim %}
+{% set hammerPriceColor = configuredHammerPriceColor matches '/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/'
+    ? configuredHammerPriceColor
+    : '#31a5f0' %}
+
+{% set configuredProductPriceH1FontSize = config("HammerTheme.theme.productPriceH1FontSize") | default('1.4rem') | trim %}
+{% set productPriceH1FontSize = configuredProductPriceH1FontSize matches '/^(?:\d+(?:\.\d+)?)(?:rem|em|px|%)$/'
+    ? configuredProductPriceH1FontSize
+    : '1.4rem' %}
+
+<style>
+    @font-face {
+        font-family: "Industry-Demi";
+        src: url("{{ plugin_path('HammerTheme') }}/fonts/Industry-Demi.woff2?v={{ buildHash }}") format("woff2"),
+             url("{{ plugin_path('HammerTheme') }}/fonts/Industry-Demi.woff?v={{ buildHash }}") format("woff");
+        font-display: swap;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    :root {
+        --hammer-price-color: {{ hammerPriceColor }};
+        --hammer-product-price-h1-font-size: {{ productPriceH1FontSize }};
+        --hammer-price-font: "Industry-Demi", "Helvetica Neue", Arial, sans-serif;
+    }
+</style>
