@@ -7,8 +7,8 @@
   "author": "David Hammer",
   "email": "dev@hammer-shops.de",
   "phone": "+49 0 000000000",
-  "authorIcon": "icon_author_xs.png",
-  "pluginIcon": "icon_plugin_xs.png",
+  "authorIcon": "David_Abdin_author_icon.jpg",
+  "pluginIcon": "davids_custom_plentylts_theme_logo.png",
   "serviceProvider": "HammerTheme\\Providers\\HammerThemeServiceProvider",
   "require": {
     "Ceres": "~5.0.0",
