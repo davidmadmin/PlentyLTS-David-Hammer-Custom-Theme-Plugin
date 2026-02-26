@@ -13,7 +13,7 @@ Die minimale, lauffähige Plugin-Basis ist angelegt:
 - `config.json` mit einer initialen Basis-Konfiguration.
 - `src/Providers/` und `src/Containers/` mit minimaler PHP-Struktur.
 - `resources/` für Twig, CSS, JavaScript und Übersetzungen (DE/EN).
-- `meta/images/` mit Platzhalter-Dokumentation; finale PNG-Icons/Preview bitte manuell ergänzen.
+- `meta/images/` mit angebundenen Bildern für Plugin- und Author-Icon.
 - `meta/documents/` mit Benutzerhandbuch, Changelog und Support-Kontakt (DE/EN).
 
 ## Shops, Namen und Abkürzungen
@@ -67,7 +67,7 @@ Damit PlentyLTS beim Upload nur relevante Plugin-Dateien berücksichtigt, nutzt 
 
 
 ## Hinweis zu Bilddateien
-Die finalen PNG-Dateien für Plugin-/Author-Icons und Preview werden manuell in `meta/images/` ergänzt. Eine genaue Anleitung findest Du in `meta/images/README.md`.
+Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. Details zur Zuordnung findest Du in `meta/images/README.md`.
 
 ## Custom price font
 - Lege die Preis-Schriftdateien in `resources/fonts/` ab (aktuell `Industry-Demi.woff2` und `Industry-Demi.woff` als `HammerPrice`).
