@@ -54,9 +54,10 @@ Die minimale, lauffähige Plugin-Basis ist angelegt:
 ## Nutzung der Basisstruktur
 1. Plugin im Plugin-Set installieren.
 2. Plugin-Set speichern und bereitstellen.
-3. In den Container-Links den DataProvider **Hammer Theme Base Container** verknüpfen.
-4. Der Container-Link liefert CSS **und** die konfigurierbaren CSS-Variablen/Fonteinbindung, damit Änderungen aus `config.json` direkt greifen.
-5. Danach Header/Footer- und Shop-spezifische Erweiterungen (FH/SH) iterativ aufbauen.
+3. In den Container-Links den DataProvider **Hammer Theme Base Container** mit **`Ceres::Template.Style`** verknüpfen.
+4. Der DataProvider ist mit `defaultLayoutContainer: "Ceres::Template.Style"` vorbelegt, damit Du die Standard-Zuordnung direkt nutzen kannst.
+5. Der Header-JavaScript-Bootstrap wird über `resources/views/PageDesign/PageDesign.twig` mit `{{ plugin_path('HammerTheme') }}/resources/js/main.js` geladen.
+6. Danach Header/Footer- und Shop-spezifische Erweiterungen (FH/SH) iterativ aufbauen.
 
 
 ## Plugin-Konfiguration (Preisdarstellung)
