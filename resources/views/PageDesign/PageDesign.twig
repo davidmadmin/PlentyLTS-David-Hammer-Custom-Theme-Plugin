@@ -25,5 +25,5 @@
 
     {# Step 5: Load the single bundled HammerTheme entry script. #}
     {% set hammerThemeMainScript = plugin_path('HammerTheme') ~ '/js/main.js?v=' ~ buildHash %}
-    <script src="{{ hammerThemeMainScript }}" defer></script>
+    <script type="module" src="{{ hammerThemeMainScript }}"></script>
 {% endblock %}
