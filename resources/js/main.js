@@ -36,8 +36,13 @@
     const rootCandidates = [];
 
     if (ASSET_ROOT) {
-      rootCandidates.push(ASSET_ROOT + '/' + relativePath);
-      rootCandidates.push(ASSET_ROOT + '/resources/js/' + relativePath);
+      const normalizedAssetRoot = ASSET_ROOT.replace(/\/$/, '');
+      const resourceRoot = /\/resources\/js$/.test(normalizedAssetRoot)
+        ? normalizedAssetRoot
+        : normalizedAssetRoot + '/resources/js';
+
+      rootCandidates.push(resourceRoot + '/' + relativePath);
+      rootCandidates.push(normalizedAssetRoot + '/' + relativePath);
     }
 
     rootCandidates.push('resources/js/' + relativePath);
