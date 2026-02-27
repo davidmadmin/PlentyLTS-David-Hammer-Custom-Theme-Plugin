@@ -13,7 +13,7 @@ class HammerHeaderWidget extends BaseWidget
     public function getData(): array
     {
         return WidgetDataFactory::make('HammerTheme::HeaderWidget')
-            ->withLabel('Widget.hammerHeaderLabel')
+            ->withLabel("David's Custom Header")
             ->withPreviewImageUrl('/images/widgets/hammer-header.svg')
             ->withType(WidgetTypes::HEADER)
             ->withCategory('header')
@@ -29,8 +29,8 @@ class HammerHeaderWidget extends BaseWidget
                 'required' => false,
                 'defaultValue' => '/',
                 'options' => [
-                    'name' => 'Widget.hammerHeaderLogoLinkName',
-                    'tooltip' => 'Widget.hammerHeaderLogoLinkTooltip'
+                    'name' => 'Logo target path',
+                    'tooltip' => 'Relative path or URL for the logo link'
                 ]
             ]
         ];
