@@ -1,13 +1,35 @@
 (function (window, document) {
-  const ASSET_ROOT = (function resolveAssetRoot() {
+  function trimTrailingSlash(value) {
+    return (value || '').replace(/\/+$/, '');
+  }
+
+  function resolveAssetRoot() {
     const currentScript = document.currentScript;
 
+    if (currentScript && currentScript.dataset && currentScript.dataset.assetRoot) {
+      return trimTrailingSlash(currentScript.dataset.assetRoot);
+    }
+
     if (currentScript && currentScript.src) {
-      return currentScript.src.replace(/\/main\.js(?:\?.*)?$/, '');
+      return trimTrailingSlash(currentScript.src.replace(/\/main\.js(?:\?.*)?$/, ''));
+    }
+
+    const scripts = document.getElementsByTagName('script');
+
+    for (let index = scripts.length - 1; index >= 0; index -= 1) {
+      const script = scripts[index];
+      const src = script && script.getAttribute('src');
+
+      if (!src) continue;
+      if (!/\/resources\/js\/main\.js(?:\?.*)?$/.test(src) && !/\/js\/main\.js(?:\?.*)?$/.test(src)) continue;
+
+      return trimTrailingSlash(src.replace(/\/main\.js(?:\?.*)?$/, ''));
     }
 
     return '';
-  })();
+  }
+
+  const ASSET_ROOT = resolveAssetRoot();
 
   function loadScriptFromCandidates(candidates, callback) {
     const paths = Array.isArray(candidates) ? candidates.slice() : [candidates];
@@ -37,10 +59,13 @@
 
     if (ASSET_ROOT) {
       rootCandidates.push(ASSET_ROOT + '/' + relativePath);
+    }
+
+    if (ASSET_ROOT && ASSET_ROOT.indexOf('/resources/js') === -1) {
       rootCandidates.push(ASSET_ROOT + '/resources/js/' + relativePath);
     }
 
-    rootCandidates.push('resources/js/' + relativePath);
+    rootCandidates.push('/resources/js/' + relativePath);
 
     return rootCandidates;
   }
@@ -52,11 +77,15 @@
     if (typeof api.initHeaderSH === 'function') api.initHeaderSH();
   }
 
-  loadScriptFromCandidates(getScriptCandidates('core/on-ready.js'), function () {
-    loadScriptFromCandidates(getScriptCandidates('modules/header-fh.js'), function () {
-      loadScriptFromCandidates(getScriptCandidates('modules/header-sh.js'), function () {
-        bootHeaders();
+  function loadHeaderModules() {
+    loadScriptFromCandidates(getScriptCandidates('core/on-ready.js'), function () {
+      loadScriptFromCandidates(getScriptCandidates('modules/header-fh.js'), function () {
+        loadScriptFromCandidates(getScriptCandidates('modules/header-sh.js'), function () {
+          bootHeaders();
+        });
       });
     });
-  });
+  }
+
+  loadHeaderModules();
 })(window, document);

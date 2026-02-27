@@ -21,7 +21,8 @@
     {
       "key": "HammerTheme\\Containers\\HammerThemeContainer",
       "name": "Hammer Theme Base Container",
-      "description": "Gibt Style-Markup (main.css) fuer Container-Links aus."
+      "description": "Gibt Style-Markup (main.css) fuer Container-Links aus.",
+      "defaultLayoutContainer": "Ceres::Template.Style"
     }
   ],
   "isClosedSource": false

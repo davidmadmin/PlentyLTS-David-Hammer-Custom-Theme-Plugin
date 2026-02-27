@@ -24,5 +24,5 @@
     {% include "HammerTheme::PageDesign.Includes.Footer" ignore missing %}
 
     {# Step 5: Load HammerTheme base script without altering Ceres default scripts. #}
-    <script src="{{ plugin_path('HammerTheme') }}/js/main.js?v={{ buildHash }}" defer></script>
+    <script src="{{ plugin_path('HammerTheme') }}/resources/js/main.js?v={{ buildHash }}" data-asset-root="{{ plugin_path('HammerTheme') }}/resources/js" defer></script>
 {% endblock %}
