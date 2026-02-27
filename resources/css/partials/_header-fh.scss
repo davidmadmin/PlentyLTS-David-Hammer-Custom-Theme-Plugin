@@ -1,3 +1,6 @@
+$header-nav-desktop-breakpoint: 1600px;
+$header-nav-inline-min-breakpoint: 768px;
+
 /* Section: FH Header Base Layout */
 .fh-header {
   position: relative;
@@ -11,7 +14,7 @@
   --fh-top-bar-padding-y: 14px;
 }
 
-@media (max-width: 1599.98px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) {
   .fh-header {
     width: 100%;
   }
@@ -2170,7 +2173,7 @@ a.logo {
   color: var(--fh-color-dark-blue);
 }
 
-@media (min-width: 1600px) {
+@media (min-width: $header-nav-desktop-breakpoint) {
   .fh-header__dropdown-sublink:not(.fh-header__dropdown-sublink--text) {
     position: relative;
     display: inline-flex;
@@ -2288,7 +2291,7 @@ a.logo {
   border-bottom: 1px solid #e5e7eb;
 }
 
-@media (min-width: 1600px) {
+@media (min-width: $header-nav-desktop-breakpoint) {
   .fh-header__mobile-submenu-header {
     display: none;
   }
@@ -2510,7 +2513,7 @@ div.grecaptcha-badge {
   border-bottom: none;
 }
 
-@media (max-width: 1599.98px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) {
   .fh-header {
     width: min(1600px, 100%);
     max-width: none;
@@ -2796,7 +2799,7 @@ div.grecaptcha-badge {
   }
 }
 
-@media (max-width: 1599.98px) and (min-width: 768px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) and (min-width: $header-nav-inline-min-breakpoint) {
   .fh-header {
     position: relative;
     width: 100vw;

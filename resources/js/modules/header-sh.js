@@ -16,6 +16,12 @@ function initHeaderSH() {
   };
 
   runOnce("sh-header-module", function () {
+    const NAV_MODE_DESKTOP_MIN_WIDTH = 1600;
+    const NAV_MODE_INLINE_MIN_WIDTH = 768;
+    const NAV_MODE_INLINE_MAX_WIDTH = NAV_MODE_DESKTOP_MIN_WIDTH - 0.02;
+    const NAV_MODE_DESKTOP_MEDIA_QUERY = '(min-width: ' + NAV_MODE_DESKTOP_MIN_WIDTH + 'px)';
+    const NAV_MODE_INLINE_MEDIA_QUERY =
+      '(max-width: ' + NAV_MODE_INLINE_MAX_WIDTH + 'px) and (min-width: ' + NAV_MODE_INLINE_MIN_WIDTH + 'px)';
 // Section: sh account menu toggle behaviour
 onReady(function () {
   function resolveGreeting(defaultGreeting) {
@@ -856,7 +862,7 @@ onReady(function () {
 
   if (!header) return;
 
-  const desktopMediaQuery = window.matchMedia('(min-width: 1600px)');
+  const desktopMediaQuery = window.matchMedia(NAV_MODE_DESKTOP_MEDIA_QUERY);
   const scrolledClassName = 'sh-header--scrolled';
   const hiddenClassName = 'sh-header--topbar-hidden';
   const topBar = header.querySelector('.sh-header__top-bar');
@@ -962,7 +968,7 @@ onReady(function () {
 
   if (!navScroll || !navScrollNextButton || !navScrollPrevButton) return;
 
-  const mediaQuery = window.matchMedia('(max-width: 1599.98px) and (min-width: 768px)');
+  const mediaQuery = window.matchMedia(NAV_MODE_INLINE_MEDIA_QUERY);
 
   function setScrollableState() {
     const hasOverflow = mediaQuery.matches && navScroll.scrollWidth - navScroll.clientWidth > 2;
@@ -1094,7 +1100,7 @@ onReady(function () {
 
   const closeButtons = header.querySelectorAll('[data-sh-mobile-menu-close]');
   const focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  const desktopMedia = window.matchMedia('(min-width: 1600px)');
+  const desktopMedia = window.matchMedia(NAV_MODE_DESKTOP_MEDIA_QUERY);
   const panelContainer = menu.querySelector('[data-sh-mobile-views]');
   const panelElements = panelContainer
     ? Array.prototype.slice.call(panelContainer.querySelectorAll('[data-sh-mobile-panel]'))
@@ -1868,7 +1874,7 @@ onReady(function () {
 
   if (navItems.length === 0) return;
 
-  const desktopMedia = window.matchMedia('(min-width: 1600px)');
+  const desktopMedia = window.matchMedia(NAV_MODE_DESKTOP_MEDIA_QUERY);
   const raf =
     typeof window.requestAnimationFrame === 'function'
       ? window.requestAnimationFrame.bind(window)
@@ -2088,24 +2094,21 @@ onReady(function () {
     currentOpenItem = null;
   }
 
+  function ensureAriaState() {
+    navItems.forEach(function (candidate) {
+      setExpanded(candidate, isDesktop() && candidate === currentOpenItem);
+    });
+  }
+
   function handleMediaChange(event) {
     if (!event.matches) {
       closeCurrentItem();
       clearHighlight();
-
-      navItems.forEach(function (item) {
-        setExpanded(item, false);
-      });
-
+      ensureAriaState();
       return;
     }
 
-    navItems.forEach(function (item) {
-      const dropdown = getDropdown(item);
-
-      if (dropdown) dropdown.setAttribute('aria-hidden', item === currentOpenItem ? 'false' : 'true');
-    });
-
+    ensureAriaState();
     requestHighlight(currentOpenItem || null);
   }
 
@@ -2143,6 +2146,16 @@ onReady(function () {
         if (event.button && event.button !== 0) return;
 
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        if (!dropdown) return;
+
+        event.preventDefault();
+
+        if (currentOpenItem === item) closeCurrentItem();
+        else openItem(item);
+
+        ensureAriaState();
+        requestHighlight(currentOpenItem || null);
       });
     }
   });
@@ -2153,6 +2166,7 @@ onReady(function () {
     if (event && event.relatedTarget && nav.contains(event.relatedTarget)) return;
 
     closeCurrentItem();
+    ensureAriaState();
     requestHighlight(null);
   });
 
@@ -2163,6 +2177,7 @@ onReady(function () {
       if (nav.contains(document.activeElement)) return;
 
       closeCurrentItem();
+      ensureAriaState();
       requestHighlight(null);
     }, 0);
   });

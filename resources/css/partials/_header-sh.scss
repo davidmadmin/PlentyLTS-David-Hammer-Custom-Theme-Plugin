@@ -1,3 +1,6 @@
+$header-nav-desktop-breakpoint: 1600px;
+$header-nav-inline-min-breakpoint: 768px;
+
 /* Section: sh Header Base Layout */
 .sh-header {
   position: relative;
@@ -11,7 +14,7 @@
   --sh-top-bar-padding-y: 14px;
 }
 
-@media (max-width: 1599.98px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) {
   .sh-header {
     width: 100%;
   }
@@ -2171,7 +2174,7 @@ a.logo {
   color: var(--sh-color-dark);
 }
 
-@media (min-width: 1600px) {
+@media (min-width: $header-nav-desktop-breakpoint) {
   .sh-header__dropdown-sublink:not(.sh-header__dropdown-sublink--text) {
     position: relative;
     display: inline-flex;
@@ -2289,7 +2292,7 @@ a.logo {
   border-bottom: 1px solid #e5e7eb;
 }
 
-@media (min-width: 1600px) {
+@media (min-width: $header-nav-desktop-breakpoint) {
   .sh-header__mobile-submenu-header {
     display: none;
   }
@@ -2511,7 +2514,7 @@ div.grecaptcha-badge {
   border-bottom: none;
 }
 
-@media (max-width: 1599.98px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) {
   .sh-header {
     width: min(1600px, 100%);
     max-width: none;
@@ -2797,7 +2800,7 @@ div.grecaptcha-badge {
   }
 }
 
-@media (max-width: 1599.98px) and (min-width: 768px) {
+@media (max-width: ($header-nav-desktop-breakpoint - 0.02px)) and (min-width: $header-nav-inline-min-breakpoint) {
   .sh-header {
     position: relative;
     width: 100vw;
