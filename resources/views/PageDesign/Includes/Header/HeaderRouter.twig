@@ -1,0 +1,7 @@
+{% set configuredHeaderLayout = config("HammerTheme.theme.headerLayout") | default('fh') | lower | trim %}
+
+{% if configuredHeaderLayout == 'sh' %}
+    {% include "HammerTheme::PageDesign.Includes.Header.SH" with { logoLink: logoLink | default('/') } %}
+{% else %}
+    {% include "HammerTheme::PageDesign.Includes.Header.FH" with { logoLink: logoLink | default('/') } %}
+{% endif %}

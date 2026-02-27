@@ -1,0 +1,14 @@
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+
+{% set headerContainer = LayoutContainer.show("Ceres::Header") | trim %}
+{% set hasHammerHeaderWidget = 'data-hammer-header-widget="true"' in headerContainer %}
+
+{% if hasHammerHeaderWidget %}
+    {{ headerContainer | raw }}
+{% else %}
+    {% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" %}
+
+    {% if headerContainer is not empty %}
+        {{ headerContainer | raw }}
+    {% endif %}
+{% endif %}

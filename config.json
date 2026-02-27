@@ -1,6 +1,17 @@
 [
   {
     "tab": "Allgemein",
+    "key": "theme.headerLayout",
+    "label": "Header-Layout",
+    "type": "select",
+    "default": "fh",
+    "options": {
+      "fh": "FH (FENSTER-HAMMER)",
+      "sh": "SH (SCHRAUBEN-HAMMER)"
+    }
+  },
+  {
+    "tab": "Allgemein",
     "key": "theme.baseClass",
     "label": "Theme-Root-CSS-Klasse",
     "type": "text",

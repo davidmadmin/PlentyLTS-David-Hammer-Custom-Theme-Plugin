@@ -1,0 +1,1280 @@
+<!--
+  This headers design and code was created by David M. Abdin for INTRA-TEC GmbH
+
+  More of this page was designed and coded by David M. Abdin.
+  Contact me on LinkedIn for business inquires https://www.linkedin.com/in/david-m-abdin-5656aa367/
+-->
+{% set basket = services.basket.getBasketForTemplate() %}
+{% set wishListCount = services.wishList.getCountedItemWishList() %}
+{% set basketCurrency = basket.currency | default("EUR") %}
+{% set showNetPricesInitial = showNetPrices is defined ? showNetPrices : false %}
+<div class="sh-header" data-sh-header-root>
+  <div class="sh-header__top-bar text-uppercase">
+    <a href="https://www.trustedshops.de/bewertung/info_X4CF462881B5021CAFE701B0AADD7B797.html" target="_blank" rel="noopener" class="sh-header__top-link">
+      <span class="sh-header__bullet"></span>
+      4,8+ „Hervorragend“ auf Trusted Shops
+    </a>
+    <span class="sh-header__top-item">
+      <span class="sh-header__bullet"></span>
+      Schneller Versand
+    </span>
+    <span class="sh-header__top-item">
+      <span class="sh-header__bullet"></span>
+      7-tägiger Kundenservice
+    </span>
+    <span class="sh-header__top-item">
+      <span class="sh-header__bullet"></span>
+      Kostenlose Großkundenbetreuung
+    </span>
+  </div>
+  <div class="sh-header__main">
+    <a href="{{ logoLink | default('/') }}" class="sh-header__logo">
+      <img src="https://bilder.schrauben-hammer.de/frontend/Logo_neu/SCHRAUBEN-HAMMER_Logo_335x150px.png" alt="FENSTER-HAMMER">
+    </a>
+    <div class="sh-header__search-area">
+      <button type="button" class="sh-header__burger" data-sh-mobile-menu-toggle aria-controls="sh-mobile-menu" aria-expanded="false" aria-label="Menü">
+        <span class="sh-header__sr-only">Navigation öffnen</span>
+        <svg aria-hidden="true" class="sh-header__burger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <form action="#" method="get" class="sh-header__search-form">
+        <input type="search" name="q" class="search-input sh-header__search-input" placeholder="Häufig gesucht: &quot;Edelstahl Bits&quot;" aria-label="Suche">
+        <button type="button" data-search-clear aria-label="Eingabe löschen" class="sh-header__search-clear">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__search-clear-icon">
+            <line x1="5" y1="5" x2="15" y2="15"></line>
+            <line x1="15" y1="5" x2="5" y2="15"></line>
+          </svg>
+        </button>
+      </form>
+    </div>
+    <div class="sh-header__actions">
+      <div class="sh-wishlist-menu-container position-relative" data-sh-wishlist-menu-container>
+        <button
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="sh-wishlist-menu"
+          aria-label="Merkliste"
+          data-sh-wishlist-menu-toggle
+          class="sh-header__icon-button"
+        >
+          <span class="sh-header__badge" aria-hidden="true">
+            {# Merkliste-Zähler: initial Twig-Fallback + reaktive Ceres-Store-Aktualisierung. #}
+            <span v-text="$store.state.basket.isBasketInitiallyLoaded ? $store.getters.wishListCount : {{ wishListCount | default(0) }}">{{ wishListCount }}</span>
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="sh-header__icon">
+            <path d="M7 4h10a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"></path>
+          </svg>
+          <span class="sh-header__sr-only">Merkliste</span>
+        </button>
+        <div id="sh-wishlist-menu" data-sh-wishlist-menu aria-hidden="true" class="sh-header__panel sh-header__panel--wishlist">
+          <div class="sh-header__panel-arrow"></div>
+          <div class="sh-header__panel-header">
+            <div class="sh-header__panel-title">Merkliste</div>
+          </div>
+          <div class="sh-header__wishlist-body" data-sh-wishlist-body>
+            <wish-list></wish-list>
+          </div>
+        </div>
+      </div>
+      <div class="sh-account-menu-container position-relative" data-sh-account-menu-container>
+        <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sh-account-menu" aria-label="Dein Konto" data-sh-account-menu-toggle class="sh-header__icon-button">
+          {# Account-Status-Mapping auf Ceres-Store-Getter. #}
+          <span class="sh-header__status-indicator" :class="{ 'is-logged-in': $store.getters.isLoggedIn }" aria-hidden="true"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="sh-header__icon">
+            <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5z"></path>
+            <path d="M4.2 21.4c.5-3.6 3.8-6.4 7.8-6.4s7.3 2.8 7.8 6.4"></path>
+          </svg>
+        </button>
+        <div id="sh-account-menu" data-sh-account-menu aria-hidden="true" class="sh-header__panel sh-header__panel--account">
+          <div class="sh-header__panel-arrow"></div>
+          <div v-if="!$store.getters.isLoggedIn">
+            <div class="sh-header__panel-title mb-3">Dein Konto</div>
+            <a href="#login" data-toggle="modal" data-target="#login" data-sh-login-trigger class="sh-header__account-login">Anmelden</a>
+            <div class="sh-header__panel-inline my-3 sh-header__panel-text">
+              <span>oder</span>
+              <a href="#registration" data-toggle="modal" data-target="#registration" data-sh-registration-trigger class="sh-header__account-register">Registrieren</a>
+            </div>
+            <div class="sh-header__panel-divider my-3"></div>
+            <div class="sh-header__panel-stack mb-3 text-body">
+              <div class="sh-header__panel-subtitle">Vorteile:</div>
+              <ul class="sh-header__panel-list">
+                <li>Gemerkte Adressdaten</li>
+                <li>Einfacher Service</li>
+                <li>Bestellungen verfolgen</li>
+                <li>Persönlicher Ansprechpartner für Großkunden</li>
+              </ul>
+            </div>
+          </div>
+          <div v-else>
+            <div class="sh-header__panel-stack mb-3 text-body">
+              <div class="sh-header__panel-title">
+                <span v-if="$store.state.user && $store.state.user.userData && $store.state.user.userData.lastName && (({ male: 'Herr', female: 'Frau', diverse: 'Divers' }[$store.state.user.userData.gender]) || $store.state.user.userData.formOfAddress || $store.state.user.userData.title)" v-cloak><span class="sh-account-greeting" data-default-greeting="Hallo,">Hallo,</span> <span v-text="((({ male: 'Herr', female: 'Frau', diverse: 'Divers' }[$store.state.user.userData.gender]) || $store.state.user.userData.formOfAddress || $store.state.user.userData.title) + ' ' + $store.state.user.userData.lastName)" v-cloak></span></span>
+                <span v-else v-cloak>Hallo</span>
+              </div>
+              <div class="sh-header__panel-text">Schön, dass Du wieder da bist!</div>
+              <div class="sh-header__price-toggle" data-sh-price-toggle-root v-if="$store.getters.isLoggedIn">
+                <div class="sh-header__price-toggle-row">
+                  <button
+                    type="button"
+                    class="sh-header__price-toggle-button is-active"
+                    data-sh-price-toggle
+                    role="switch"
+                    aria-checked="true"
+                    aria-label="Preise mit Mehrwertsteuer anzeigen"
+                  >
+                    <span class="sh-header__price-toggle-option" data-sh-price-toggle-option="gross">inkl. MwSt.</span>
+                    <span class="sh-header__price-toggle-option" data-sh-price-toggle-option="net">exkl. MwSt.</span>
+                    <span class="sh-header__price-toggle-handle" aria-hidden="true"></span>
+                  </button>
+                  <span class="sh-header__price-toggle-note sh-header__price-toggle-status" data-sh-price-toggle-note>
+                    Preise mit MwSt
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="sh-header__customer-segment"
+              v-if="$store.state.user && $store.state.user.userData && [1, 12, 16, 21].includes(Number($store.state.user.userData.classId))"
+            >
+              <div
+                class="sh-header__customer-contact sh-header__customer-contact--standard"
+                v-if="Number($store.state.user.userData.classId) === 1"
+                v-cloak
+              >
+                <span class="sh-header__customer-contact-label">Ansprechpartner:</span>
+                <span class="sh-header__customer-contact-name">Standard</span>
+              </div>
+              <div
+                class="sh-header__customer-contact sh-header__customer-contact--personal"
+                v-else-if="Number($store.state.user.userData.classId) === 12"
+                v-cloak
+              >
+                <div class="sh-header__customer-contact-heading">Dein Ansprechpartner:</div>
+                <div class="sh-header__customer-contact-name">Ulrich Vorländer</div>
+                <div class="sh-header__customer-contact-role">Produktexperte &amp; Kundenbetreuer</div>
+                <a href="/kundenbetreuer-ulrich-vorlaender" class="sh-header__contact-button">Direkt kontaktieren</a>
+              </div>
+              <div
+                class="sh-header__customer-contact sh-header__customer-contact--personal"
+                v-else-if="Number($store.state.user.userData.classId) === 16"
+                v-cloak
+              >
+                <div class="sh-header__customer-contact-heading">Dein Ansprechpartner:</div>
+                <div class="sh-header__customer-contact-name">Andreas Fischermann</div>
+                <div class="sh-header__customer-contact-role">Produktexperte &amp; Kundenbetreuer</div>
+                <a href="/kundenbetreuer-andreas-fischermann" class="sh-header__contact-button">Direkt kontaktieren</a>
+              </div>
+              <div
+                class="sh-header__customer-contact sh-header__customer-contact--personal"
+                v-else-if="Number($store.state.user.userData.classId) === 21"
+                v-cloak
+              >
+                <div class="sh-header__customer-contact-heading">Dein Ansprechpartner:</div>
+                <div class="sh-header__customer-contact-name">Gabriele Sprenger</div>
+                <div class="sh-header__customer-contact-role">Produktexpertin &amp; Kundenbetreuerin</div>
+                <a href="/kundenbetreuerin-gabriele-sprenger" class="sh-header__contact-button">Direkt kontaktieren</a>
+              </div>
+            </div>
+            <div class="sh-header__panel-divider mb-3"></div>
+            <div
+              class="sh-header__panel-contact"
+              v-if="!($store.state.user && $store.state.user.userData && [12, 16, 21].includes(Number($store.state.user.userData.classId)))"
+            >
+              <div class="sh-header__panel-contact-label">Fragen? Du erreichst uns hier:</div>
+              <div class="sh-header__panel-contact-line">
+                <a href="tel:02204910980" class="sh-header__panel-contact-chip">
+                  <span class="sh-header__panel-contact-icon" aria-hidden="true">
+                    <img
+                      src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/phone.svg"
+                      alt=""
+                      class="sh-header__panel-contact-icon-image"
+                    >
+                  </span>
+                  <span class="sh-header__panel-contact-text">02204 910 980</span>
+                </a>
+                <span class="sh-header__panel-contact-separator">oder</span>
+              </div>
+              <div class="sh-header__panel-contact-line">
+                <a href="mailto:service@schrauben-hammer.de" class="sh-header__panel-contact-chip">
+                  <span class="sh-header__panel-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                      <path d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75v10.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25Zm2.75-.25a.75.75 0 0 0-.75.75v.26l7 4.38 7-4.38V7.25a.75.75 0 0 0-.75-.75Z" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  <span class="sh-header__panel-contact-text">service@schrauben-hammer.de</span>
+                </a>
+              </div>
+            </div>
+            <nav class="sh-header__panel-links mb-3">
+              <a href="/my-account" class="sh-header__panel-link">Kontoübersicht</a>
+              <a href="/my-account#bestellungen" class="sh-header__panel-link">Meine Bestellungen</a>
+              <a href="/my-account#kontoeinstellungen" class="sh-header__panel-link">Kontoeinstellungen</a>
+            </nav>
+            <div
+              class="sh-header__panel-text sh-header__account-type"
+              v-if="$store.state.user && $store.state.user.userData && $store.state.user.userData.classId != null"
+              v-cloak
+            >
+              <span
+                v-if="![1, 12, 16, 21].includes(Number($store.state.user.userData.classId))"
+                v-cloak
+              >
+                Konto: Standardkonto
+              </span>
+              <span v-else>Konto: Firmenkunde</span>
+            </div>
+            <div
+              class="sh-header__panel-text sh-header__customer-id"
+              v-if="$store.state.user && $store.state.user.userData && $store.state.user.userData.id"
+              v-cloak
+            >
+              Kunden-ID: <span v-text="$store.state.user.userData.id"></span>
+            </div>
+            <a href="#" v-logout data-sh-account-close class="sh-header__logout">
+              <span class="sh-header__logout-icon" aria-hidden="true"></span>
+              <span class="sh-header__logout-label">Abmelden</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="sh-basket-preview sh-header__basket">
+        <a v-toggle-basket-preview href="#" class="toggle-basket-preview sh-header__basket-link" aria-label="Warenkorb">
+          {# Warenkorb-Mapping auf Ceres Basket-State. #}
+          <template v-if="$store.state.basket.isBasketInitiallyLoaded">
+            <span class="sh-header__basket-count" v-basket-item-quantity="$store.state.basket.data.itemQuantity">{{ basket.itemQuantity | default(0) }}</span>
+          </template>
+          <template v-else>
+            <span class="sh-header__basket-count">{{ basket.itemQuantity | default(0) }}</span>
+          </template>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="sh-header__basket-icon">
+            <circle cx="9" cy="20" r="1.5" fill="currentColor"></circle>
+            <circle cx="18" cy="20" r="1.5" fill="currentColor"></circle>
+            <path d="M2.5 3h2l2.4 12.6a1.5 1.5 0 0 0 1.5 1.2H18a1.5 1.5 0 0 0 1.5-1.2L21 7H6"></path>
+          </svg>
+          <template v-if="$store.state.basket.isBasketInitiallyLoaded">
+            <span class="sh-header__basket-total" aria-hidden="true" v-if="!$store.state.basket.showNetPrices" v-basket-item-sum="$store.state.basket.data.itemSum">
+              {{ basket.itemSum | default(0) | formatMonetary(basketCurrency) }}
+            </span>
+            <span class="sh-header__basket-total" aria-hidden="true" v-else v-cloak v-basket-item-sum="$store.state.basket.data.itemSumNet">
+              {{ basket.itemSumNet | default(0) | formatMonetary(basketCurrency) }}
+            </span>
+            <span class="sh-header__sr-only" v-if="!$store.state.basket.showNetPrices" v-basket-item-sum="$store.state.basket.data.itemSum">
+              {{ basket.itemSum | default(0) | formatMonetary(basketCurrency) }}
+            </span>
+            <span class="sh-header__sr-only" v-else v-cloak v-basket-item-sum="$store.state.basket.data.itemSumNet">
+              {{ basket.itemSumNet | default(0) | formatMonetary(basketCurrency) }}
+            </span>
+          </template>
+          <template v-else>
+            <span class="sh-header__basket-total" aria-hidden="true">
+              {% if showNetPricesInitial %}
+                {{ basket.itemSumNet | default(0) | formatMonetary(basketCurrency) }}
+              {% else %}
+                {{ basket.itemSum | default(0) | formatMonetary(basketCurrency) }}
+              {% endif %}
+            </span>
+            <span class="sh-header__sr-only">
+              {% if showNetPricesInitial %}
+                {{ basket.itemSumNet | default(0) | formatMonetary(basketCurrency) }}
+              {% else %}
+                {{ basket.itemSum | default(0) | formatMonetary(basketCurrency) }}
+              {% endif %}
+            </span>
+          </template>
+        </a>
+        <basket-preview
+          v-if="$store.state.lazyComponent.components['basket-preview']"
+          :show-net-prices="$store.state.basket.showNetPrices"
+          :visible-fields="[
+            $store.state.basket.showNetPrices ? 'basketValueNet' : 'basketValueGross',
+            $store.state.basket.showNetPrices ? 'shippingCostsNet' : 'shippingCostsGross',
+            'totalSumNet',
+            'totalSumGross'
+          ]"
+        ></basket-preview>
+      </div>
+    </div>
+  </div>
+  <nav class="sh-header__nav" id="sh-mobile-menu" data-sh-mobile-menu data-sh-mobile-root-label="Start" aria-hidden="false">
+    <div class="sh-header__nav-inner">
+      <div class="sh-header__mobile-views" data-sh-mobile-views>
+        <div class="sh-header__mobile-view sh-header__mobile-view--root is-active" data-sh-mobile-panel="root" aria-hidden="false">
+          <div class="sh-header__mobile-submenu-header sh-header__mobile-root-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="sh-header__nav-surface" data-sh-desktop-nav-surface>
+            <span class="sh-header__nav-highlight" aria-hidden="true"></span>
+            <button
+              type="button"
+              class="sh-header__nav-burger"
+              data-sh-mobile-menu-toggle
+              aria-controls="sh-mobile-menu"
+              aria-expanded="false"
+              aria-label="Menü"
+            >
+              <span class="sh-header__sr-only">Navigation öffnen</span>
+              <svg aria-hidden="true" class="sh-header__burger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <div class="sh-header__nav-scroll" data-sh-nav-scroll>
+              <ul class="nav sh-header__nav-list">
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/anwendungsgebiet/" data-sh-mobile-submenu-target="anwendungsgebiet" aria-controls="sh-mobile-submenu-anwendungsgebiet" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Anwendungsgebiete_icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Anwendungsgebiet</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/beton-metallbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Beton- &amp; Metallbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/beton-metallbau/betonschrauben-duebel/" class="sh-header__dropdown-sublink">Betonschrauben &amp; Dübel</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/bohrer-metall-stein/" class="sh-header__dropdown-sublink">Bohrer Metall/Stein</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/chemische-befestigung/" class="sh-header__dropdown-sublink">Chemische Befestigung</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/gewindestangen/" class="sh-header__dropdown-sublink">Gewindestangen</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/metrische-schrauben/" class="sh-header__dropdown-sublink">Metrische Schrauben</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/muttern/" class="sh-header__dropdown-sublink">Muttern</a>
+                        <a href="/duebel/nylon-duebel" class="sh-header__dropdown-sublink">Nylon Dübel</a>
+                        <a href="/anwendungsgebiet/beton-metallbau/scheiben-ringe/" class="sh-header__dropdown-sublink">Scheiben &amp; Ringe</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/fensterbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Fensterbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/fensterbau/fensterbankschrauben/" class="sh-header__dropdown-sublink">Fensterbankschrauben</a>
+                        <a href="/anwendungsgebiet/fensterbau/fensterrahmenschrauben/" class="sh-header__dropdown-sublink">Fensterrahmenschrauben</a>
+                        <a href="/anwendungsgebiet/fensterbau/montagekeile/" class="sh-header__dropdown-sublink">Montagekeile</a>
+                        <a href="/anwendungsgebiet/fensterbau/verglasungsklotz/" class="sh-header__dropdown-sublink">Verglasungsklotz</a>
+                        <a href="/anwendungsgebiet/fensterbau/kompriband/" class="sh-header__dropdown-sublink">Kompriband</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/dach-fassadenbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Dach- &amp; Fassadenbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/dach-fassadenbau/bohrschrauben/" class="sh-header__dropdown-sublink">Bohrschrauben</a>
+                        <a href="/anwendungsgebiet/dach-fassadenbau/dachschrauben/" class="sh-header__dropdown-sublink">Dachschrauben</a>
+                        <a href="/anwendungsgebiet/dach-fassadenbau/dicht-anschlussbaender/" class="sh-header__dropdown-sublink">Dicht- &amp; Anschlussbänder</a>
+                        <a href="/anwendungsgebiet/dach-fassadenbau/fassadenschrauben/" class="sh-header__dropdown-sublink">Fassadenschrauben</a>
+                        <a href="/anwendungsgebiet/dach-fassadenbau/klebeschaum-wdvs/" class="sh-header__dropdown-sublink">Klebeschaum / WDVS</a>
+                        <a href="/anwendungsgebiet/dach-fassadenbau/zubehoer/" class="sh-header__dropdown-sublink">Zubehör</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/gartenbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Gartenbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/gartenbau/ketten/" class="sh-header__dropdown-sublink">Ketten</a>
+                        <a href="/anwendungsgebiet/gartenbau/naegel-klammern/" class="sh-header__dropdown-sublink">Nägel &amp; Klammern</a>
+                        <a href="/anwendungsgebiet/gartenbau/schrauben/" class="sh-header__dropdown-sublink">Schrauben</a>
+                        <a href="/anwendungsgebiet/gartenbau/sichtschutz/" class="sh-header__dropdown-sublink">Sichtschutz</a>
+                        <a href="/anwendungsgebiet/gartenbau/zaunzubehoer/" class="sh-header__dropdown-sublink">Zaunzubehör</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/holzbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Holzbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/holzbau/holzbauschrauben/" class="sh-header__dropdown-sublink">Holzbauschrauben</a>
+                        <a href="/anwendungsgebiet/holzbau/holzbohrer/" class="sh-header__dropdown-sublink">Holzbohrer</a>
+                        <a href="/anwendungsgebiet/holzbau/holzverbinder/" class="sh-header__dropdown-sublink">Holzverbinder</a>
+                        <a href="/anwendungsgebiet/holzbau/stockschrauben/" class="sh-header__dropdown-sublink">Stockschrauben</a>
+                        <a href="/anwendungsgebiet/holzbau/terrassenverschraubungen/" class="sh-header__dropdown-sublink">Terrassenverschraubungen</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/photovoltaik-solar/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Photovoltaik / Solar</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/photovoltaik-solar/muttern-scheiben/" class="sh-header__dropdown-sublink">Muttern &amp; Scheiben</a>
+                        <a href="/anwendungsgebiet/photovoltaik-solar/solarbefestigung/" class="sh-header__dropdown-sublink">Solarbefestigung</a>
+                        <a href="/anwendungsgebiet/photovoltaik-solar/solar-schrauben/" class="sh-header__dropdown-sublink">Solar-Schrauben</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/sanitaer-heizungsinstallation/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Sanitär- &amp; Heizungsinstallation</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/sanitaer-heizungsinstallation/duebel-befestigungselemente/" class="sh-header__dropdown-sublink">Dübel &amp; Befestigungselemente</a>
+                        <a href="/anwendungsgebiet/sanitaer-heizungsinstallation/rohrschellen-gelenkschellen/" class="sh-header__dropdown-sublink">Rohrschellen &amp; Gelenkschellen</a>
+                        <a href="/anwendungsgebiet/sanitaer-heizungsinstallation/stockschrauben-gewindebolzen/" class="sh-header__dropdown-sublink">Stockschrauben &amp; Gewindebolzen</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Sonstiges / Werkstattbedarf</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/arbeitshandschuhe/" class="sh-header__dropdown-sublink">Arbeitshandschuhe</a>
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/betriebsmittel/" class="sh-header__dropdown-sublink">Betriebsmittel</a>
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/bits-schraubendreher/" class="sh-header__dropdown-sublink">Bits &amp; Schraubendreher</a>
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/malerzubehoer/" class="sh-header__dropdown-sublink">Malerzubehör</a>
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/schleifen-trennen/" class="sh-header__dropdown-sublink">Schleifen &amp; Trennen</a>
+                        <a href="/anwendungsgebiet/sonstiges-werkstattbedarf/werkzeuge/" class="sh-header__dropdown-sublink">Werkzeuge</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/anwendungsgebiet/terrassenbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Terrassenbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/terrassenbau/holzschutzband/" class="sh-header__dropdown-sublink">Holzschutzband</a>
+                        <a href="/anwendungsgebiet/terrassenbau/terrassenschrauben/" class="sh-header__dropdown-sublink">Terrassenschrauben</a>
+                        <a href="/anwendungsgebiet/terrassenbau/terrassenzubehoer/" class="sh-header__dropdown-sublink">Terrassenzubehör</a>
+                      </div>
+                    </div>
+                    <div class="sh-header__dropdown-group">
+                        <a href="/anwendungsgebiet/trockenbau/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Trockenbau</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/anwendungsgebiet/trockenbau/expressnaegel-deckenbefestigungen/" class="sh-header__dropdown-sublink">Expressnägel &amp; Deckenbefestigungen</a>
+                        <a href="/anwendungsgebiet/trockenbau/kleben-dichten/" class="sh-header__dropdown-sublink">Kleben &amp; Dichten</a>
+                        <a href="/schrauben/schnellbauschrauben/" class="sh-header__dropdown-sublink">Schnellbauschrauben</a>
+                        <a href="/anwendungsgebiet/trockenbau/trockenbau-duebel/" class="sh-header__dropdown-sublink">Trockenbau-Dübel</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/anwendungsgebiet/" class="sh-header__dropdown-footer-link">Alle Anwendungsgebiete sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+                <a
+                  class="nav-link sh-header__nav-link"
+                  href="/anwendungsgebiet/trockenbau/"
+                  data-sh-mobile-submenu-target="anwendungsgebiet-trockenbau-innenausbau"
+                  aria-controls="sh-mobile-submenu-anwendungsgebiet-trockenbau-innenausbau"
+                  aria-expanded="false"
+              >
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Bauchemie_icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Trockenbau</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/anwendungsgebiet/trockenbau/expressnaegel-deckenbefestigungen/" class="sh-header__dropdown-link">Expressnägel &amp; Deckenbefestigungen</a>
+                    <a href="/anwendungsgebiet/trockenbau/kleben-dichten/" class="sh-header__dropdown-link">Kleben &amp; Dichten</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/schrauben/schnellbauschrauben/" class="sh-header__dropdown-link">Schnellbauschrauben</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/anwendungsgebiet/trockenbau/trockenbau-duebel/" class="sh-header__dropdown-link">Trockenbau-Dübel</a>
+                  </div>
+                  <div class="sh-header__dropdown-column sh-header__dropdown-column--preview">
+                    <a href="/anwendungsgebiet/trockenbau/" class="sh-header__dropdown-preview-link">
+                      <img src="https://bilder.schrauben-hammer.de/frontend/Kategorie_Bilder_Shop/Nav_Vorschau_Bilder/Trockenbau_360x120.jpg" alt="Trockenbau Kategorie Vorschau" class="sh-header__dropdown-preview-image" width="360" height="120">
+                    </a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                      <a href="/schrauben/schnellbauschrauben/" class="sh-header__dropdown-footer-link">Alle Trockenbau-Produkte sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/schrauben/" data-sh-mobile-submenu-target="schrauben" aria-controls="sh-mobile-submenu-schrauben" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Schraubensortiment_icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Schraubensortiment</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/schrauben/betonschrauben/" class="sh-header__dropdown-link">Betonschrauben</a>
+                    <a href="/schrauben/bohrschrauben/" class="sh-header__dropdown-link">Bohrschrauben</a>
+                    <a href="/schrauben/tellerkopfschrauben/" class="sh-header__dropdown-link">Tellerkopfschrauben</a>
+                    <a href="/schrauben/trapezblechschrauben/" class="sh-header__dropdown-link">Trapezblechschrauben</a>
+                    <a href="/schrauben/terrassenschrauben/" class="sh-header__dropdown-link">Terrassenschrauben</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/schrauben/fensterbankschrauben/" class="sh-header__dropdown-link">Fensterbankschrauben</a>
+                    <a href="/schrauben/fensterrahmenschrauben/" class="sh-header__dropdown-link">Fensterrahmenschrauben</a>
+                    <a href="/schrauben/holzbauschrauben/" class="sh-header__dropdown-link">Holzbauschrauben</a>
+                    <a href="/schrauben/edelstahlschrauben/" class="sh-header__dropdown-link">Edelstahlschrauben</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/schrauben/schnellbauschrauben/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Schnellbauschrauben</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/schrauben/schnellbauschrauben/faserplattenschrauben/" class="sh-header__dropdown-sublink">Faserplattenschrauben</a>
+                        <a href="/schrauben/schnellbauschrauben/feingewinde/" class="sh-header__dropdown-sublink">Feingewinde</a>
+                        <a href="/schrauben/schnellbauschrauben/grobgewinde/" class="sh-header__dropdown-sublink">Grobgewinde</a>
+                        <a href="/schrauben/schnellbauschrauben/hartgipsplattenschrauben/" class="sh-header__dropdown-sublink">Hartgipsplattenschrauben</a>
+                        <a href="/schrauben/schnellbauschrauben/mit-bohrspitze/" class="sh-header__dropdown-sublink">mit Bohrspitze</a>
+                      </div>
+                    </div>
+                    <a href="/schrauben/senkkopfschrauben/" class="sh-header__dropdown-link">Senkkopfschrauben</a>
+                    <a href="/schrauben/spenglerschrauben/" class="sh-header__dropdown-link">Spenglerschrauben</a>
+                    <a href="/schrauben/fassadenschrauben/" class="sh-header__dropdown-link">Fassadenschrauben</a>
+                    <a href="/schrauben/stockschrauben/" class="sh-header__dropdown-link">Stockschrauben</a>
+                  </div>
+                  <div class="sh-header__dropdown-column sh-header__dropdown-column--preview">
+                    <a href="/schrauben/" class="sh-header__dropdown-preview-link">
+                      <img src="https://bilder.schrauben-hammer.de/frontend/Kategorie_Bilder_Shop/Nav_Vorschau_Bilder/Schraubensortiment_360x120.jpg" alt="Schraubensortiment Kategorie Vorschau" class="sh-header__dropdown-preview-image" width="360" height="120">
+                      <span class="sh-header__dropdown-preview-intro">Finde die passende Schraube für jedes Projekt – von Holz bis Metall.</span>
+                    </a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/schrauben/" class="sh-header__dropdown-footer-link">Alle Schrauben sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/duebel/" data-sh-mobile-submenu-target="duebel" aria-controls="sh-mobile-submenu-duebel" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Duebel_icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Dübel</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/duebel/edelstahl-duebel/" class="sh-header__dropdown-link">Edelstahl Dübel</a>
+                    <a href="/duebel/nylon-duebel/" class="sh-header__dropdown-link">Nylon Dübel</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/duebel/sonstige-duebel/" class="sh-header__dropdown-link">Sonstige Dübel</a>
+                    <a href="/duebel/verzinkte-duebel/" class="sh-header__dropdown-link">Verzinkte Dübel</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/duebel/zubehoer/" class="sh-header__dropdown-link">Zubehör</a>
+                  </div>
+                  <div class="sh-header__dropdown-column sh-header__dropdown-column--preview">
+                    <a href="/duebel/" class="sh-header__dropdown-preview-link">
+                      <img src="https://bilder.schrauben-hammer.de/frontend/Kategorie_Bilder_Shop/Nav_Vorschau_Bilder/Duebel_360x120.jpg" alt="Dübel Kategorie Vorschau" class="sh-header__dropdown-preview-image" width="360" height="120">
+                      <span class="sh-header__dropdown-preview-intro">Sichere Befestigungen für Beton, Stein und Mauerwerk – mit Dübeln für jeden Einsatz.</span>
+                    </a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/duebel/" class="sh-header__dropdown-footer-link">Alle Dübel sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/normteile/" data-sh-mobile-submenu-target="normteile" aria-controls="sh-mobile-submenu-normteile" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Normteile_Icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Normteile</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/normteile/metrische-schrauben/" class="sh-header__dropdown-link">Metrische Schrauben</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/normteile/muttern/" class="sh-header__dropdown-link">Muttern</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/normteile/scheiben/" class="sh-header__dropdown-link">Scheiben</a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/normteile/" class="sh-header__dropdown-footer-link">Alle Normteile sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/zubehoer/" data-sh-mobile-submenu-target="zubehoer" aria-controls="sh-mobile-submenu-zubehoer" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Zubehoer_icon_2.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Zubehör</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/zubehoer/arbeitshandschuhe/" class="sh-header__dropdown-link">Arbeitshandschuhe</a>
+                    <a href="/zubehoer/betriebsmittel/" class="sh-header__dropdown-link">Betriebsmittel</a>
+                    <a href="/zubehoer/dampfbremsen" class="sh-header__dropdown-link">Dampfbremsen</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/zubehoer/bits" class="sh-header__dropdown-link">Bits</a>
+                    <a href="/zubehoer/klebebaender" class="sh-header__dropdown-link">Klebebänder</a>
+                    <a href="/zubehoer/malerzubehoer/" class="sh-header__dropdown-link">Malerzubehör</a>
+                    <a href="/zubehoer/schleifen-trennen/" class="sh-header__dropdown-link">Schleifen-Trennen</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <div class="sh-header__dropdown-group">
+                      <a href="/zubehoer/bohrer/" class="sh-header__dropdown-link sh-header__dropdown-link--parent">Bohrer</a>
+                      <div class="sh-header__dropdown-sublist">
+                        <a href="/zubehoer/bohrer/holzbohrer/" class="sh-header__dropdown-sublink">Holzbohrer</a>
+                        <a href="/zubehoer/bohrer/metallbohrer/" class="sh-header__dropdown-sublink">Metallbohrer</a>
+                        <a href="/zubehoer/bohrer/sds-plus-hammerbohrer/" class="sh-header__dropdown-sublink">SDS-Plus Hammerbohrer</a>
+                      </div>
+                    </div>
+                    <a href="/zubehoer/werkzeug" class="sh-header__dropdown-link">Werkzeug</a>
+                  </div>
+                  <div class="sh-header__dropdown-column sh-header__dropdown-column--preview">
+                    <a href="/zubehoer" class="sh-header__dropdown-preview-link">
+                      <img src="https://bilder.schrauben-hammer.de/frontend/Kategorie_Bilder_Shop/Nav_Vorschau_Bilder/Zubehoer_Kategorie_Nav_Vorschau_360x120.jpg" alt="Zubehör Kategorie Vorschau" class="sh-header__dropdown-preview-image" width="360" height="120">
+                      <span class="sh-header__dropdown-preview-intro">Alles, was Dein Projekt ergänzt – Bits, Bohrer und Werkzeuge für saubere Arbeit.</span>
+                    </a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/zubehoer" class="sh-header__dropdown-footer-link">Alle Zubehör sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link" href="/top-marken" data-sh-mobile-submenu-target="marken" aria-controls="sh-mobile-submenu-marken" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Marken_icon.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Marken</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/top-marken/acp/" class="sh-header__dropdown-link">ACP</a>
+                    <a href="/top-marken/adunox/" class="sh-header__dropdown-link">Adunox</a>
+                    <a href="/top-marken/asw-wekador/" class="sh-header__dropdown-link">ASW Wekador</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/top-marken/famag/" class="sh-header__dropdown-link">Famag</a>
+                    <a href="/top-marken/keil/" class="sh-header__dropdown-link">Keil</a>
+                    <a href="/top-marken/pica/" class="sh-header__dropdown-link">Pica</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/top-marken/prebena/" class="sh-header__dropdown-link">Prebena</a>
+                    <a href="/top-marken/reisser/" class="sh-header__dropdown-link">Reisser</a>
+                    <a href="/top-marken/rhodius/" class="sh-header__dropdown-link">Rhodius</a>
+                  </div>
+                  <div class="sh-header__dropdown-column">
+                    <a href="/top-marken/screw-rebel/" class="sh-header__dropdown-link">Screw Rebel</a>
+                    <a href="/top-marken/wera/" class="sh-header__dropdown-link">WERA</a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/top-marken" class="sh-header__dropdown-footer-link">Alle Marken sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown sh-header__nav-item">
+              <a class="nav-link sh-header__nav-link sh-header__nav-link--highlight" href="/aktion/" data-sh-mobile-submenu-target="aktionen" aria-controls="sh-mobile-submenu-aktionen" aria-expanded="false">
+                <span class="sh-header__nav-icon" aria-hidden="true">
+                  <img src="https://bilder.schrauben-hammer.de/frontend/UI_Icons/Aktionen_icon_2.svg" alt="">
+                </span>
+                <span class="sh-header__nav-text">Aktionen</span>
+              </a>
+              <div class="dropdown-menu sh-header__dropdown">
+                <div class="sh-header__dropdown-grid sh-header__dropdown-grid--four">
+                  <div class="sh-header__dropdown-column">
+                    <a href="/aktion/" class="sh-header__dropdown-link">Aktuelle Aktionen</a>
+                  </div>
+                  <div class="sh-header__dropdown-footer">
+                    <hr class="sh-header__dropdown-divider">
+                    <a href="/aktion/" class="sh-header__dropdown-footer-link">Alle Aktionen sehen</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+              </ul>
+            </div>
+            <button type="button" class="sh-header__nav-scroll-button sh-header__nav-scroll-button--prev" data-sh-nav-scroll-prev aria-label="Vorherige Kategorien anzeigen">
+              <span aria-hidden="true" class="sh-header__nav-scroll-icon">➜</span>
+            </button>
+            <button type="button" class="sh-header__nav-scroll-button sh-header__nav-scroll-button--next" data-sh-nav-scroll-next aria-label="Weitere Kategorien anzeigen">
+              <span aria-hidden="true" class="sh-header__nav-scroll-icon">➜</span>
+            </button>
+          </div>
+          </div>
+          <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet" data-sh-mobile-panel="anwendungsgebiet" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zum Hauptmenü">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Anwendungsgebiet</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Anwendungsgebiete</a></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-beton-metallbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-beton-metallbau" aria-expanded="false">Beton- &amp; Metallbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-dach-fassadenbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-dach-fassadenbau" aria-expanded="false">Dach- &amp; Fassadenbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-fensterbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-fensterbau" aria-expanded="false">Fensterbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-gartenbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-gartenbau" aria-expanded="false">Gartenbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-holzbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-holzbau" aria-expanded="false">Holzbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-photovoltaik-solar" aria-controls="sh-mobile-submenu-anwendungsgebiet-photovoltaik-solar" aria-expanded="false">Photovoltaik / Solar</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-sanitaer-heizungsinstallation" aria-controls="sh-mobile-submenu-anwendungsgebiet-sanitaer-heizungsinstallation" aria-expanded="false">Sanitär- &amp; Heizungsinstallation</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-sonstiges-werkstattbedarf" aria-controls="sh-mobile-submenu-anwendungsgebiet-sonstiges-werkstattbedarf" aria-expanded="false">Sonstiges / Werkstattbedarf</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-terrassenbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-terrassenbau" aria-expanded="false">Terrassenbau</button></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="anwendungsgebiet-trockenbau-innenausbau" aria-controls="sh-mobile-submenu-anwendungsgebiet-trockenbau-innenausbau" aria-expanded="false">Trockenbau</button></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-gartenbau" data-sh-mobile-panel="anwendungsgebiet-gartenbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Gartenbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Gartenbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/gartenbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Gartenbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/gartenbau/ketten/" class="sh-header__mobile-submenu-link">Ketten</a></li>
+            <li><a href="/anwendungsgebiet/gartenbau/naegel-klammern/" class="sh-header__mobile-submenu-link">Nägel &amp; Klammern</a></li>
+            <li><a href="/anwendungsgebiet/gartenbau/schrauben/" class="sh-header__mobile-submenu-link">Schrauben</a></li>
+            <li><a href="/anwendungsgebiet/gartenbau/sichtschutz/" class="sh-header__mobile-submenu-link">Sichtschutz</a></li>
+            <li><a href="/anwendungsgebiet/gartenbau/zaunzubehoer/" class="sh-header__mobile-submenu-link">Zaunzubehör</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-beton-metallbau" data-sh-mobile-panel="anwendungsgebiet-beton-metallbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Beton- &amp; Metallbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Beton- &amp; Metallbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/beton-metallbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Beton- &amp; Metallbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/betonschrauben-duebel/" class="sh-header__mobile-submenu-link">Betonschrauben &amp; Dübel</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/bohrer-metall-stein/" class="sh-header__mobile-submenu-link">Bohrer Metall/Stein</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/chemische-befestigung/" class="sh-header__mobile-submenu-link">Chemische Befestigung</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/gewindestangen/" class="sh-header__mobile-submenu-link">Gewindestangen</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/metrische-schrauben/" class="sh-header__mobile-submenu-link">Metrische Schrauben</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/muttern/" class="sh-header__mobile-submenu-link">Muttern</a></li>
+            <li><a href="/duebel/nylon-duebel" class="sh-header__mobile-submenu-link">Nylon Dübel</a></li>
+            <li><a href="/anwendungsgebiet/beton-metallbau/scheiben-ringe/" class="sh-header__mobile-submenu-link">Scheiben &amp; Ringe</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-dach-fassadenbau" data-sh-mobile-panel="anwendungsgebiet-dach-fassadenbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Dach- &amp; Fassadenbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Dach- &amp; Fassadenbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Dach- &amp; Fassadenbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/bohrschrauben/" class="sh-header__mobile-submenu-link">Bohrschrauben</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/dachschrauben/" class="sh-header__mobile-submenu-link">Dachschrauben</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/dicht-anschlussbaender/" class="sh-header__mobile-submenu-link">Dicht- &amp; Anschlussbänder</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/fassadenschrauben/" class="sh-header__mobile-submenu-link">Fassadenschrauben</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/klebeschaum-wdvs/" class="sh-header__mobile-submenu-link">Klebeschaum / WDVS</a></li>
+            <li><a href="/anwendungsgebiet/dach-fassadenbau/zubehoer/" class="sh-header__mobile-submenu-link">Zubehör</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-fensterbau" data-sh-mobile-panel="anwendungsgebiet-fensterbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Fensterbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Fensterbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/fensterbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Fensterbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/fensterbau/fensterbankschrauben/" class="sh-header__mobile-submenu-link">Fensterbankschrauben</a></li>
+            <li><a href="/anwendungsgebiet/fensterbau/fensterrahmenschrauben/" class="sh-header__mobile-submenu-link">Fensterrahmenschrauben</a></li>
+            <li><a href="/anwendungsgebiet/fensterbau/montagekeile/" class="sh-header__mobile-submenu-link">Montagekeile</a></li>
+            <li><a href="/anwendungsgebiet/fensterbau/verglasungsklotz/" class="sh-header__mobile-submenu-link">Verglasungsklotz</a></li>
+            <li><a href="/anwendungsgebiet/fensterbau/kompriband/" class="sh-header__mobile-submenu-link">Kompriband</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-holzbau" data-sh-mobile-panel="anwendungsgebiet-holzbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Holzbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Holzbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/holzbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Holzbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/holzbau/holzbauschrauben/" class="sh-header__mobile-submenu-link">Holzbauschrauben</a></li>
+            <li><a href="/anwendungsgebiet/holzbau/holzbohrer/" class="sh-header__mobile-submenu-link">Holzbohrer</a></li>
+            <li><a href="/anwendungsgebiet/holzbau/holzverbinder/" class="sh-header__mobile-submenu-link">Holzverbinder</a></li>
+            <li><a href="/anwendungsgebiet/holzbau/stockschrauben/" class="sh-header__mobile-submenu-link">Stockschrauben</a></li>
+            <li><a href="/anwendungsgebiet/holzbau/terrassenverschraubungen/" class="sh-header__mobile-submenu-link">Terrassenverschraubungen</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-sonstiges-werkstattbedarf" data-sh-mobile-panel="anwendungsgebiet-sonstiges-werkstattbedarf" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Sonstiges / Werkstattbedarf">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Sonstiges / Werkstattbedarf</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Werkstattbedarf-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/arbeitshandschuhe/" class="sh-header__mobile-submenu-link">Arbeitshandschuhe</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/betriebsmittel/" class="sh-header__mobile-submenu-link">Betriebsmittel</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/bits-schraubendreher/" class="sh-header__mobile-submenu-link">Bits &amp; Schraubendreher</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/malerzubehoer/" class="sh-header__mobile-submenu-link">Malerzubehör</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/schleifen-trennen/" class="sh-header__mobile-submenu-link">Schleifen &amp; Trennen</a></li>
+            <li><a href="/anwendungsgebiet/sonstiges-werkstattbedarf/werkzeuge/" class="sh-header__mobile-submenu-link">Werkzeuge</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-sanitaer-heizungsinstallation" data-sh-mobile-panel="anwendungsgebiet-sanitaer-heizungsinstallation" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Sanitär- &amp; Heizungsinstallation">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Sanitär- &amp; Heizungsinstallation</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/sanitaer-heizungsinstallation/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Sanitär- &amp; Heizungsprodukte</a></li>
+            <li><a href="/anwendungsgebiet/sanitaer-heizungsinstallation/duebel-befestigungselemente/" class="sh-header__mobile-submenu-link">Dübel &amp; Befestigungselemente</a></li>
+            <li><a href="/anwendungsgebiet/sanitaer-heizungsinstallation/rohrschellen-gelenkschellen/" class="sh-header__mobile-submenu-link">Rohrschellen &amp; Gelenkschellen</a></li>
+            <li><a href="/anwendungsgebiet/sanitaer-heizungsinstallation/stockschrauben-gewindebolzen/" class="sh-header__mobile-submenu-link">Stockschrauben &amp; Gewindebolzen</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-terrassenbau" data-sh-mobile-panel="anwendungsgebiet-terrassenbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Terrassenbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Terrassenbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/terrassenbau/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Terrassenbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/terrassenbau/holzschutzband/" class="sh-header__mobile-submenu-link">Holzschutzband</a></li>
+            <li><a href="/anwendungsgebiet/terrassenbau/terrassenschrauben/" class="sh-header__mobile-submenu-link">Terrassenschrauben</a></li>
+            <li><a href="/anwendungsgebiet/terrassenbau/terrassenzubehoer/" class="sh-header__mobile-submenu-link">Terrassenzubehör</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-trockenbau-innenausbau" data-sh-mobile-panel="anwendungsgebiet-trockenbau-innenausbau" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Trockenbau">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Trockenbau</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/schrauben/schnellbauschrauben/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Trockenbau-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/trockenbau/expressnaegel-deckenbefestigungen/" class="sh-header__mobile-submenu-link">Expressnägel &amp; Deckenbefestigungen</a></li>
+            <li><a href="/anwendungsgebiet/trockenbau/kleben-dichten/" class="sh-header__mobile-submenu-link">Kleben &amp; Dichten</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/" class="sh-header__mobile-submenu-link">Schnellbauschrauben</a></li>
+            <li><a href="/anwendungsgebiet/trockenbau/trockenbau-duebel/" class="sh-header__mobile-submenu-link">Trockenbau-Dübel</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-anwendungsgebiet-photovoltaik-solar" data-sh-mobile-panel="anwendungsgebiet-photovoltaik-solar" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Photovoltaik / Solar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Photovoltaik / Solar</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/anwendungsgebiet/photovoltaik-solar/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Photovoltaik-Produkte</a></li>
+            <li><a href="/anwendungsgebiet/photovoltaik-solar/muttern-scheiben/" class="sh-header__mobile-submenu-link">Muttern &amp; Scheiben</a></li>
+            <li><a href="/anwendungsgebiet/photovoltaik-solar/solar-schrauben/" class="sh-header__mobile-submenu-link">Solar-Schrauben</a></li>
+            <li><a href="/anwendungsgebiet/photovoltaik-solar/solarbefestigung/" class="sh-header__mobile-submenu-link">Solarbefestigung</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-zubehoer" data-sh-mobile-panel="zubehoer" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Zubehör">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Zubehör</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/zubehoer/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Zubehör-Produkte</a></li>
+            <li><a href="/zubehoer/arbeitshandschuhe/" class="sh-header__mobile-submenu-link">Arbeitshandschuhe</a></li>
+            <li><a href="/zubehoer/betriebsmittel/" class="sh-header__mobile-submenu-link">Betriebsmittel</a></li>
+            <li><a href="/zubehoer/bits" class="sh-header__mobile-submenu-link">Bits</a></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="zubehoer-bohrer" aria-controls="sh-mobile-submenu-zubehoer-bohrer" aria-expanded="false">Bohrer</button></li>
+            <li><a href="/zubehoer/dampfbremsen" class="sh-header__mobile-submenu-link">Dampfbremsen</a></li>
+            <li><a href="/zubehoer/klebebaender" class="sh-header__mobile-submenu-link">Klebebänder</a></li>
+            <li><a href="/zubehoer/malerzubehoer/" class="sh-header__mobile-submenu-link">Malerzubehör</a></li>
+            <li><a href="/zubehoer/schleifen-trennen/" class="sh-header__mobile-submenu-link">Schleifen-Trennen</a></li>
+            <li><a href="/zubehoer/werkzeug" class="sh-header__mobile-submenu-link">Werkzeug</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-zubehoer-bohrer" data-sh-mobile-panel="zubehoer-bohrer" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Bohrer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Bohrer</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/zubehoer/bohrer/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Bohrer</a></li>
+            <li><a href="/zubehoer/bohrer/holzbohrer/" class="sh-header__mobile-submenu-link">Holzbohrer</a></li>
+            <li><a href="/zubehoer/bohrer/metallbohrer/" class="sh-header__mobile-submenu-link">Metallbohrer</a></li>
+            <li><a href="/zubehoer/bohrer/sds-plus-hammerbohrer/" class="sh-header__mobile-submenu-link">SDS-Plus Hammerbohrer</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-marken" data-sh-mobile-panel="marken" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Marken">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Marken</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/top-marken" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Marken</a></li>
+            <li><a href="/top-marken/acp/" class="sh-header__mobile-submenu-link">ACP</a></li>
+            <li><a href="/top-marken/adunox/" class="sh-header__mobile-submenu-link">Adunox</a></li>
+            <li><a href="/top-marken/asw-wekador/" class="sh-header__mobile-submenu-link">ASW Wekador</a></li>
+            <li><a href="/top-marken/famag/" class="sh-header__mobile-submenu-link">Famag</a></li>
+            <li><a href="/top-marken/keil/" class="sh-header__mobile-submenu-link">Keil</a></li>
+            <li><a href="/top-marken/pica/" class="sh-header__mobile-submenu-link">Pica</a></li>
+            <li><a href="/top-marken/prebena/" class="sh-header__mobile-submenu-link">Prebena</a></li>
+            <li><a href="/top-marken/reisser/" class="sh-header__mobile-submenu-link">Reisser</a></li>
+            <li><a href="/top-marken/rhodius/" class="sh-header__mobile-submenu-link">Rhodius</a></li>
+            <li><a href="/top-marken/screw-rebel/" class="sh-header__mobile-submenu-link">Screw Rebel</a></li>
+            <li><a href="/top-marken/wera/" class="sh-header__mobile-submenu-link">WERA</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-schrauben" data-sh-mobile-panel="schrauben" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Schraubensortiment">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Schraubensortiment</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/schrauben/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Schrauben</a></li>
+            <li><a href="/schrauben/betonschrauben/" class="sh-header__mobile-submenu-link">Betonschrauben</a></li>
+            <li><a href="/schrauben/bohrschrauben/" class="sh-header__mobile-submenu-link">Bohrschrauben</a></li>
+            <li><a href="/schrauben/edelstahlschrauben/" class="sh-header__mobile-submenu-link">Edelstahlschrauben</a></li>
+            <li><a href="/schrauben/fassadenschrauben/" class="sh-header__mobile-submenu-link">Fassadenschrauben</a></li>
+            <li><a href="/schrauben/fensterbankschrauben/" class="sh-header__mobile-submenu-link">Fensterbankschrauben</a></li>
+            <li><a href="/schrauben/fensterrahmenschrauben/" class="sh-header__mobile-submenu-link">Fensterrahmenschrauben</a></li>
+            <li><a href="/schrauben/holzbauschrauben/" class="sh-header__mobile-submenu-link">Holzbauschrauben</a></li>
+            <li><button type="button" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--has-children" data-sh-mobile-submenu-target="schrauben-schnellbauschrauben" aria-controls="sh-mobile-submenu-schrauben-schnellbauschrauben" aria-expanded="false">Schnellbauschrauben</button></li>
+            <li><a href="/schrauben/senkkopfschrauben/" class="sh-header__mobile-submenu-link">Senkkopfschrauben</a></li>
+            <li><a href="/schrauben/spenglerschrauben/" class="sh-header__mobile-submenu-link">Spenglerschrauben</a></li>
+            <li><a href="/schrauben/stockschrauben/" class="sh-header__mobile-submenu-link">Stockschrauben</a></li>
+            <li><a href="/schrauben/tellerkopfschrauben/" class="sh-header__mobile-submenu-link">Tellerkopfschrauben</a></li>
+            <li><a href="/schrauben/terrassenschrauben/" class="sh-header__mobile-submenu-link">Terrassenschrauben</a></li>
+            <li><a href="/schrauben/trapezblechschrauben/" class="sh-header__mobile-submenu-link">Trapezblechschrauben</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-schrauben-schnellbauschrauben" data-sh-mobile-panel="schrauben-schnellbauschrauben" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Schnellbauschrauben">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Schnellbauschrauben</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/schrauben/schnellbauschrauben/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Schnellbauschrauben</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/faserplattenschrauben/" class="sh-header__mobile-submenu-link">Faserplattenschrauben</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/feingewinde/" class="sh-header__mobile-submenu-link">Feingewinde</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/grobgewinde/" class="sh-header__mobile-submenu-link">Grobgewinde</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/hartgipsplattenschrauben/" class="sh-header__mobile-submenu-link">Hartgipsplattenschrauben</a></li>
+            <li><a href="/schrauben/schnellbauschrauben/mit-bohrspitze/" class="sh-header__mobile-submenu-link">mit Bohrspitze</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-duebel" data-sh-mobile-panel="duebel" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Dübel">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Dübel</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/duebel/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Dübel</a></li>
+            <li><a href="/duebel/edelstahl-duebel/" class="sh-header__mobile-submenu-link">Edelstahl Dübel</a></li>
+            <li><a href="/duebel/nylon-duebel/" class="sh-header__mobile-submenu-link">Nylon Dübel</a></li>
+            <li><a href="/duebel/sonstige-duebel/" class="sh-header__mobile-submenu-link">Sonstige Dübel</a></li>
+            <li><a href="/duebel/verzinkte-duebel/" class="sh-header__mobile-submenu-link">Verzinkte Dübel</a></li>
+            <li><a href="/duebel/zubehoer/" class="sh-header__mobile-submenu-link">Zubehör</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-normteile" data-sh-mobile-panel="normteile" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Normteile">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Normteile</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/normteile/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Normteile</a></li>
+            <li><a href="/metrische-schrauben/" class="sh-header__mobile-submenu-link">Metrische Schrauben</a></li>
+            <li><a href="/muttern/" class="sh-header__mobile-submenu-link">Muttern</a></li>
+            <li><a href="/scheiben/" class="sh-header__mobile-submenu-link">Scheiben</a></li>
+          </ul>
+        </div>
+        <div class="sh-header__mobile-view sh-header__mobile-submenu-panel" id="sh-mobile-submenu-aktionen" data-sh-mobile-panel="aktionen" aria-hidden="true">
+          <div class="sh-header__mobile-submenu-header">
+            <div class="sh-header__mobile-submenu-bar">
+              <button type="button" class="sh-header__mobile-submenu-back" data-sh-mobile-submenu-back aria-label="Zurück zur Kategorie Aktion">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sh-header__mobile-submenu-back-icon">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Zurück</span>
+              </button>
+              <button type="button" class="sh-header__mobile-close" data-sh-mobile-menu-close aria-label="Menü schließen">
+                <span class="sh-header__sr-only">Navigation schließen</span>
+                <svg aria-hidden="true" class="sh-header__mobile-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="sh-header__mobile-submenu-title">Aktionen</div>
+            <nav class="sh-header__mobile-breadcrumb" aria-label="Breadcrumb" data-sh-mobile-breadcrumb></nav>
+          </div>
+          <ul class="sh-header__mobile-submenu-list">
+            <li><a href="/aktion/" class="sh-header__mobile-submenu-link sh-header__mobile-submenu-link--all">Alle Aktionen</a></li>
+            <li><a href="/aktion/" class="sh-header__mobile-submenu-link">Aktuelle Aktionen</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  </nav>
+</div>
