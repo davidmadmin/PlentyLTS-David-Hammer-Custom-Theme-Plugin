@@ -52,12 +52,7 @@
     if (typeof api.initHeaderSH === 'function') api.initHeaderSH();
   }
 
-  loadScriptFromCandidates(getScriptCandidates('core/on-ready.js'), function (hasReadyScript) {
-    if (!hasReadyScript) {
-      bootHeaders();
-      return;
-    }
-
+  loadScriptFromCandidates(getScriptCandidates('core/on-ready.js'), function () {
     loadScriptFromCandidates(getScriptCandidates('modules/header-fh.js'), function () {
       loadScriptFromCandidates(getScriptCandidates('modules/header-sh.js'), function () {
         bootHeaders();
