@@ -23,6 +23,7 @@
     {# Step 4: Optional, dedicated hook for future footer customisations. #}
     {% include "HammerTheme::PageDesign.Includes.Footer" ignore missing %}
 
-    {# Step 5: Load HammerTheme base script without altering Ceres default scripts. #}
-    <script src="{{ plugin_path('HammerTheme') }}/js/main.js?v={{ buildHash }}" defer></script>
+    {# Step 5: Load the single bundled HammerTheme entry script. #}
+    {% set hammerThemeMainScript = plugin_path('HammerTheme') ~ '/js/main.js?v=' ~ buildHash %}
+    <script src="{{ hammerThemeMainScript }}" defer></script>
 {% endblock %}
