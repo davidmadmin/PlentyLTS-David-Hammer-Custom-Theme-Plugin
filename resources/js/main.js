@@ -59,10 +59,6 @@
   function bootHeaders() {
     const api = window.HammerThemeHeader || {};
 
-    if (typeof api.enforceSingleHeaderWidget === 'function') {
-      api.enforceSingleHeaderWidget();
-    }
-
     log('info', 'booting header modules', {
       hasFH: typeof api.initHeaderFH === 'function',
       hasSH: typeof api.initHeaderSH === 'function',
