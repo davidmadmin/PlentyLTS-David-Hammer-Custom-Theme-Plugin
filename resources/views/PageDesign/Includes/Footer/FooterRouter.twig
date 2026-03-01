@@ -1,0 +1,11 @@
+{% set configuredHeaderLayout = config("HammerTheme.theme.headerLayout") | default('fh') | lower | trim %}
+
+{% if configuredHeaderLayout == 'sh' %}
+    {% include "HammerTheme::PageDesign.Includes.Footer.SH" with {
+        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.')
+    } %}
+{% else %}
+    {% include "HammerTheme::PageDesign.Includes.Footer.FH" with {
+        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.')
+    } %}
+{% endif %}

@@ -214,6 +214,13 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 - Die Font wird über eine Twig-`@font-face`-Definition aus `documents/` mit absolutem `plugin_path` eingebunden, damit Browser die WOFF-Dateien ohne 403 laden.
 
 
+
+## ShopBuilder-Footer-Widget
+- Das komplette Footer-Markup ist als ShopBuilder-Widget `HammerTheme::FooterWidget` (Label: **David's Custom Footer**) registriert.
+- Das Widget rendert je nach Plugin-Konfiguration **Header-Layout** automatisch die FH- oder SH-Footer-Variante.
+- Der Copyright-Text in der untersten Footer-Zeile ist pro Widget-Instanz über das Feld **Footer copyright text** editierbar.
+- Standardwert: `© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.`
+
 ## ShopBuilder-Header-Widget
 - Das komplette Header-Markup ist als ShopBuilder-Widget `HammerTheme::HeaderWidget` (Label: **David's Custom Header**) registriert.
 - Du kannst das Widget im Header-Bereich platzieren und den **Logo-Zielpfad** pro Widget-Instanz konfigurieren.
