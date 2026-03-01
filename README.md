@@ -219,3 +219,114 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 - Du kannst das Widget im Header-Bereich platzieren und den **Logo-Zielpfad** pro Widget-Instanz konfigurieren.
 - Welches Header-Layout gerendert wird (FH oder SH), steuerst Du ausschließlich über die Plugin-Konfiguration **Header-Layout** (`theme.headerLayout`).
 - Die Domain wird für die Header-Auswahl nicht mehr ausgewertet.
+
+## ShopBuilder Widgets – ausführlicher Leitfaden
+
+Dieser Abschnitt gibt Dir eine kompakte, aber vollständige Arbeitsgrundlage für ShopBuilder-Widgets in diesem Theme-Plugin.
+
+### 1) Wie ein Widget in diesem Plugin aufgebaut ist
+
+Ein Widget besteht in der Praxis aus drei Ebenen:
+
+1. **Registrierung im Service Provider**
+   - Datei: `src/Providers/HammerThemeServiceProvider.php`
+   - Das Widget wird via `registerWidget(...)` im ShopBuilder verfügbar gemacht.
+
+2. **Widget-PHP-Klasse (Daten + Settings)**
+   - Datei: `src/Widgets/Header/HammerHeaderWidget.php`
+   - In `getData()` definierst Du Metadaten (Identifier, Typ, Kategorie usw.).
+   - In `getSettings()` definierst Du die konfigurierbaren Optionen, die Redakteure im ShopBuilder sehen.
+
+3. **Twig-Template (Rendering im Frontend)**
+   - Datei: `resources/views/Widgets/Header/HammerHeaderWidget.twig`
+   - Hier wird das konkrete Markup aufgebaut und ggf. an bestehende Header-Teile weitergereicht.
+
+### 2) Widget-Metadaten aus `getData()` und ihre Bedeutung
+
+Diese Felder sind für die Platzierung und Auffindbarkeit des Widgets entscheidend:
+
+- **identifier** (`WidgetDataFactory::make(...)`)
+  - Eindeutiger technischer Schlüssel des Widgets.
+- **label** (`withLabel(...)`)
+  - Anzeigename im ShopBuilder.
+- **previewImageUrl** (`withPreviewImageUrl(...)`)
+  - Vorschau-Icon im Widget-Panel.
+- **type** (`withType(...)`)
+  - Definiert den Platzierungsbereich.
+- **category / categories** (`withCategory(...)`)
+  - Gruppierung im ShopBuilder.
+- **position** (`withPosition(...)`)
+  - Sortierreihenfolge in der Widget-Liste.
+
+#### Gängige Widget-Typen (Platzierungslogik)
+
+- **header**: Nur im Header-Bereich.
+- **footer**: Nur im Footer-Bereich.
+- **static/default/structure**: Je nach Inhaltstyp in Body-/Struktur-Bereichen.
+
+Hinweis: Die konkrete Verfügbarkeit hängt zusätzlich vom jeweiligen ShopBuilder-Inhaltstyp und dessen Dropzones ab.
+
+### 3) Einstellungen (`getSettings()`) – alle relevanten Konfigurationsarten
+
+Jeder Setting-Eintrag ist ein Objekt mit klaren Eigenschaften. Die wichtigsten sind:
+
+- **type**
+  - Art der Eingabe (z. B. `text`, `number`, `select`, `checkbox`, `spacing` usw.).
+- **required**
+  - Legt fest, ob ein Wert verpflichtend ist.
+- **defaultValue**
+  - Startwert, wenn noch nichts konfiguriert wurde.
+- **options**
+  - Zusätzliche UI-Informationen für den Editor.
+  - **name**: Anzeigename im Editor.
+  - **tooltip**: Hilfetext im Editor.
+  - **listBoxValues**: Auswahlwerte bei `select`.
+- **isVisible**
+  - Optional: blendet Felder dynamisch ein/aus.
+- **isList**
+  - Optional: erlaubt wiederholbare Einträge (z. B. Listen/Slides).
+
+### 4) Konfigurationsarten – wann Du was verwendest
+
+| Konfigurationsart | Wann Du sie verwendest | Beispiel im Header-Kontext |
+|---|---|---|
+| `text` | Freie Eingaben wie Pfade, Labels, CSS-Klassen | `logoLink` (`/` oder `/start`) |
+| `number` | Größen, Limits, numerische Schwellen | z. B. max. Anzahl sichtbarer Navigationselemente |
+| `select` + `listBoxValues` | Feste Auswahlwerte | Layout-Variante „kompakt“ vs. „voll“ |
+| `checkbox` | Ein/Aus-Optionen | Top-Bar anzeigen ja/nein |
+| `spacing` | Standardisierte Abstände | Abstände unter Header-Elementen |
+| `isVisible` | Abhängige Settings | Zusatzfeld nur sichtbar, wenn Checkbox aktiv |
+| `isList` | Wiederholbare Konfigurationsgruppen | Mehrere Service-Links im Header |
+
+### 5) Platzierungsregeln & Restriktionen für das Header-Widget
+
+- Das Widget `HammerTheme::HeaderWidget` ist als **Header-Widget** ausgelegt.
+- Zusätzlich ist im Frontend eine Schutzlogik aktiv: Wenn mehrere Header-Widget-Instanzen auf derselben Seite vorhanden sind, bleibt nur die **erste** sichtbar; weitere Instanzen werden automatisch ausgeblendet.
+- Damit schützt Du die Seite vor doppelten Header-Strukturen und vor Nebenwirkungen durch mehrfach gebundene Interaktionen.
+
+### 6) Warum nur eine Header-Instanz erlaubt ist
+
+Der Header enthält komplexe Navigation, Such-/Overlay-Logik und Shop-spezifische Verzweigungen (FH/SH). Mehrfaches Rendering kann zu folgenden Problemen führen:
+
+- doppelte oder konkurrierende Interaktionen,
+- fehlerhafte Fokus- und Overlay-Zustände,
+- unnötige DOM-Last und schlechtere Wartbarkeit.
+
+Mit der Single-Instance-Absicherung bleibt das Verhalten stabil und für beide Shops konsistent.
+
+### 7) Best Practices für neue Widgets in FH & SH
+
+- Passe Änderungen immer für **beide Shops** kompatibel an.
+- Nutze nach Möglichkeit bestehende Ceres-Hooks und vermeide doppelte Listener.
+- Verwende für interne Shop-Navigation konsequent **relative Pfade**.
+- Dokumentiere neue Settings sofort im README, damit Redaktion und Entwicklung denselben Stand haben.
+
+### 8) Checkliste für neue ShopBuilder-Widgets
+
+1. Widget in Service Provider registriert?
+2. `getData()` vollständig (Identifier, Label, Typ, Kategorie, Position)?
+3. `getSettings()` mit sinnvollen Defaults und Tooltips aufgebaut?
+4. Übersetzungen in `resources/lang/de/widgets.properties` und `resources/lang/en/widgets.properties` ergänzt?
+5. Preview-Icon unter `resources/images/widgets/` hinterlegt?
+6. Twig-Template sauber strukturiert und kompatibel mit FH/SH?
+7. Editor-Verhalten, Frontend-Rendering und mögliche Mehrfachplatzierung getestet?
