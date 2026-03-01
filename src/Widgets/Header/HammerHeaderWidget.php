@@ -32,6 +32,51 @@ class HammerHeaderWidget extends BaseWidget
                     'name' => 'Logo target path',
                     'tooltip' => 'Relative path or URL for the logo link'
                 ]
+            ],
+            'wishlistIconUrl' => [
+                'type' => 'text',
+                'required' => false,
+                'defaultValue' => '',
+                'options' => [
+                    'name' => 'Merkliste icon URL',
+                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                ]
+            ],
+            'accountIconUrl' => [
+                'type' => 'text',
+                'required' => false,
+                'defaultValue' => '',
+                'options' => [
+                    'name' => 'Account icon URL',
+                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                ]
+            ],
+            'basketIconUrl' => [
+                'type' => 'text',
+                'required' => false,
+                'defaultValue' => '',
+                'options' => [
+                    'name' => 'Basket icon URL',
+                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                ]
+            ],
+            'contactPhoneIconUrl' => [
+                'type' => 'text',
+                'required' => false,
+                'defaultValue' => '',
+                'options' => [
+                    'name' => 'Contact phone icon URL',
+                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                ]
+            ],
+            'contactMailIconUrl' => [
+                'type' => 'text',
+                'required' => false,
+                'defaultValue' => '',
+                'options' => [
+                    'name' => 'Contact mail icon URL',
+                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                ]
             ]
         ];
     }

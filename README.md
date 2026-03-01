@@ -217,5 +217,7 @@ Die Plugin-Bilder in `meta/images/` sind bereits mit `plugin.json` verbunden. De
 ## ShopBuilder-Header-Widget
 - Das komplette Header-Markup ist als ShopBuilder-Widget `HammerTheme::HeaderWidget` (Label: **David's Custom Header**) registriert.
 - Du kannst das Widget im Header-Bereich platzieren und den **Logo-Zielpfad** pro Widget-Instanz konfigurieren.
+- Zusätzlich kannst Du pro Widget-Instanz optionale Icon-URLs für **Merkliste**, **Konto**, **Warenkorb**, **Kontakt Telefon** und **Kontakt E-Mail** setzen (auch Plenty Webspace/Upload-URLs). Ohne URL bleiben die bisherigen Default-Icons aktiv.
+- Die Icon-Felder sind für mindestens `svg`, `png`, `jpg` und `jpeg` ausgelegt.
 - Welches Header-Layout gerendert wird (FH oder SH), steuerst Du ausschließlich über die Plugin-Konfiguration **Header-Layout** (`theme.headerLayout`).
 - Die Domain wird für die Header-Auswahl nicht mehr ausgewertet.

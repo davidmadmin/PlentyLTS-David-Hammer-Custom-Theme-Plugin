@@ -782,6 +782,11 @@ a.logo {
   height: 22px;
 }
 
+.fh-header__icon--image {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 .fh-header__badge {
   position: absolute;
   top: -6px;
@@ -1482,6 +1487,11 @@ a.logo {
 .fh-header__basket-icon {
   width: 24px;
   height: 24px;
+}
+
+.fh-header__basket-icon--image {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .fh-header__basket-total {
@@ -3892,6 +3902,11 @@ a.logo {
   height: 22px;
 }
 
+.sh-header__icon--image {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 .sh-header__badge {
   position: absolute;
   top: -6px;
@@ -4600,6 +4615,11 @@ a.logo {
 .sh-header__basket-icon {
   width: 24px;
   height: 24px;
+}
+
+.sh-header__basket-icon--image {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .sh-header__basket-total {

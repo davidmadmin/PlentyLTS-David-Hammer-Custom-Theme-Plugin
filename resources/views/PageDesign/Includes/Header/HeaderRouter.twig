@@ -1,7 +1,21 @@
 {% set configuredHeaderLayout = config("HammerTheme.theme.headerLayout") | default('fh') | lower | trim %}
 
 {% if configuredHeaderLayout == 'sh' %}
-    {% include "HammerTheme::PageDesign.Includes.Header.SH" with { logoLink: logoLink | default('/') } %}
+    {% include "HammerTheme::PageDesign.Includes.Header.SH" with {
+        logoLink: logoLink | default('/'),
+        wishlistIconUrl: wishlistIconUrl | default(''),
+        accountIconUrl: accountIconUrl | default(''),
+        basketIconUrl: basketIconUrl | default(''),
+        contactPhoneIconUrl: contactPhoneIconUrl | default(''),
+        contactMailIconUrl: contactMailIconUrl | default('')
+    } %}
 {% else %}
-    {% include "HammerTheme::PageDesign.Includes.Header.FH" with { logoLink: logoLink | default('/') } %}
+    {% include "HammerTheme::PageDesign.Includes.Header.FH" with {
+        logoLink: logoLink | default('/'),
+        wishlistIconUrl: wishlistIconUrl | default(''),
+        accountIconUrl: accountIconUrl | default(''),
+        basketIconUrl: basketIconUrl | default(''),
+        contactPhoneIconUrl: contactPhoneIconUrl | default(''),
+        contactMailIconUrl: contactMailIconUrl | default('')
+    } %}
 {% endif %}
