@@ -1,4 +1,13 @@
 (function (window, document) {
+  function log(level, message, detail) {
+    if (!window || !window.console) return;
+
+    const logger = typeof window.console[level] === 'function' ? window.console[level] : window.console.log;
+
+    if (typeof detail === 'undefined') logger.call(window.console, '[HammerTheme]', message);
+    else logger.call(window.console, '[HammerTheme]', message, detail);
+  }
+
   const ASSET_ROOT = (function resolveAssetRoot() {
     const currentScript = document.currentScript;
 
@@ -16,6 +25,7 @@
       const nextPath = paths.shift();
 
       if (!nextPath) {
+        log('error', 'failed to load script candidates', candidates);
         if (typeof callback === 'function') callback(false);
         return;
       }
@@ -23,6 +33,7 @@
       const script = document.createElement('script');
       script.src = nextPath;
       script.onload = function () {
+        log('info', 'loaded script', nextPath);
         if (typeof callback === 'function') callback(true);
       };
       script.onerror = tryNext;
@@ -48,8 +59,15 @@
   function bootHeaders() {
     const api = window.HammerThemeHeader || {};
 
+    log('info', 'booting header modules', {
+      hasFH: typeof api.initHeaderFH === 'function',
+      hasSH: typeof api.initHeaderSH === 'function',
+    });
+
     if (typeof api.initHeaderFH === 'function') api.initHeaderFH();
     if (typeof api.initHeaderSH === 'function') api.initHeaderSH();
+
+    log('info', 'header module boot sequence completed');
   }
 
   loadScriptFromCandidates(getScriptCandidates('core/on-ready.js'), function () {

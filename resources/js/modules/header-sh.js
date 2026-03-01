@@ -8,6 +8,15 @@ function initHeaderSH() {
     }
     callback();
   };
+  function log(level, message, detail) {
+    if (!window || !window.console) return;
+
+    const logger = typeof window.console[level] === 'function' ? window.console[level] : window.console.log;
+
+    if (typeof detail === 'undefined') logger.call(window.console, '[HammerTheme][SH]', message);
+    else logger.call(window.console, '[HammerTheme][SH]', message, detail);
+  }
+
   const runOnce = hammerThemeHeader.runOnce || function (runOnceKey, initializer) {
     const fallbackState = (window.HammerThemeHeaderRunOnceKeys = window.HammerThemeHeaderRunOnceKeys || {});
     if (!runOnceKey || typeof initializer !== "function" || fallbackState[runOnceKey]) return;
@@ -16,6 +25,7 @@ function initHeaderSH() {
   };
 
   runOnce("sh-header-module", function () {
+    log('info', 'header module init started');
 // Section: sh account menu toggle behaviour
 onReady(function () {
   function resolveGreeting(defaultGreeting) {
@@ -60,12 +70,18 @@ onReady(function () {
     });
   }
 
-  if (!container) return;
+  if (!container) {
+    log('warn', 'account menu container not found', '[data-sh-account-menu-container]');
+    return;
+  }
 
   const toggleButton = container.querySelector('[data-sh-account-menu-toggle]');
   const menu = container.querySelector('[data-sh-account-menu]');
 
-  if (!toggleButton || !menu) return;
+  if (!toggleButton || !menu) {
+    log('warn', 'account menu wiring incomplete', { hasToggle: !!toggleButton, hasMenu: !!menu });
+    return;
+  }
 
   let isOpen = false;
 
@@ -854,7 +870,10 @@ onReady(function () {
 onReady(function () {
   const header = document.querySelector('[data-sh-header-root]');
 
-  if (!header) return;
+  if (!header) {
+    log('warn', 'header root not found for mobile navigation', '[data-sh-header-root]');
+    return;
+  }
 
   const desktopMediaQuery = window.matchMedia('(min-width: 1600px)');
   const scrolledClassName = 'sh-header--scrolled';
@@ -1090,7 +1109,10 @@ onReady(function () {
   const menu = header.querySelector('[data-sh-mobile-menu]');
   const toggleButtons = header.querySelectorAll('[data-sh-mobile-menu-toggle]');
 
-  if (!menu || toggleButtons.length === 0) return;
+  if (!menu || toggleButtons.length === 0) {
+    log('warn', 'mobile menu wiring incomplete', { hasMenu: !!menu, toggleCount: toggleButtons.length });
+    return;
+  }
 
   const closeButtons = header.querySelectorAll('[data-sh-mobile-menu-close]');
   const focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -2181,12 +2203,18 @@ onReady(function () {
   const reloadStorageKey = 'shWishlistAutoOpen';
   const container = document.querySelector('[data-sh-wishlist-menu-container]');
 
-  if (!container) return;
+  if (!container) {
+    log('warn', 'wishlist menu container not found', '[data-sh-wishlist-menu-container]');
+    return;
+  }
 
   const toggleButton = container.querySelector('[data-sh-wishlist-menu-toggle]');
   const menu = container.querySelector('[data-sh-wishlist-menu]');
 
-  if (!toggleButton || !menu) return;
+  if (!toggleButton || !menu) {
+    log('warn', 'wishlist menu wiring incomplete', { hasToggle: !!toggleButton, hasMenu: !!menu });
+    return;
+  }
 
   let isOpen = false;
   let storeWatcherCleanup = null;
@@ -2331,6 +2359,7 @@ onReady(function () {
   };
 });
 
+    log('info', 'header module init completed');
   });
 }
 
