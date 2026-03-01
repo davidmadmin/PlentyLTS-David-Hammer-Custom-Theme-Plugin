@@ -1,15 +1,11 @@
 {% set configuredBottomText = widget.settings.bottomText.mobile | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.') | trim %}
 {% set bottomText = configuredBottomText is not empty ? configuredBottomText : '© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.' %}
-{% set fallbackShippingMethodsRaw = "Standardversand|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/DHL_Standardversand.png\nExpressversand|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/GO__Express.png\nSelbstabholung|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/Selbstabholer.png" %}
-{% set configuredShippingMethodsRaw = widget.settings.shippingMethodsConfig.mobile | default('') | trim %}
-{% set shippingMethodsRaw = configuredShippingMethodsRaw is not empty ? configuredShippingMethodsRaw : fallbackShippingMethodsRaw %}
-{% set shippingMethodLines = shippingMethodsRaw | split("\n") %}
+{% set configuredShippingMethods = widget.settings.shippingMethods.mobile | default([]) %}
 {% set shippingMethods = [] %}
 
-{% for shippingMethodLine in shippingMethodLines %}
-    {% set shippingMethodParts = shippingMethodLine | split('|') %}
-    {% set shippingMethodLabel = shippingMethodParts[0] | default('') | trim %}
-    {% set shippingMethodIcon = shippingMethodParts[1] | default('') | trim %}
+{% for shippingMethodEntry in configuredShippingMethods %}
+    {% set shippingMethodLabel = shippingMethodEntry.label | default('') | trim %}
+    {% set shippingMethodIcon = shippingMethodEntry.iconUrl | default('') | trim %}
 
     {% if shippingMethodLabel is not empty and shippingMethodIcon is not empty %}
         {% set shippingMethods = shippingMethods | merge([{
@@ -18,23 +14,6 @@
         }]) %}
     {% endif %}
 {% endfor %}
-
-{% if shippingMethods is empty %}
-    {% set shippingMethods = [
-        {
-            label: 'Standardversand',
-            iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/DHL_Standardversand.png'
-        },
-        {
-            label: 'Expressversand',
-            iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/GO__Express.png'
-        },
-        {
-            label: 'Selbstabholung',
-            iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/Selbstabholer.png'
-        }
-    ] %}
-{% endif %}
 
 <div data-hammer-footer-widget="true">
     {% include "HammerTheme::PageDesign.Includes.Footer.FooterRouter" with {
