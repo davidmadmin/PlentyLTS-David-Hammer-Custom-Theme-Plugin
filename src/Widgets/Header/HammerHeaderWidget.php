@@ -34,48 +34,53 @@ class HammerHeaderWidget extends BaseWidget
                 ]
             ],
             'wishlistIconUrl' => [
-                'type' => 'text',
+                'type' => 'file',
                 'required' => false,
                 'defaultValue' => '',
+                'showPreview' => true,
                 'options' => [
-                    'name' => 'Merkliste icon URL',
-                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                    'name' => 'Merkliste icon file',
+                    'tooltip' => 'Optional icon file from webspace/upload. Uses default icon when empty.'
                 ]
             ],
             'accountIconUrl' => [
-                'type' => 'text',
+                'type' => 'file',
                 'required' => false,
                 'defaultValue' => '',
+                'showPreview' => true,
                 'options' => [
-                    'name' => 'Account icon URL',
-                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                    'name' => 'Account icon file',
+                    'tooltip' => 'Optional icon file from webspace/upload. Uses default icon when empty.'
                 ]
             ],
             'basketIconUrl' => [
-                'type' => 'text',
+                'type' => 'file',
                 'required' => false,
                 'defaultValue' => '',
+                'showPreview' => true,
                 'options' => [
-                    'name' => 'Basket icon URL',
-                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                    'name' => 'Basket icon file',
+                    'tooltip' => 'Optional icon file from webspace/upload. Uses default icon when empty.'
                 ]
             ],
             'contactPhoneIconUrl' => [
-                'type' => 'text',
+                'type' => 'file',
                 'required' => false,
                 'defaultValue' => '',
+                'showPreview' => true,
                 'options' => [
-                    'name' => 'Contact phone icon URL',
-                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                    'name' => 'Contact phone icon file',
+                    'tooltip' => 'Optional icon file from webspace/upload. Uses default icon when empty.'
                 ]
             ],
             'contactMailIconUrl' => [
-                'type' => 'text',
+                'type' => 'file',
                 'required' => false,
                 'defaultValue' => '',
+                'showPreview' => true,
                 'options' => [
-                    'name' => 'Contact mail icon URL',
-                    'tooltip' => 'Optional image URL (svg, png, jpg, jpeg, webspace/upload). Uses default icon when empty.'
+                    'name' => 'Contact mail icon file',
+                    'tooltip' => 'Optional icon file from webspace/upload. Uses default icon when empty.'
                 ]
             ]
         ];
