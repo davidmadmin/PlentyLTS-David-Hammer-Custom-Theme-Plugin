@@ -4,6 +4,14 @@
   More of this page was designed and coded by David M. Abdin.
   Contact me on LinkedIn for business inquires https://www.linkedin.com/in/david-m-abdin-5656aa367/
 -->
+{% set defaultShippingMethods = [
+  { label: 'Standardversand', iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/DHL_Standardversand.png' },
+  { label: 'Expressversand', iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/GO__Express.png' },
+  { label: 'Selbstabholung', iconUrl: 'https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/Selbstabholer.png' }
+] %}
+{% set configuredShippingMethods = shippingMethods | default([]) %}
+{% set shippingMethodsToRender = configuredShippingMethods is not empty ? configuredShippingMethods : defaultShippingMethods %}
+
 <div class="fh-footer">
   <div class="fh-footer__inner">
     <div class="fh-footer__content">
@@ -119,18 +127,17 @@
         <div class="fh-footer__logistics-section">
           <h6 class="fh-footer__sub-heading">Unsere Versandarten</h6>
           <div class="fh-footer__badge-grid fh-footer__badge-grid--shipping" aria-label="Versanddienstleister">
-            <div class="fh-footer__shipping-item">
-              <img src="https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/DHL_Standardversand.png" alt="DHL Standardversand" loading="lazy" decoding="async">
-              <span class="fh-footer__shipping-label">Standardversand</span>
-            </div>
-            <div class="fh-footer__shipping-item">
-              <img src="https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/GO__Express.png" alt="GO! Express" loading="lazy" decoding="async">
-              <span class="fh-footer__shipping-label">Expressversand</span>
-            </div>
-            <div class="fh-footer__shipping-item">
-              <img src="https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/Selbstabholer.png" alt="Selbstabholer" loading="lazy" decoding="async">
-              <span class="fh-footer__shipping-label">Selbstabholung</span>
-            </div>
+            {% for shippingMethod in shippingMethodsToRender %}
+              {% set shippingLabel = shippingMethod.label | default('') | trim %}
+              {% set shippingIconUrl = shippingMethod.iconUrl | default('') | trim %}
+
+              {% if shippingLabel is not empty and shippingIconUrl is not empty %}
+                <div class="fh-footer__shipping-item">
+                  <img src="{{ shippingIconUrl }}" alt="{{ shippingLabel }}" loading="lazy" decoding="async">
+                  <span class="fh-footer__shipping-label">{{ shippingLabel }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
       </div>

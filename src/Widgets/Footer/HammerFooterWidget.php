@@ -14,6 +14,7 @@ class HammerFooterWidget extends BaseWidget
     {
         return WidgetDataFactory::make('HammerTheme::FooterWidget')
             ->withLabel("David's Custom Footer")
+            ->withPreviewImageUrl('/images/widgets/hammer-footer.svg')
             ->withType(WidgetTypes::FOOTER)
             ->withCategory('footer')
             ->withPosition(100)
@@ -30,6 +31,15 @@ class HammerFooterWidget extends BaseWidget
                 'options' => [
                     'name' => 'Footer copyright text',
                     'tooltip' => 'Editable bottom line text for the footer widget'
+                ]
+            ],
+            'shippingMethodsConfig' => [
+                'type' => 'textarea',
+                'required' => false,
+                'defaultValue' => "Standardversand|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/DHL_Standardversand.png\nExpressversand|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/GO__Express.png\nSelbstabholung|https://bilder.fenster-hammer.de/frontend/Footer_v2_Media/Selbstabholer.png",
+                'options' => [
+                    'name' => 'Shipping method icons',
+                    'tooltip' => 'One entry per line: Label|Image URL. Empty input uses defaults.'
                 ]
             ]
         ];

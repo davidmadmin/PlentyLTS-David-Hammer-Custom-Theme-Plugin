@@ -2,10 +2,12 @@
 
 {% if configuredHeaderLayout == 'sh' %}
     {% include "HammerTheme::PageDesign.Includes.Footer.SH" with {
-        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.')
+        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.'),
+        shippingMethods: shippingMethods | default([])
     } %}
 {% else %}
     {% include "HammerTheme::PageDesign.Includes.Footer.FH" with {
-        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.')
+        bottomText: bottomText | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.'),
+        shippingMethods: shippingMethods | default([])
     } %}
 {% endif %}
