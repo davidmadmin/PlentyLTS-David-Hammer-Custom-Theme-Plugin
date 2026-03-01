@@ -1,0 +1,8 @@
+{% set configuredBottomText = widget.settings.bottomText.mobile | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.') | trim %}
+{% set bottomText = configuredBottomText is not empty ? configuredBottomText : '© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.' %}
+
+<div data-hammer-footer-widget="true">
+    {% include "HammerTheme::PageDesign.Includes.Footer.FooterRouter" with {
+        bottomText: bottomText
+    } %}
+</div>
