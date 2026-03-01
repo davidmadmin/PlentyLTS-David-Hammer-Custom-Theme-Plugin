@@ -1,8 +1,23 @@
 {% set configuredBottomText = widget.settings.bottomText.mobile | default('© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.') | trim %}
 {% set bottomText = configuredBottomText is not empty ? configuredBottomText : '© 2002–2026 ACME CORP Shop | ACME INC. Alle Rechte vorbehalten.' %}
+{% set configuredShippingMethods = widget.settings.shippingMethods.mobile | default([]) %}
+{% set shippingMethods = [] %}
+
+{% for shippingMethodEntry in configuredShippingMethods %}
+    {% set shippingMethodLabel = shippingMethodEntry.label | default('') | trim %}
+    {% set shippingMethodIcon = shippingMethodEntry.iconUrl | default('') | trim %}
+
+    {% if shippingMethodLabel is not empty and shippingMethodIcon is not empty %}
+        {% set shippingMethods = shippingMethods | merge([{
+            label: shippingMethodLabel,
+            iconUrl: shippingMethodIcon
+        }]) %}
+    {% endif %}
+{% endfor %}
 
 <div data-hammer-footer-widget="true">
     {% include "HammerTheme::PageDesign.Includes.Footer.FooterRouter" with {
-        bottomText: bottomText
+        bottomText: bottomText,
+        shippingMethods: shippingMethods
     } %}
 </div>
