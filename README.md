@@ -71,9 +71,9 @@ Technisch ist das die Verknüpfung zwischen:
 Ein **Default-Container** ist die optionale Eigenschaft `defaultLayoutContainer` im jeweiligen DataProvider in `plugin.json`. Wenn gesetzt, kann Plenty den DataProvider beim Verknüpfen direkt an diesen vorgeschlagenen Container hängen.
 
 Wichtig für dieses Plugin:
-- Aktuell ist in `plugin.json` **kein** `defaultLayoutContainer` gesetzt.
-- Das heißt: Die Verknüpfung passiert derzeit manuell im Plugin-Set unter **Container-Verknüpfungen**.
-- Falls Du die manuelle Arbeit reduzieren willst, kannst Du später z. B. `"defaultLayoutContainer": "Ceres::Template.Style"` ergänzen.
+- Für `Hammer Theme Script Container` ist `defaultLayoutContainer` bereits auf `Ceres::Script.Loader` gesetzt.
+- Für `Hammer Theme Base Container` erfolgt die Verknüpfung weiterhin manuell im Plugin-Set unter **Container-Verknüpfungen** (`Ceres::Template.Style`).
+- Optional kannst Du später auch für den Base-DataProvider einen `defaultLayoutContainer` ergänzen.
 
 ### Welche Container brauchen wir für dieses Plugin aktuell?
 
@@ -82,10 +82,10 @@ Der DataProvider **Hammer Theme Base Container** rendert derzeit nur:
 - Theme-Variablen/Fonteinbindung via Twig-Include.
 
 Daher gilt aktuell:
-- **Erforderlich:** `Ceres::Template.Style`
-- **Nicht erforderlich (derzeit):** `Ceres::Script.Loader` (nur sinnvoll, wenn dieser DataProvider auch `<script>`-Output liefern soll)
+- **Erforderlich:** `Ceres::Template.Style` für `Hammer Theme Base Container`
+- **Erforderlich:** `Ceres::Script.Loader` für `Hammer Theme Script Container`
 
-Hinweis: Wenn derselbe DataProvider gleichzeitig an `Template.Style` **und** `Script.Loader` hängt, wird sein Output zweimal ausgegeben. Da unser Output aktuell style-lastig ist, ist die saubere Ziel-Verknüpfung primär `Template.Style`.
+Hinweis: Verknüpfe den Base-DataProvider nicht doppelt an `Template.Style` und `Script.Loader`. Der Script-Output wird jetzt über den separaten DataProvider ausgeliefert, damit Header-JavaScript (inkl. Dropdown-Toggles) zuverlässig lädt.
 
 ### Erklärung der in Deinem Screenshot sichtbaren Container-Optionen
 
@@ -183,7 +183,7 @@ Die folgende Liste erklärt die sichtbaren Einträge aus der Ceres-Containerausw
 
 ### Empfohlene Praxis für dieses Repository
 
-- Für den Basis-Container in diesem Repo derzeit auf `Ceres::Template.Style` fokussieren.
+- Verknüpfe in jedem Plugin-Set sowohl `Hammer Theme Base Container` → `Ceres::Template.Style` als auch `Hammer Theme Script Container` → `Ceres::Script.Loader`.
 - Checkout-/Kategorie-Container nur dann belegen, wenn Du gezielt dortige Features einführst.
 - Deprecated-Container nicht für neue Implementierungen nutzen.
 - Wenn künftig separate JS-DataProvider dazukommen, kann ein eigener DataProvider mit passendem `defaultLayoutContainer` (`Ceres::Script.Loader` oder checkout-/pdp-spezifische Container) sinnvoll sein.
