@@ -8,6 +8,11 @@
 {% set wishListCount = services.wishList.getCountedItemWishList() %}
 {% set basketCurrency = basket.currency | default("EUR") %}
 {% set showNetPricesInitial = showNetPrices is defined ? showNetPrices : false %}
+{% set wishlistIconUrl = wishlistIconUrl | default('') | trim %}
+{% set accountIconUrl = accountIconUrl | default('') | trim %}
+{% set basketIconUrl = basketIconUrl | default('') | trim %}
+{% set contactPhoneIconUrl = (contactPhoneIconUrl | default('') | trim) is not empty ? (contactPhoneIconUrl | default('') | trim) : 'https://bilder.fenster-hammer.de/frontend/UI_Icons/phone.svg' %}
+{% set contactMailIconUrl = contactMailIconUrl | default('') | trim %}
 <div class="fh-header" data-fh-header-root>
   <div class="fh-header__top-bar text-uppercase">
     <a href="https://www.trustedshops.de/bewertung/info_XDCA531410FCCAB88C0D491294FA17294.html" target="_blank" rel="noopener" class="fh-header__top-link">
@@ -65,9 +70,13 @@
             {# Merkliste-Zähler: initial Twig-Fallback + reaktive Ceres-Store-Aktualisierung. #}
             <span v-text="$store.state.basket.isBasketInitiallyLoaded ? $store.getters.wishListCount : {{ wishListCount | default(0) }}">{{ wishListCount }}</span>
           </span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="fh-header__icon">
-            <path d="M7 4h10a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"></path>
-          </svg>
+          {% if wishlistIconUrl is not empty %}
+            <img src="{{ wishlistIconUrl }}" alt="" class="fh-header__icon fh-header__icon--image" loading="lazy">
+          {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="fh-header__icon">
+              <path d="M7 4h10a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"></path>
+            </svg>
+          {% endif %}
           <span class="fh-header__sr-only">Merkliste</span>
         </button>
         <div id="fh-wishlist-menu" data-fh-wishlist-menu aria-hidden="true" class="fh-header__panel fh-header__panel--wishlist">
@@ -84,10 +93,14 @@
         <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fh-account-menu" aria-label="Dein Konto" data-fh-account-menu-toggle class="fh-header__icon-button">
           {# Account-Status-Mapping auf Ceres-Store-Getter. #}
           <span class="fh-header__status-indicator" :class="{ 'is-logged-in': $store.getters.isLoggedIn }" aria-hidden="true"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="fh-header__icon">
-            <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5z"></path>
-            <path d="M4.2 21.4c.5-3.6 3.8-6.4 7.8-6.4s7.3 2.8 7.8 6.4"></path>
-          </svg>
+          {% if accountIconUrl is not empty %}
+            <img src="{{ accountIconUrl }}" alt="" class="fh-header__icon fh-header__icon--image" loading="lazy">
+          {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="fh-header__icon">
+              <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5z"></path>
+              <path d="M4.2 21.4c.5-3.6 3.8-6.4 7.8-6.4s7.3 2.8 7.8 6.4"></path>
+            </svg>
+          {% endif %}
         </button>
         <div id="fh-account-menu" data-fh-account-menu aria-hidden="true" class="fh-header__panel fh-header__panel--account">
           <div class="fh-header__panel-arrow"></div>
@@ -189,9 +202,10 @@
                 <a href="tel:02204910980" class="fh-header__panel-contact-chip">
                   <span class="fh-header__panel-contact-icon" aria-hidden="true">
                     <img
-                      src="https://bilder.fenster-hammer.de/frontend/UI_Icons/phone.svg"
+                      src="{{ contactPhoneIconUrl }}"
                       alt=""
                       class="fh-header__panel-contact-icon-image"
+                      loading="lazy"
                     >
                   </span>
                   <span class="fh-header__panel-contact-text">02204 910 980</span>
@@ -201,9 +215,18 @@
               <div class="fh-header__panel-contact-line">
                 <a href="mailto:service@fenster-hammer.de" class="fh-header__panel-contact-chip">
                   <span class="fh-header__panel-contact-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                      <path d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75v10.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25Zm2.75-.25a.75.75 0 0 0-.75.75v.26l7 4.38 7-4.38V7.25a.75.75 0 0 0-.75-.75Z" fill="currentColor"/>
-                    </svg>
+                    {% if contactMailIconUrl is not empty %}
+                      <img
+                        src="{{ contactMailIconUrl }}"
+                        alt=""
+                        class="fh-header__panel-contact-icon-image"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                        <path d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75v10.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25Zm2.75-.25a.75.75 0 0 0-.75.75v.26l7 4.38 7-4.38V7.25a.75.75 0 0 0-.75-.75Z" fill="currentColor"/>
+                      </svg>
+                    {% endif %}
                   </span>
                   <span class="fh-header__panel-contact-text">service@fenster-hammer.de</span>
                 </a>
@@ -250,11 +273,15 @@
           <template v-else>
             <span class="fh-header__basket-count">{{ basket.itemQuantity | default(0) }}</span>
           </template>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="fh-header__basket-icon">
-            <circle cx="9" cy="20" r="1.5" fill="currentColor"></circle>
-            <circle cx="18" cy="20" r="1.5" fill="currentColor"></circle>
-            <path d="M2.5 3h2l2.4 12.6a1.5 1.5 0 0 0 1.5 1.2H18a1.5 1.5 0 0 0 1.5-1.2L21 7H6"></path>
-          </svg>
+          {% if basketIconUrl is not empty %}
+            <img src="{{ basketIconUrl }}" alt="" class="fh-header__basket-icon fh-header__basket-icon--image" loading="lazy">
+          {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="fh-header__basket-icon">
+              <circle cx="9" cy="20" r="1.5" fill="currentColor"></circle>
+              <circle cx="18" cy="20" r="1.5" fill="currentColor"></circle>
+              <path d="M2.5 3h2l2.4 12.6a1.5 1.5 0 0 0 1.5 1.2H18a1.5 1.5 0 0 0 1.5-1.2L21 7H6"></path>
+            </svg>
+          {% endif %}
           <template v-if="$store.state.basket.isBasketInitiallyLoaded">
             <span class="fh-header__basket-total" aria-hidden="true" v-if="!$store.state.basket.showNetPrices" v-basket-item-sum="$store.state.basket.data.itemSum">
               {{ basket.itemSum | default(0) | formatMonetary(basketCurrency) }}

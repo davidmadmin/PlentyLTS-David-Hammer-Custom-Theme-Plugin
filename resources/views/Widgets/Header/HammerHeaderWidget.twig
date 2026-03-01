@@ -1,6 +1,18 @@
 {% set configuredLogoLink = widget.settings.logoLink.mobile | default('/') | trim %}
 {% set logoLink = configuredLogoLink is not empty ? configuredLogoLink : '/' %}
+{% set wishlistIconUrl = widget.settings.wishlistIconUrl.mobile | default('') | trim %}
+{% set accountIconUrl = widget.settings.accountIconUrl.mobile | default('') | trim %}
+{% set basketIconUrl = widget.settings.basketIconUrl.mobile | default('') | trim %}
+{% set contactPhoneIconUrl = widget.settings.contactPhoneIconUrl.mobile | default('') | trim %}
+{% set contactMailIconUrl = widget.settings.contactMailIconUrl.mobile | default('') | trim %}
 
 <div data-hammer-header-widget="true">
-    {% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" with { logoLink: logoLink } %}
+    {% include "HammerTheme::PageDesign.Includes.Header.HeaderRouter" with {
+        logoLink: logoLink,
+        wishlistIconUrl: wishlistIconUrl,
+        accountIconUrl: accountIconUrl,
+        basketIconUrl: basketIconUrl,
+        contactPhoneIconUrl: contactPhoneIconUrl,
+        contactMailIconUrl: contactMailIconUrl
+    } %}
 </div>
